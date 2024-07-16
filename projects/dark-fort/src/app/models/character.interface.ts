@@ -1,6 +1,7 @@
 export interface ICharacter {
   name: string;
-  hitPoints: number;
+  hitPointsCurrent: number;
+  hitPointsMax: number;
   silver: number;
   level: number;
   weapon: WeaponIdentifier;
@@ -39,4 +40,23 @@ export enum ItemIdentifier {
   palms,
   aegis,
   omen
+}
+
+export interface IMonster {
+  name: string;
+  damage: number;
+  hitPoints: number;
+  points: number;
+
+}
+
+export enum MonsterIdentifier {
+  skeleton,
+  cultist,
+  goblin,
+  hound,
+  sorcerer,
+  troll,
+  medusa,
+  basilisk
 }
