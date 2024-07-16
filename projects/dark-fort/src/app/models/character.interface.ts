@@ -12,6 +12,7 @@ export interface IWeapon {
   damageDie: number;
   damageBonus: number;
   attackBonus: number;
+  silver: number;
 }
 
 export enum WeaponIdentifier {
@@ -20,4 +21,22 @@ export enum WeaponIdentifier {
   sword,
   flail,
   zweihander
+}
+
+export interface IItem {
+  name: string;
+  silver: number;
+  uses: number;
+  id: ItemIdentifier;
+}
+
+export enum ItemIdentifier {
+  potion,
+  rope,
+  armor,
+  cloack,
+  summon,
+  palms,
+  aegis,
+  omen
 }
