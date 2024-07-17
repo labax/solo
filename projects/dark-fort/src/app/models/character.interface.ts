@@ -5,6 +5,8 @@ export interface ICharacter {
   silver: number;
   level: number;
   weapon: WeaponIdentifier;
+  inventory: IItem[];
+  points: number;
 }
 
 export interface IWeapon {
@@ -29,13 +31,14 @@ export interface IItem {
   silver: number;
   uses: number;
   id: ItemIdentifier;
+  onUse: (state: IState) => void;
 }
 
 export enum ItemIdentifier {
   potion,
   rope,
   armor,
-  cloack,
+  cloak,
   summon,
   palms,
   aegis,
@@ -47,7 +50,8 @@ export interface IMonster {
   damage: number;
   hitPoints: number;
   points: number;
-
+  id: MonsterIdentifier;
+  onKill: (state: IState) => void;
 }
 
 export enum MonsterIdentifier {
@@ -59,4 +63,17 @@ export enum MonsterIdentifier {
   troll,
   medusa,
   basilisk
+}
+
+export interface IState {
+  character: ICharacter;
+}
+
+export interface IEffect {
+  id: EffectIdetifier,
+  uses: number
+}
+
+export enum EffectIdetifier {
+  daemon
 }
