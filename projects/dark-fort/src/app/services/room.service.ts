@@ -3,7 +3,6 @@
 import {Injectable} from '@angular/core';
 import {Cardinality, Room, RoomShape} from '../models/character.interface';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -41,27 +40,24 @@ export class RoomService {
 
     const roomExits = new Set(existingExits);
 
-    return {shape: RoomShape.placeholder, exits: Array.from(roomExits ), x, y};
+    return {shape: RoomShape.placeholder, exits: Array.from(roomExits), x, y};
   }
 
-  materializeRoom(room: Room):{ x: number, y: number }[] {
+  materializeRoom(room: Room): { x: number, y: number }[] {
     const shapes = Object.values(RoomShape).filter(value => typeof value === 'number')
-      .filter(shape=>shape !== RoomShape.placeholder);
-    const exits = Object.values(Cardinality).filter(value => typeof value === 'number');
+      .filter(shape => shape !== RoomShape.placeholder);
+
+    const invalidCardinalities = this.calculateInvalidCardinalities(room);
+    const exits = Object.values(Cardinality).filter(value => typeof value === 'number')
+      .filter(exit => !invalidCardinalities.includes(exit as Cardinality));
 
     const roomShape = shapes[Math.floor(Math.random() * shapes.length)] as RoomShape;
     const exitCount = Math.floor(Math.random() * 2) + 1;
 
     const roomExits = new Set(room.exits);
 
-    while (roomExits.size < exitCount + 1) {
+    while (roomExits.size < Math.min(exitCount + 1, exits.length)) {
       const exit = exits[Math.floor(Math.random() * exits.length)] as Cardinality
-      if ((room.x === 0 && exit === Cardinality.north)
-        || (room.y === 0 && exit === Cardinality.west)
-        || (room.x === this._mapHeight - 1 && exit === Cardinality.south)
-        || (room.y === this._mapWidth - 1 && exit === Cardinality.east)) {
-        continue
-      }
       roomExits.add(exit);
     }
 
@@ -69,6 +65,27 @@ export class RoomService {
     room.shape = roomShape;
 
     return this.getNeighboringCoordinates(room);
+  }
+
+  calculateInvalidCardinalities(room: Room): Cardinality[] {
+    const cardinalities: Cardinality[] = [];
+    if (room.x === 0) {
+      cardinalities.push(Cardinality.north);
+    }
+
+    if (room.y === 0) {
+      cardinalities.push(Cardinality.west);
+    }
+
+    if (room.x === this._mapHeight - 1) {
+      cardinalities.push(Cardinality.south)
+    }
+
+    if (room.y === this._mapWidth -1) {
+      cardinalities.push(Cardinality.east);
+    }
+
+    return cardinalities;
   }
 
   getNeighboringCoordinates(room: Room): { x: number, y: number }[] {
@@ -94,21 +111,20 @@ export class RoomService {
     return neighbors;
   }
 
-  calculateEntrance(sourceX: number, sourceY: number, targetX:number, targetY:number): Cardinality {
-    if(sourceX === targetX && sourceY < targetY) {
+  calculateEntrance(sourceX: number, sourceY: number, targetX: number, targetY: number): Cardinality {
+    if (sourceX === targetX && sourceY < targetY) {
       return Cardinality.west;
     }
 
-    if(sourceX === targetX && sourceY > targetY) {
+    if (sourceX === targetX && sourceY > targetY) {
       return Cardinality.east;
     }
 
-    if(sourceX < targetX && sourceY === targetY) {
+    if (sourceX < targetX && sourceY === targetY) {
       return Cardinality.north;
     }
 
     return Cardinality.south;
-
   }
 
   generateRandomMap(rows: number, cols: number): Room[] {
