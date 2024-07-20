@@ -4,7 +4,7 @@ export interface ICharacter {
   hitPointsMax: number;
   silver: number;
   level: number;
-  weapon: WeaponIdentifier;
+  weapon?: WeaponIdentifier;
   inventory: IItem[];
   points: number;
 }
