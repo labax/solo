@@ -42,4 +42,15 @@ export class RoomMapComponent implements OnInit {
   getRoomAtPosition(x: number, y: number): Room | undefined {
     return this.stateService.map.find(room => room.x === x && room.y === y);
   }
+
+  onRoomClick(room: Room) {
+    if(room.shape === RoomShape.placeholder) {
+      const rooms = this.roomService.materializeRoom(room);
+
+      for (const coordinate of rooms){
+        this.stateService.map.push(this.roomService.generateRandomRoom(coordinate.x, coordinate.y, room.exits));
+      }
+
+    }
+  }
 }

@@ -94,7 +94,8 @@ export enum RoomShape {
   round,
   rectangular,
   triangular,
-  skull
+  skull,
+  placeholder
 }
 
 export interface Room {

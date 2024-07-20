@@ -38,25 +38,37 @@ export class RoomService {
   }
 
   generateRandomRoom(x: number, y: number, existingExits: Cardinality[] = []): Room {
-    const shapes = Object.values(RoomShape).filter(value => typeof value === 'number');
+
+    //const roomExits = new Set(existingExits);
+
+    return {shape: RoomShape.placeholder, exits: Array.from([]), x, y};
+  }
+
+  materializeRoom(room: Room):{ x: number, y: number }[] {
+    const shapes = Object.values(RoomShape).filter(value => typeof value === 'number')
+      .filter(shape=>shape !== RoomShape.placeholder);
     const exits = Object.values(Cardinality).filter(value => typeof value === 'number');
 
-    const shape = shapes[Math.floor(Math.random() * shapes.length)] as RoomShape;
+    const roomShape = shapes[Math.floor(Math.random() * shapes.length)] as RoomShape;
     const exitCount = Math.floor(Math.random() * 2) + 1;
-    const roomExits = new Set(existingExits);
+
+    const roomExits = new Set(room.exits);
 
     while (roomExits.size < exitCount) {
       const exit = exits[Math.floor(Math.random() * exits.length)] as Cardinality
-      if ((x === 0 && exit === Cardinality.north)
-        || (y === 0 && exit === Cardinality.west)
-        || (x === this._mapHeight - 1 && exit === Cardinality.south)
-        || (y === this._mapWidth - 1 && exit === Cardinality.east)) {
+      if ((room.x === 0 && exit === Cardinality.north)
+        || (room.y === 0 && exit === Cardinality.west)
+        || (room.x === this._mapHeight - 1 && exit === Cardinality.south)
+        || (room.y === this._mapWidth - 1 && exit === Cardinality.east)) {
         continue
       }
       roomExits.add(exit);
     }
 
-    return {shape, exits: Array.from(roomExits), x, y};
+    room.exits = Array.from(roomExits);
+    room.shape = roomShape;
+
+    return this.getNeighboringCoordinates(room);
   }
 
   getNeighboringCoordinates(room: Room): { x: number, y: number }[] {
