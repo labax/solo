@@ -35,6 +35,29 @@ export class RoomService {
     return { shape, exits: Array.from(roomExits), x, y };
   }
 
+  getNeighboringCoordinates(room: Room): { x: number, y: number }[] {
+    const neighbors: { x: number, y: number }[] = [];
+
+    room.exits.forEach(exit => {
+      switch (exit) {
+        case Cardinality.north:
+          neighbors.push({ x: room.x - 1, y: room.y });
+          break;
+        case Cardinality.east:
+          neighbors.push({ x: room.x, y: room.y + 1 });
+          break;
+        case Cardinality.south:
+          neighbors.push({ x: room.x + 1, y: room.y });
+          break;
+        case Cardinality.west:
+          neighbors.push({ x: room.x, y: room.y - 1 });
+          break;
+      }
+    });
+
+    return neighbors;
+  }
+
   generateRandomMap(rows: number, cols: number): Room[] {
     const map: Room[] = [];
 
