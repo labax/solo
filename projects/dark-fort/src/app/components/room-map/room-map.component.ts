@@ -35,10 +35,6 @@ export class RoomMapComponent implements OnInit {
     return RoomShape[shape];
   }
 
-  getRoomExits(exits: Cardinality[]): string {
-    return exits.map(exit => Cardinality[exit]).join(', ');
-  }
-
   getRoomAtPosition(x: number, y: number): Room | undefined {
     return this.stateService.map.find(room => room.x === x && room.y === y);
   }
