@@ -1,0 +1,36 @@
+/* src/app/components/room-map/room-map.component.css */
+
+.room-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.room-row {
+  display: flex;
+}
+
+.room {
+  border: 1px solid #000;
+  margin: 5px;
+  padding: 10px;
+  text-align: center;
+}
+
+.exit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.exit {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.spacer {
+  width: 24px;
+  height: 24px;
+}
