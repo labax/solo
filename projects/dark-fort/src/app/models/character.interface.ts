@@ -77,3 +77,27 @@ export interface IEffect {
 export enum EffectIdetifier {
   daemon
 }
+
+export enum Cardinality {
+  north,
+  east,
+  south,
+  west
+}
+
+export enum RoomShape {
+  irregularCave,
+  oval,
+  cross,
+  corridor,
+  square,
+  round,
+  rectangular,
+  triangular,
+  skull
+}
+
+export interface Room {
+  shape: RoomShape;
+  exits: Cardinality[];
+}
