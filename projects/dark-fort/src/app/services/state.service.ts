@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import {ICharacter, Room} from '../models/character.interface';
+import {Injectable} from '@angular/core';
+import {ICharacter, Room, RoomShape} from '../models/character.interface';
 import {DiceService} from '../../../../common/src/lib/services/dice.service';
 
 @Injectable({
@@ -22,4 +22,12 @@ export class StateService {
   public map: Room[] = [];
   public currentRoom!: Room;
   public character?: ICharacter
+
+  public calculateExploredRoomsCount(): number {
+    return this.map.filter(room=> room.shape !== RoomShape.placeholder).length;
+  }
+
+  public calculateUnexploredRoomsCount() {
+    return this.map.filter(room=> room.shape === RoomShape.placeholder).length;
+  }
 }

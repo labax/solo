@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {StateService} from '../../services/state.service';
 
 @Component({
   selector: 'dark-fort-score',
@@ -9,4 +10,6 @@ import { Component } from '@angular/core';
 })
 export class ScoreComponent {
 
+  constructor(public stateService: StateService) {
+  }
 }
