@@ -39,9 +39,9 @@ export class RoomService {
 
   generateRandomRoom(x: number, y: number, existingExits: Cardinality[] = []): Room {
 
-    //const roomExits = new Set(existingExits);
+    const roomExits = new Set(existingExits);
 
-    return {shape: RoomShape.placeholder, exits: Array.from([]), x, y};
+    return {shape: RoomShape.placeholder, exits: Array.from(roomExits ), x, y};
   }
 
   materializeRoom(room: Room):{ x: number, y: number }[] {
@@ -54,7 +54,7 @@ export class RoomService {
 
     const roomExits = new Set(room.exits);
 
-    while (roomExits.size < exitCount) {
+    while (roomExits.size < exitCount + 1) {
       const exit = exits[Math.floor(Math.random() * exits.length)] as Cardinality
       if ((room.x === 0 && exit === Cardinality.north)
         || (room.y === 0 && exit === Cardinality.west)
@@ -92,6 +92,23 @@ export class RoomService {
     });
 
     return neighbors;
+  }
+
+  calculateEntrance(sourceX: number, sourceY: number, targetX:number, targetY:number): Cardinality {
+    if(sourceX === targetX && sourceY < targetY) {
+      return Cardinality.west;
+    }
+
+    if(sourceX === targetX && sourceY > targetY) {
+      return Cardinality.east;
+    }
+
+    if(sourceX < targetX && sourceY === targetY) {
+      return Cardinality.north;
+    }
+
+    return Cardinality.south;
+
   }
 
   generateRandomMap(rows: number, cols: number): Room[] {

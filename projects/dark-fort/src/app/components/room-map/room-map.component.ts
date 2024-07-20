@@ -48,7 +48,8 @@ export class RoomMapComponent implements OnInit {
       const rooms = this.roomService.materializeRoom(room);
 
       for (const coordinate of rooms){
-        this.stateService.map.push(this.roomService.generateRandomRoom(coordinate.x, coordinate.y, room.exits));
+        const cardinality = this.roomService.calculateEntrance(room.x, room.y, coordinate.x, coordinate.y)
+        this.stateService.map.push(this.roomService.generateRandomRoom(coordinate.x, coordinate.y, [cardinality]));
       }
 
     }
