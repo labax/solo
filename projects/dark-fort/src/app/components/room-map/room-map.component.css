@@ -12,17 +12,20 @@
 
 .room {
   border: 1px solid #000;
-  margin: 5px;
-  position: relative;
   width: 100px;
   height: 100px;
+  margin: 5px;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .room-shape {
+  border: 1px solid #000;
   text-align: center;
+  width: 100px;
+  height: 100px;
 }
 
 .exit {

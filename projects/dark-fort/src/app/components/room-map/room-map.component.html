@@ -1,8 +1,8 @@
 <!-- src/app/components/room-map/room-map.component.html -->
 
 <div class="room-grid">
-  <div *ngFor="let row of [0, 1, 2, 3, 4]" class="room-row">
-    <div *ngFor="let col of [0, 1, 2, 3, 4]" class="room">
+  <div *ngFor="let row of height" class="room-row">
+    <div *ngFor="let col of width" class="room">
       <ng-container *ngIf="getRoomAtPosition(row, col) as room">
         <div class="room-shape">
           <h3>{{ getRoomShape(room.shape) }}</h3>

@@ -1,6 +1,6 @@
 // src/app/services/room.service.ts
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Cardinality, Room, RoomShape} from '../models/character.interface';
 
 
@@ -8,15 +8,32 @@ import {Cardinality, Room, RoomShape} from '../models/character.interface';
   providedIn: 'root'
 })
 export class RoomService {
+  get mapWidth(): number {
+    return this._mapWidth;
+  }
 
-  constructor() { }
+  get mapHeight(): number {
+    return this._mapHeight;
+  }
+
+  constructor() {
+    this._mapWidth = 11;
+    this._mapHeight = 11;
+  }
+
+  private readonly _mapWidth: number;
+  private readonly _mapHeight: number;
 
   private getOppositeExit(exit: Cardinality): Cardinality {
     switch (exit) {
-      case Cardinality.north: return Cardinality.south;
-      case Cardinality.east: return Cardinality.west;
-      case Cardinality.south: return Cardinality.north;
-      case Cardinality.west: return Cardinality.east;
+      case Cardinality.north:
+        return Cardinality.south;
+      case Cardinality.east:
+        return Cardinality.west;
+      case Cardinality.south:
+        return Cardinality.north;
+      case Cardinality.west:
+        return Cardinality.east;
     }
   }
 
@@ -25,14 +42,21 @@ export class RoomService {
     const exits = Object.values(Cardinality).filter(value => typeof value === 'number');
 
     const shape = shapes[Math.floor(Math.random() * shapes.length)] as RoomShape;
-    const exitCount = Math.floor(Math.random() * 4) + 1; // 1 to 4 exits
+    const exitCount = Math.floor(Math.random() * 2) + 1;
     const roomExits = new Set(existingExits);
 
     while (roomExits.size < exitCount) {
-      roomExits.add(exits[Math.floor(Math.random() * exits.length)] as Cardinality);
+      const exit = exits[Math.floor(Math.random() * exits.length)] as Cardinality
+      if ((x === 0 && exit === Cardinality.north)
+        || (y === 0 && exit === Cardinality.west)
+        || (x === this._mapHeight - 1 && exit === Cardinality.south)
+        || (y === this._mapWidth - 1 && exit === Cardinality.east)) {
+        continue
+      }
+      roomExits.add(exit);
     }
 
-    return { shape, exits: Array.from(roomExits), x, y };
+    return {shape, exits: Array.from(roomExits), x, y};
   }
 
   getNeighboringCoordinates(room: Room): { x: number, y: number }[] {
@@ -41,16 +65,16 @@ export class RoomService {
     room.exits.forEach(exit => {
       switch (exit) {
         case Cardinality.north:
-          neighbors.push({ x: room.x - 1, y: room.y });
+          neighbors.push({x: room.x - 1, y: room.y});
           break;
         case Cardinality.east:
-          neighbors.push({ x: room.x, y: room.y + 1 });
+          neighbors.push({x: room.x, y: room.y + 1});
           break;
         case Cardinality.south:
-          neighbors.push({ x: room.x + 1, y: room.y });
+          neighbors.push({x: room.x + 1, y: room.y});
           break;
         case Cardinality.west:
-          neighbors.push({ x: room.x, y: room.y - 1 });
+          neighbors.push({x: room.x, y: room.y - 1});
           break;
       }
     });
