@@ -11,7 +11,6 @@
 }
 
 .room {
-  border: 1px solid #000;
   width: 100px;
   height: 100px;
   margin: 5px;
@@ -22,6 +21,9 @@
 }
 
 .room-shape {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 1px solid #000;
   text-align: center;
   width: 100px;

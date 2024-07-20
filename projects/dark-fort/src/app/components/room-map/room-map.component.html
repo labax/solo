@@ -5,7 +5,7 @@
     <div *ngFor="let col of width" class="room">
       <ng-container *ngIf="getRoomAtPosition(row, col) as room">
         <div class="room-shape" (click)="onRoomClick(room)">
-          <h3>{{ getRoomShape(room.shape) }}</h3>
+          {{ getRoomDescription(room.shape) }}
           <div class="north-exit exit" *ngIf="room.exits.includes(cardinality.north)">↑</div>
           <div class="south-exit exit" *ngIf="room.exits.includes(cardinality.south)">↓</div>
           <div class="east-exit exit" *ngIf="room.exits.includes(cardinality.east)">→</div>

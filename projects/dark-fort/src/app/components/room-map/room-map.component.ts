@@ -31,8 +31,12 @@ export class RoomMapComponent implements OnInit {
     this.stateService.map.push(this.roomService.generateRandomRoom(0, Math.floor(this.roomService.mapWidth / 2)));
   }
 
-  getRoomShape(shape: RoomShape): string {
-    return RoomShape[shape];
+  getRoomDescription(shape: RoomShape): string {
+    if(shape === RoomShape.placeholder) {
+      return 'click to explore';
+    }
+
+    return 'explored'
   }
 
   getRoomAtPosition(x: number, y: number): Room | undefined {
