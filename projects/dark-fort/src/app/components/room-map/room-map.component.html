@@ -1,22 +1,17 @@
 <!-- src/app/components/room-map/room-map.component.html -->
 
 <div class="room-grid">
-  <div *ngFor="let row of roomGrid" class="room-row">
-    <div *ngFor="let room of row" class="room">
-      <h3>{{ getRoomShape(room.shape) }}</h3>
-      <div class="exit-grid">
-        <div class="spacer"></div>
-        <div class="exit" *ngIf="room.exits.includes(cardinality.north)">↑</div>
-        <div class="spacer"></div>
-        <div class="spacer"></div>
-        <div class="exit" *ngIf="room.exits.includes(cardinality.west)">←</div>
-        <div class="spacer"></div>
-        <div class="exit" *ngIf="room.exits.includes(cardinality.east)">→</div>
-        <div class="spacer"></div>
-        <div class="spacer"></div>
-        <div class="exit" *ngIf="room.exits.includes(cardinality.south)">↓</div>
-        <div class="spacer"></div>
-      </div>
+  <div *ngFor="let row of [0, 1, 2, 3, 4]" class="room-row">
+    <div *ngFor="let col of [0, 1, 2, 3, 4]" class="room">
+      <ng-container *ngIf="getRoomAtPosition(row, col) as room">
+        <div class="room-shape">
+          <h3>{{ getRoomShape(room.shape) }}</h3>
+          <div class="north-exit exit" *ngIf="room.exits.includes(cardinality.north)">↑</div>
+          <div class="south-exit exit" *ngIf="room.exits.includes(cardinality.south)">↓</div>
+          <div class="east-exit exit" *ngIf="room.exits.includes(cardinality.east)">→</div>
+          <div class="west-exit exit" *ngIf="room.exits.includes(cardinality.west)">←</div>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>

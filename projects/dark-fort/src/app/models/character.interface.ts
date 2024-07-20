@@ -100,4 +100,6 @@ export enum RoomShape {
 export interface Room {
   shape: RoomShape;
   exits: Cardinality[];
+  x: number;
+  y: number;
 }

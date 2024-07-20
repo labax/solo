@@ -13,24 +13,44 @@
 .room {
   border: 1px solid #000;
   margin: 5px;
-  padding: 10px;
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.room-shape {
   text-align: center;
 }
 
-.exit-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  gap: 5px;
-  margin-top: 10px;
-}
-
 .exit {
+  position: absolute;
   font-size: 24px;
   font-weight: bold;
 }
 
-.spacer {
-  width: 24px;
-  height: 24px;
+.north-exit {
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.south-exit {
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.east-exit {
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.west-exit {
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
 }

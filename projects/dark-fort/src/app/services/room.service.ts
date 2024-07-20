@@ -3,6 +3,7 @@
 import { Injectable } from '@angular/core';
 import {Cardinality, Room, RoomShape} from '../models/character.interface';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +20,7 @@ export class RoomService {
     }
   }
 
-  generateRandomRoom(existingExits: Cardinality[] = []): Room {
+  generateRandomRoom(x: number, y: number, existingExits: Cardinality[] = []): Room {
     const shapes = Object.values(RoomShape).filter(value => typeof value === 'number');
     const exits = Object.values(Cardinality).filter(value => typeof value === 'number');
 
@@ -31,44 +32,44 @@ export class RoomService {
       roomExits.add(exits[Math.floor(Math.random() * exits.length)] as Cardinality);
     }
 
-    return { shape, exits: Array.from(roomExits) };
+    return { shape, exits: Array.from(roomExits), x, y };
   }
 
-  generateRandomMap(rows: number, cols: number): Room[][] {
-    const map: Room[][] = Array.from({ length: rows }, () => Array.from({ length: cols }, () => null as unknown as Room));
+  generateRandomMap(rows: number, cols: number): Room[] {
+    const map: Room[] = [];
 
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
         const existingExits: Cardinality[] = [];
 
-        if (r > 0 && map[r - 1][c]) {
-          const northRoom = map[r - 1][c];
-          if (northRoom.exits.includes(Cardinality.south)) {
+        if (r > 0) {
+          const northRoom = map.find(room => room.x === r - 1 && room.y === c);
+          if (northRoom?.exits.includes(Cardinality.south)) {
             existingExits.push(Cardinality.north);
           }
         }
 
-        if (c > 0 && map[r][c - 1]) {
-          const westRoom = map[r][c - 1];
-          if (westRoom.exits.includes(Cardinality.east)) {
+        if (c > 0) {
+          const westRoom = map.find(room => room.x === r && room.y === c - 1);
+          if (westRoom?.exits.includes(Cardinality.east)) {
             existingExits.push(Cardinality.west);
           }
         }
 
-        const room = this.generateRandomRoom(existingExits);
-        map[r][c] = room;
+        const room = this.generateRandomRoom(r, c, existingExits);
+        map.push(room);
 
-        if (r > 0 && map[r - 1][c]) {
-          const northRoom = map[r - 1][c];
-          if (room.exits.includes(Cardinality.north) && !northRoom.exits.includes(Cardinality.south)) {
-            northRoom.exits.push(Cardinality.south);
+        if (r > 0) {
+          const northRoom = map.find(room => room.x === r - 1 && room.y === c);
+          if (room.exits.includes(Cardinality.north) && !northRoom?.exits.includes(Cardinality.south)) {
+            northRoom?.exits.push(Cardinality.south);
           }
         }
 
-        if (c > 0 && map[r][c - 1]) {
-          const westRoom = map[r][c - 1];
-          if (room.exits.includes(Cardinality.west) && !westRoom.exits.includes(Cardinality.east)) {
-            westRoom.exits.push(Cardinality.east);
+        if (c > 0) {
+          const westRoom = map.find(room => room.x === r && room.y === c - 1);
+          if (room.exits.includes(Cardinality.west) && !westRoom?.exits.includes(Cardinality.east)) {
+            westRoom?.exits.push(Cardinality.east);
           }
         }
       }

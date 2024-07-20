@@ -17,13 +17,13 @@ import {NgForOf, NgIf} from '@angular/common';
 })
 export class RoomMapComponent implements OnInit {
 
-  roomGrid: Room[][] = [];
+  rooms: Room[] = [];
   cardinality = Cardinality;
 
   constructor(private roomService: RoomService) { }
 
   ngOnInit(): void {
-    this.roomGrid = this.roomService.generateRandomMap(5, 5); // Generate a 5x5 grid of rooms
+    this.rooms = this.roomService.generateRandomMap(5, 5); // Generate a 5x5 grid of rooms
   }
 
   getRoomShape(shape: RoomShape): string {
@@ -32,5 +32,9 @@ export class RoomMapComponent implements OnInit {
 
   getRoomExits(exits: Cardinality[]): string {
     return exits.map(exit => Cardinality[exit]).join(', ');
+  }
+
+  getRoomAtPosition(x: number, y: number): Room | undefined {
+    return this.rooms.find(room => room.x === x && room.y === y);
   }
 }
