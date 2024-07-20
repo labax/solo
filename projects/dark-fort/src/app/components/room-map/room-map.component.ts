@@ -28,12 +28,25 @@ export class RoomMapComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.stateService.map.push(this.roomService.generateRandomRoom(0, Math.floor(this.roomService.mapWidth / 2)));
+    const room = this.roomService.generateRandomRoom(0, Math.floor(this.roomService.mapWidth / 2))
+    this.stateService.map.push(room);
+    this.stateService.currentRoom = room;
   }
 
-  getRoomDescription(shape: RoomShape): string {
-    if(shape === RoomShape.placeholder) {
-      return 'click to explore';
+  getRoomDescription(room: Room): string {
+    if(room === this.stateService.currentRoom && this.stateService.map.length > 1) {
+      return 'you are here';
+    }
+    if(room.shape === RoomShape.placeholder) {
+      if(this.roomService.canTravel(this.stateService.currentRoom, room) || this.stateService.map.length === 1) {
+        return 'click to explore'
+      } else {
+        return 'unexplored'
+      }
+    }
+
+    if (this.roomService.canTravel(this.stateService.currentRoom, room)) {
+      return 'click to travel';
     }
 
     return 'explored'
@@ -44,14 +57,17 @@ export class RoomMapComponent implements OnInit {
   }
 
   onRoomClick(room: Room) {
-    if(room.shape === RoomShape.placeholder) {
-      const rooms = this.roomService.materializeRoom(room);
+    if (this.roomService.canTravel(this.stateService.currentRoom, room) || this.stateService.map.length === 1) {
+      this.stateService.currentRoom = room;
+      if (room.shape === RoomShape.placeholder) {
+        const rooms = this.roomService.materializeRoom(room);
 
-      for (const coordinate of rooms){
-        const cardinality = this.roomService.calculateEntrance(room.x, room.y, coordinate.x, coordinate.y)
-        this.stateService.map.push(this.roomService.generateRandomRoom(coordinate.x, coordinate.y, [cardinality]));
+        for (const coordinate of rooms) {
+          const cardinality = this.roomService.calculateEntrance(room.x, room.y, coordinate.x, coordinate.y)
+          this.stateService.map.push(this.roomService.generateRandomRoom(coordinate.x, coordinate.y, [cardinality]));
+        }
+
       }
-
     }
   }
 }

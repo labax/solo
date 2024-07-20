@@ -6,4 +6,5 @@ import {Room} from '../models/character.interface';
 })
 export class StateService {
   public map: Room[] = [];
+  public currentRoom!: Room;
 }

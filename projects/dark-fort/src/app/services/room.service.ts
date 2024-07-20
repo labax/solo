@@ -114,4 +114,14 @@ export class RoomService {
 
     return Cardinality.south;
   }
+
+  canTravel(source: Room, target: Room): boolean {
+    const validTargets = this.getNeighboringCoordinates(source);
+    for (const validTarget of validTargets) {
+      if(validTarget.x === target.x && validTarget.y === target.y) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
