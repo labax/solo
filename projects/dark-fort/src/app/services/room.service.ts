@@ -2,6 +2,7 @@
 
 import {Injectable} from '@angular/core';
 import {Cardinality, Room, RoomShape} from '../models/character.interface';
+import {StateService} from './state.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class RoomService {
     return this._mapHeight;
   }
 
-  constructor() {
+  constructor(private stateService: StateService) {
     this._mapWidth = 11;
     this._mapHeight = 11;
   }
@@ -69,19 +70,19 @@ export class RoomService {
 
   calculateInvalidCardinalities(room: Room): Cardinality[] {
     const cardinalities: Cardinality[] = [];
-    if (room.x === 0) {
+    if (room.x === 0 || this.stateService.map.find(r => room.x === r.x + 1 && room.y === r.y)) {
       cardinalities.push(Cardinality.north);
     }
 
-    if (room.y === 0) {
+    if (room.y === 0 || this.stateService.map.find(r => room.x === r.x && room.y === r.y + 1)) {
       cardinalities.push(Cardinality.west);
     }
 
-    if (room.x === this._mapHeight - 1) {
+    if (room.x === this._mapHeight - 1 || this.stateService.map.find(r => room.x === r.x - 1 && room.y === r.y)) {
       cardinalities.push(Cardinality.south)
     }
 
-    if (room.y === this._mapWidth -1) {
+    if (room.y === this._mapWidth - 1 || this.stateService.map.find(r => room.x === r.x && room.y === r.y - 1)) {
       cardinalities.push(Cardinality.east);
     }
 
