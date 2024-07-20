@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import {ICharacter, Room} from '../models/character.interface';
+import {DiceService} from '../../../../common/src/lib/services/dice.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StateService {
 
-  constructor() {
+  constructor(diceService: DiceService) {
     this.character = {
       name: 'Kargunt',
       hitPointsCurrent: 15,
@@ -14,7 +15,7 @@ export class StateService {
       inventory: [],
       level: 0,
       points: 0,
-      silver: 0
+      silver: diceService.rollDice(1,6) + 15
     }
   }
 
