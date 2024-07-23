@@ -63,10 +63,15 @@ export class RoomMapComponent implements OnInit {
         const rooms = this.roomService.materializeRoom(room);
 
         for (const coordinate of rooms) {
-          const cardinality = this.roomService.calculateEntrance(room.x, room.y, coordinate.x, coordinate.y)
-          this.stateService.map.push(this.roomService.generateRandomRoom(coordinate.x, coordinate.y, [cardinality]));
+          if(!this.stateService.map.find(room=>room.x === coordinate.x && room.y === coordinate.y)) {
+            const cardinality = this.roomService.calculateEntrance(room.x, room.y, coordinate.x, coordinate.y)
+            this.stateService.map.push(this.roomService.generateRandomRoom(coordinate.x, coordinate.y, [cardinality]));
+          }
         }
 
+      }
+      if(this.stateService.calculateUnexploredRoomsCount() === 0){
+        alert('you lost')
       }
     }
   }
