@@ -1,0 +1,7 @@
+<h2>Inventory</h2>
+
+<ng-container *ngFor="let inventorySlot of stateService.character.inventory | keyvalue">
+  <div *ngIf="inventorySlot.value > 0">
+    {{ getItemName(inventorySlot.key) }}: {{ inventorySlot.value }}
+  </div>
+</ng-container>

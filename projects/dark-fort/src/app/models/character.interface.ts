@@ -7,7 +7,8 @@ export interface ICharacter {
   silver: number;
   level: number;
   weapon: WeaponIdentifier;
-  inventory: IItem[];
+  inventory: Record<ItemIdentifier, number>;
+  effects: Record<EffectIdetifier, number>;
   points: number;
 }
 
@@ -75,7 +76,6 @@ export const initialWeaponsTable: WeaponIdentifier[] = [
 export interface IItem {
   name: string;
   silver: number;
-  uses: number;
   id: ItemIdentifier;
   onUse?: (state: StateService) => void;
 }
@@ -93,7 +93,6 @@ export enum ItemIdentifier {
 
 export const itemsTable: IItem[] = [{
   name: 'Potion',
-  uses: 1,
   silver: 6,
   id: ItemIdentifier.potion,
   onUse: (state: StateService) => {
@@ -101,46 +100,46 @@ export const itemsTable: IItem[] = [{
   }
 }, {
   name: 'Rope',
-  uses: -1,
   silver: 5,
   id: ItemIdentifier.rope
 }, {
   name: 'Armor',
-  uses: -1,
   silver: 10,
   id: ItemIdentifier.armor
 }, {
   name: 'cloak of invisibility',
-  uses: 1,
   silver: 15,
   id: ItemIdentifier.cloak,
   onUse: (state: StateService) => {
-    state.isInvisible += state.calculateScrollUses();
+    state.character.effects[EffectIdetifier.invisible] += state.calculateScrollUses();
   }
 }, {
   name: 'Summon weak daemon',
-  uses: 1,
   silver: 0,
   id: ItemIdentifier.summon,
   onUse: (state: StateService) => {
-    state.hasDaemon += state.calculateScrollUses();
+    state.character.effects[EffectIdetifier.daemon] += state.calculateScrollUses();
   }
 }, {
   name: 'Palms Open the Southern Gate',
-  uses: 1,
   silver: 0,
   id: ItemIdentifier.palms
 }, {
   name: 'Aegis of Sorrow',
-  uses: 1,
   silver: 0,
   id: ItemIdentifier.aegis
 }, {
   name: 'False Omen',
-  uses: 1,
   silver: 0,
   id: ItemIdentifier.omen
 }]
+
+export const initialItemsTable: ItemIdentifier[] = [
+  ItemIdentifier.armor,
+  ItemIdentifier.potion,
+  ItemIdentifier.summon,
+  ItemIdentifier.cloak
+]
 
 export interface IMonster {
   name: string;
