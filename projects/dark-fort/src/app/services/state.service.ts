@@ -37,14 +37,14 @@ export class StateService {
     this.map.push(room);
     this.currentRoom = room;
     const inventory: Record<ItemIdentifier, number> = {
-      [ItemIdentifier.rope]: 0,
-      [ItemIdentifier.armor]: 0,
-      [ItemIdentifier.aegis]: 0,
-      [ItemIdentifier.cloak]: 0,
-      [ItemIdentifier.omen]: 0,
-      [ItemIdentifier.potion]: 0,
-      [ItemIdentifier.summon]: 0,
-      [ItemIdentifier.palms]: 0
+      'rope': 0,
+      'armor': 0,
+      'aegis': 0,
+      'cloak': 0,
+      'omen': 0,
+      'potion': 0,
+      'summon': 0,
+      'palms': 0
     }
 
     const effects: Record<EffectIdetifier, number> = {

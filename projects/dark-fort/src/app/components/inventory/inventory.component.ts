@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {StateService} from '../../services/state.service';
 import {KeyValuePipe, NgForOf, NgIf} from '@angular/common';
-import {ItemIdentifier, itemsTable} from '../../models/character.interface';
+import {itemsTable} from '../../models/character.interface';
 
 @Component({
   selector: 'dark-fort-inventory',
@@ -20,7 +20,7 @@ export class InventoryComponent {
   }
 
   getItemName(key: string): string {
-    const item = itemsTable.find(item => item.id.toString() === key as keyof typeof ItemIdentifier);
+    const item = itemsTable.find(item => item.id === key);
     if (!item) {
       return ''
     }
