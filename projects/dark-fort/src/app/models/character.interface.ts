@@ -1,3 +1,5 @@
+import {StateService} from '../services/state.service';
+
 export interface ICharacter {
   name: string;
   hitPointsCurrent: number;
@@ -75,7 +77,7 @@ export interface IItem {
   silver: number;
   uses: number;
   id: ItemIdentifier;
-  onUse: (state: IState) => void;
+  onUse?: (state: StateService) => void;
 }
 
 export enum ItemIdentifier {
@@ -88,6 +90,57 @@ export enum ItemIdentifier {
   aegis,
   omen
 }
+
+export const itemsTable: IItem[] = [{
+  name: 'Potion',
+  uses: 1,
+  silver: 6,
+  id: ItemIdentifier.potion,
+  onUse: (state: StateService) => {
+    state.healCharacter();
+  }
+}, {
+  name: 'Rope',
+  uses: -1,
+  silver: 5,
+  id: ItemIdentifier.rope
+}, {
+  name: 'Armor',
+  uses: -1,
+  silver: 10,
+  id: ItemIdentifier.armor
+}, {
+  name: 'cloak of invisibility',
+  uses: 1,
+  silver: 15,
+  id: ItemIdentifier.cloak,
+  onUse: (state: StateService) => {
+    state.isInvisible += state.calculateScrollUses();
+  }
+}, {
+  name: 'Summon weak daemon',
+  uses: 1,
+  silver: 0,
+  id: ItemIdentifier.summon,
+  onUse: (state: StateService) => {
+    state.hasDaemon += state.calculateScrollUses();
+  }
+}, {
+  name: 'Palms Open the Southern Gate',
+  uses: 1,
+  silver: 0,
+  id: ItemIdentifier.palms
+}, {
+  name: 'Aegis of Sorrow',
+  uses: 1,
+  silver: 0,
+  id: ItemIdentifier.aegis
+}, {
+  name: 'False Omen',
+  uses: 1,
+  silver: 0,
+  id: ItemIdentifier.omen
+}]
 
 export interface IMonster {
   name: string;
@@ -113,13 +166,9 @@ export interface IState {
   character: ICharacter;
 }
 
-export interface IEffect {
-  id: EffectIdetifier,
-  uses: number
-}
-
 export enum EffectIdetifier {
-  daemon
+  daemon,
+  invisible
 }
 
 export enum Cardinality {

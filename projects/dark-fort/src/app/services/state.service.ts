@@ -14,14 +14,16 @@ export class StateService {
 
   public map: Room[] = [];
   public currentRoom!: Room;
-  public character?: ICharacter
+  public character!: ICharacter
+  public isInvisible: number = 0;
+  public hasDaemon: number = 0;
 
   public calculateExploredRoomsCount(): number {
-    return this.map.filter(room=> room.shape !== RoomShape.placeholder).length;
+    return this.map.filter(room => room.shape !== RoomShape.placeholder).length;
   }
 
   public calculateUnexploredRoomsCount() {
-    return this.map.filter(room=> room.shape === RoomShape.placeholder).length;
+    return this.map.filter(room => room.shape === RoomShape.placeholder).length;
   }
 
   initialize() {
@@ -36,12 +38,12 @@ export class StateService {
       inventory: [],
       level: 0,
       points: 0,
-      silver: this.diceService.rollDice(1,6) + 15,
+      silver: this.diceService.rollDice(1, 6) + 15,
       weapon: this.diceService.getRandomElement(initialWeaponsTable)
     }
   }
 
-  next(room: Room): Status{
+  next(room: Room): Status {
     if (this.roomService.canTravel(this.currentRoom, room) || this.map.length === 1) {
       this.currentRoom = room;
       if (room.shape === RoomShape.placeholder) {
@@ -61,5 +63,16 @@ export class StateService {
     }
 
     return Status.continue;
+  }
+
+  healCharacter(): void {
+    this.character.hitPointsCurrent += this.diceService.rollDice(1, 6);
+    if (this.character.hitPointsCurrent > this.character.hitPointsMax) {
+      this.character.hitPointsCurrent = this.character.hitPointsMax;
+    }
+  }
+
+  calculateScrollUses() {
+    return this.diceService.rollDice(1, 4);
   }
 }
