@@ -35,8 +35,9 @@ export class RoomService {
       .filter(shape => shape !== RoomShape.placeholder);
 
     const invalidCardinalities = this.calculateInvalidCardinalities(room, map);
-    const exits = Object.values(Cardinality).filter(value => typeof value === 'number')
-      .filter(exit => !invalidCardinalities.includes(exit as Cardinality));
+    const exits: Cardinality[] = ['east', 'north', 'west', 'south']
+      .filter(exit => !invalidCardinalities.includes(exit as Cardinality))
+      .map(cardinality => cardinality as Cardinality);
 
     const roomShape = shapes[Math.floor(Math.random() * shapes.length)] as RoomShape;
     const exitCount = Math.floor(Math.random() * 2) + 1;
@@ -57,19 +58,19 @@ export class RoomService {
   calculateInvalidCardinalities(room: Room, map: Room[]): Cardinality[] {
     const cardinalities: Cardinality[] = [];
     if (room.x === 0 || map.find(r => room.x === r.x + 1 && room.y === r.y)) {
-      cardinalities.push(Cardinality.north);
+      cardinalities.push('north');
     }
 
     if (room.y === 0 || map.find(r => room.x === r.x && room.y === r.y + 1)) {
-      cardinalities.push(Cardinality.west);
+      cardinalities.push('west');
     }
 
     if (room.x === this._mapHeight - 1 || map.find(r => room.x === r.x - 1 && room.y === r.y)) {
-      cardinalities.push(Cardinality.south)
+      cardinalities.push('south')
     }
 
     if (room.y === this._mapWidth - 1 || map.find(r => room.x === r.x && room.y === r.y - 1)) {
-      cardinalities.push(Cardinality.east);
+      cardinalities.push('east');
     }
 
     return cardinalities;
@@ -80,16 +81,16 @@ export class RoomService {
 
     room.exits.forEach(exit => {
       switch (exit) {
-        case Cardinality.north:
+        case 'north':
           neighbors.push({x: room.x - 1, y: room.y});
           break;
-        case Cardinality.east:
+        case 'east':
           neighbors.push({x: room.x, y: room.y + 1});
           break;
-        case Cardinality.south:
+        case 'south':
           neighbors.push({x: room.x + 1, y: room.y});
           break;
-        case Cardinality.west:
+        case 'west':
           neighbors.push({x: room.x, y: room.y - 1});
           break;
       }
@@ -100,18 +101,18 @@ export class RoomService {
 
   calculateEntrance(sourceX: number, sourceY: number, targetX: number, targetY: number): Cardinality {
     if (sourceX === targetX && sourceY < targetY) {
-      return Cardinality.west;
+      return 'west';
     }
 
     if (sourceX === targetX && sourceY > targetY) {
-      return Cardinality.east;
+      return 'east';
     }
 
     if (sourceX < targetX && sourceY === targetY) {
-      return Cardinality.north;
+      return 'north';
     }
 
-    return Cardinality.south;
+    return 'south';
   }
 
   canTravel(source: Room, target: Room): boolean {

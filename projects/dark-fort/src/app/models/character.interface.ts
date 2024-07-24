@@ -169,12 +169,11 @@ export type EffectIdetifier =
   'daemon'|
   'invisible'
 
-export enum Cardinality {
-  north,
-  east,
-  south,
-  west
-}
+export type Cardinality =
+  'north'|
+  'east'|
+  'south'|
+  'west'
 
 export enum RoomShape {
   irregularCave,

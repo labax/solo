@@ -6,10 +6,10 @@
       <ng-container *ngIf="getRoomAtPosition(row, col) as room">
         <div class="room-shape" (click)="onRoomClick(room)">
           {{ getRoomDescription(room) }}
-          <div class="north-exit exit" *ngIf="room.exits.includes(cardinality.north)">↑</div>
-          <div class="south-exit exit" *ngIf="room.exits.includes(cardinality.south)">↓</div>
-          <div class="east-exit exit" *ngIf="room.exits.includes(cardinality.east)">→</div>
-          <div class="west-exit exit" *ngIf="room.exits.includes(cardinality.west)">←</div>
+          <div class="north-exit exit" *ngIf="room.exits.includes('north')">↑</div>
+          <div class="south-exit exit" *ngIf="room.exits.includes('south')">↓</div>
+          <div class="east-exit exit" *ngIf="room.exits.includes('east')">→</div>
+          <div class="west-exit exit" *ngIf="room.exits.includes('west')">←</div>
         </div>
       </ng-container>
     </div>
