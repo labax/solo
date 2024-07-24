@@ -148,3 +148,9 @@ export interface Room {
   x: number;
   y: number;
 }
+
+export enum Status {
+  win,
+  loss,
+  continue
+}

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ICharacter, Room, RoomShape} from '../models/character.interface';
+import {ICharacter, Room, RoomShape, Status} from '../models/character.interface';
 import {DiceService} from '../../../../common/src/lib/services/dice.service';
 import {RoomService} from './room.service';
 
@@ -8,16 +8,8 @@ import {RoomService} from './room.service';
 })
 export class StateService {
 
-  constructor(diceService: DiceService, private roomService: RoomService) {
-    this.character = {
-      name: 'Kargunt',
-      hitPointsCurrent: 15,
-      hitPointsMax: 15,
-      inventory: [],
-      level: 0,
-      points: 0,
-      silver: diceService.rollDice(1,6) + 15
-    }
+  constructor(private diceService: DiceService, private roomService: RoomService) {
+
   }
 
   public map: Room[] = [];
@@ -36,5 +28,37 @@ export class StateService {
     const room = this.roomService.generateRandomRoom(0, Math.floor(this.roomService.mapWidth / 2))
     this.map.push(room);
     this.currentRoom = room;
+
+    this.character = {
+      name: 'Kargunt',
+      hitPointsCurrent: 15,
+      hitPointsMax: 15,
+      inventory: [],
+      level: 0,
+      points: 0,
+      silver: this.diceService.rollDice(1,6) + 15
+    }
+  }
+
+  next(room: Room): Status{
+    if (this.roomService.canTravel(this.currentRoom, room) || this.map.length === 1) {
+      this.currentRoom = room;
+      if (room.shape === RoomShape.placeholder) {
+        const rooms = this.roomService.materializeRoom(room, this.map);
+
+        for (const coordinate of rooms) {
+          if (!this.map.find(room => room.x === coordinate.x && room.y === coordinate.y)) {
+            const cardinality = this.roomService.calculateEntrance(room.x, room.y, coordinate.x, coordinate.y)
+            this.map.push(this.roomService.generateRandomRoom(coordinate.x, coordinate.y, [cardinality]));
+          }
+        }
+
+      }
+      if (this.calculateUnexploredRoomsCount() === 0) {
+        return Status.loss;
+      }
+    }
+
+    return Status.continue;
   }
 }

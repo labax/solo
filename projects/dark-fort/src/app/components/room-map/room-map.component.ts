@@ -2,7 +2,7 @@
 
 import {Component, OnInit} from '@angular/core';
 import {RoomService} from '../../services/room.service';
-import {Cardinality, Room, RoomShape} from '../../models/character.interface';
+import {Cardinality, Room, RoomShape, Status} from '../../models/character.interface';
 import {NgForOf, NgIf} from '@angular/common';
 import {StateService} from '../../services/state.service';
 
@@ -55,22 +55,10 @@ export class RoomMapComponent implements OnInit {
   }
 
   onRoomClick(room: Room) {
-    if (this.roomService.canTravel(this.stateService.currentRoom, room) || this.stateService.map.length === 1) {
-      this.stateService.currentRoom = room;
-      if (room.shape === RoomShape.placeholder) {
-        const rooms = this.roomService.materializeRoom(room, this.stateService.map);
+    const status = this.stateService.next(room);
 
-        for (const coordinate of rooms) {
-          if (!this.stateService.map.find(room => room.x === coordinate.x && room.y === coordinate.y)) {
-            const cardinality = this.roomService.calculateEntrance(room.x, room.y, coordinate.x, coordinate.y)
-            this.stateService.map.push(this.roomService.generateRandomRoom(coordinate.x, coordinate.y, [cardinality]));
-          }
-        }
-
-      }
-      if (this.stateService.calculateUnexploredRoomsCount() === 0) {
-        alert('you lost')
-      }
+    if(status === Status.loss) {
+      alert('you lost');
     }
   }
 }
