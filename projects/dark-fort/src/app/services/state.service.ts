@@ -48,8 +48,8 @@ export class StateService {
     }
 
     const effects: Record<EffectIdetifier, number> = {
-      [EffectIdetifier.invisible]: 0,
-      [EffectIdetifier.daemon]: 0
+      'invisible': 0,
+      'daemon': 0
     }
 
     this.character = {

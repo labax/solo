@@ -21,13 +21,13 @@ export interface IWeapon {
   silver: number;
 }
 
-export enum WeaponIdentifier {
-  warhammer,
-  dagger,
-  sword,
-  flail,
-  zweihander
-}
+export type WeaponIdentifier =
+  'warhammer'|
+  'dagger'|
+  'sword'|
+  'flail'|
+  'zweihander'
+
 
 export const weaponsTable: IWeapon[] = [{
   attackBonus: 0,
@@ -35,42 +35,42 @@ export const weaponsTable: IWeapon[] = [{
   damageBonus: 0,
   damageDie: 6,
   name: 'Warhammer',
-  id: WeaponIdentifier.warhammer
+  id: 'warhammer'
 }, {
   attackBonus: 1,
   silver: 6,
   damageBonus: 0,
   damageDie: 4,
   name: 'Dagger',
-  id: WeaponIdentifier.dagger
+  id: 'dagger'
 }, {
   attackBonus: 1,
   silver: 12,
   damageBonus: 0,
   damageDie: 6,
   name: 'Sword',
-  id: WeaponIdentifier.sword
+  id: 'sword'
 }, {
   attackBonus: 0,
   silver: 16,
   damageBonus: 1,
   damageDie: 6,
   name: 'Flail',
-  id: WeaponIdentifier.flail
+  id: 'flail'
 }, {
   attackBonus: 0,
   silver: 16,
   damageBonus: 2,
   damageDie: 6,
   name: 'Mighty Zweihander',
-  id: WeaponIdentifier.zweihander
+  id: 'zweihander'
 }]
 
 export const initialWeaponsTable: WeaponIdentifier[] = [
-  WeaponIdentifier.flail,
-  WeaponIdentifier.dagger,
-  WeaponIdentifier.sword,
-  WeaponIdentifier.warhammer
+  'flail',
+  'dagger',
+  'sword',
+  'warhammer'
 ]
 
 export interface IItem {
@@ -111,14 +111,14 @@ export const itemsTable: IItem[] = [{
   silver: 15,
   id: 'cloak',
   onUse: (state: StateService) => {
-    state.character.effects[EffectIdetifier.invisible] += state.calculateScrollUses();
+    state.character.effects['invisible'] += state.calculateScrollUses();
   }
 }, {
   name: 'Summon weak daemon',
   silver: 0,
   id: 'summon',
   onUse: (state: StateService) => {
-    state.character.effects[EffectIdetifier.daemon] += state.calculateScrollUses();
+    state.character.effects['daemon'] += state.calculateScrollUses();
   }
 }, {
   name: 'Palms Open the Southern Gate',
@@ -150,25 +150,24 @@ export interface IMonster {
   onKill: (state: IState) => void;
 }
 
-export enum MonsterIdentifier {
-  skeleton,
-  cultist,
-  goblin,
-  hound,
-  sorcerer,
-  troll,
-  medusa,
-  basilisk
-}
+export type MonsterIdentifier =
+  'skeleton'|
+  'cultist'|
+  'goblin'|
+  'hound'|
+  'sorcerer'|
+  'troll'|
+  'medusa'|
+  'basilisk'
+
 
 export interface IState {
   character: ICharacter;
 }
 
-export enum EffectIdetifier {
-  daemon,
-  invisible
-}
+export type EffectIdetifier =
+  'daemon'|
+  'invisible'
 
 export enum Cardinality {
   north,
