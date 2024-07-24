@@ -26,6 +26,50 @@ export enum WeaponIdentifier {
   zweihander
 }
 
+export const weaponsTable: IWeapon[] = [{
+  attackBonus: 0,
+  silver: 9,
+  damageBonus: 0,
+  damageDie: 6,
+  name: 'Warhammer',
+  id: WeaponIdentifier.warhammer
+}, {
+  attackBonus: 1,
+  silver: 6,
+  damageBonus: 0,
+  damageDie: 4,
+  name: 'Dagger',
+  id: WeaponIdentifier.dagger
+}, {
+  attackBonus: 1,
+  silver: 12,
+  damageBonus: 0,
+  damageDie: 6,
+  name: 'Sword',
+  id: WeaponIdentifier.sword
+}, {
+  attackBonus: 0,
+  silver: 16,
+  damageBonus: 1,
+  damageDie: 6,
+  name: 'Flail',
+  id: WeaponIdentifier.flail
+}, {
+  attackBonus: 0,
+  silver: 16,
+  damageBonus: 2,
+  damageDie: 6,
+  name: 'Mighty Zweihander',
+  id: WeaponIdentifier.zweihander
+}]
+
+export const initialWeaponsTable: WeaponIdentifier[] = [
+  WeaponIdentifier.flail,
+  WeaponIdentifier.dagger,
+  WeaponIdentifier.sword,
+  WeaponIdentifier.zweihander
+]
+
 export interface IItem {
   name: string;
   silver: number;
