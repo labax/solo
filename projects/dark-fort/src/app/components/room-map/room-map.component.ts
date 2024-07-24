@@ -28,17 +28,15 @@ export class RoomMapComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const room = this.roomService.generateRandomRoom(0, Math.floor(this.roomService.mapWidth / 2))
-    this.stateService.map.push(room);
-    this.stateService.currentRoom = room;
+    this.stateService.initialize();
   }
 
   getRoomDescription(room: Room): string {
-    if(room === this.stateService.currentRoom && this.stateService.map.length > 1) {
+    if (room === this.stateService.currentRoom && this.stateService.map.length > 1) {
       return 'you are here';
     }
-    if(room.shape === RoomShape.placeholder) {
-      if(this.roomService.canTravel(this.stateService.currentRoom, room) || this.stateService.map.length === 1) {
+    if (room.shape === RoomShape.placeholder) {
+      if (this.roomService.canTravel(this.stateService.currentRoom, room) || this.stateService.map.length === 1) {
         return 'click to explore'
       } else {
         return 'unexplored'
@@ -60,17 +58,17 @@ export class RoomMapComponent implements OnInit {
     if (this.roomService.canTravel(this.stateService.currentRoom, room) || this.stateService.map.length === 1) {
       this.stateService.currentRoom = room;
       if (room.shape === RoomShape.placeholder) {
-        const rooms = this.roomService.materializeRoom(room);
+        const rooms = this.roomService.materializeRoom(room, this.stateService.map);
 
         for (const coordinate of rooms) {
-          if(!this.stateService.map.find(room=>room.x === coordinate.x && room.y === coordinate.y)) {
+          if (!this.stateService.map.find(room => room.x === coordinate.x && room.y === coordinate.y)) {
             const cardinality = this.roomService.calculateEntrance(room.x, room.y, coordinate.x, coordinate.y)
             this.stateService.map.push(this.roomService.generateRandomRoom(coordinate.x, coordinate.y, [cardinality]));
           }
         }
 
       }
-      if(this.stateService.calculateUnexploredRoomsCount() === 0){
+      if (this.stateService.calculateUnexploredRoomsCount() === 0) {
         alert('you lost')
       }
     }

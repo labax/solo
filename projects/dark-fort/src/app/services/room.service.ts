@@ -2,7 +2,6 @@
 
 import {Injectable} from '@angular/core';
 import {Cardinality, Room, RoomShape} from '../models/character.interface';
-import {StateService} from './state.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +15,7 @@ export class RoomService {
     return this._mapHeight;
   }
 
-  constructor(private stateService: StateService) {
+  constructor() {
     this._mapWidth = 11;
     this._mapHeight = 11;
   }
@@ -31,11 +30,11 @@ export class RoomService {
     return {shape: RoomShape.placeholder, exits: Array.from(roomExits), x, y};
   }
 
-  materializeRoom(room: Room): { x: number, y: number }[] {
+  materializeRoom(room: Room, map: Room[]): { x: number, y: number }[] {
     const shapes = Object.values(RoomShape).filter(value => typeof value === 'number')
       .filter(shape => shape !== RoomShape.placeholder);
 
-    const invalidCardinalities = this.calculateInvalidCardinalities(room);
+    const invalidCardinalities = this.calculateInvalidCardinalities(room, map);
     const exits = Object.values(Cardinality).filter(value => typeof value === 'number')
       .filter(exit => !invalidCardinalities.includes(exit as Cardinality));
 
@@ -55,21 +54,21 @@ export class RoomService {
     return this.getNeighboringCoordinates(room);
   }
 
-  calculateInvalidCardinalities(room: Room): Cardinality[] {
+  calculateInvalidCardinalities(room: Room, map: Room[]): Cardinality[] {
     const cardinalities: Cardinality[] = [];
-    if (room.x === 0 || this.stateService.map.find(r => room.x === r.x + 1 && room.y === r.y)) {
+    if (room.x === 0 || map.find(r => room.x === r.x + 1 && room.y === r.y)) {
       cardinalities.push(Cardinality.north);
     }
 
-    if (room.y === 0 || this.stateService.map.find(r => room.x === r.x && room.y === r.y + 1)) {
+    if (room.y === 0 || map.find(r => room.x === r.x && room.y === r.y + 1)) {
       cardinalities.push(Cardinality.west);
     }
 
-    if (room.x === this._mapHeight - 1 || this.stateService.map.find(r => room.x === r.x - 1 && room.y === r.y)) {
+    if (room.x === this._mapHeight - 1 || map.find(r => room.x === r.x - 1 && room.y === r.y)) {
       cardinalities.push(Cardinality.south)
     }
 
-    if (room.y === this._mapWidth - 1 || this.stateService.map.find(r => room.x === r.x && room.y === r.y - 1)) {
+    if (room.y === this._mapWidth - 1 || map.find(r => room.x === r.x && room.y === r.y - 1)) {
       cardinalities.push(Cardinality.east);
     }
 
@@ -118,7 +117,7 @@ export class RoomService {
   canTravel(source: Room, target: Room): boolean {
     const validTargets = this.getNeighboringCoordinates(source);
     for (const validTarget of validTargets) {
-      if(validTarget.x === target.x && validTarget.y === target.y) {
+      if (validTarget.x === target.x && validTarget.y === target.y) {
         return true;
       }
     }

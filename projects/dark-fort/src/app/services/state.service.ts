@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {ICharacter, Room, RoomShape} from '../models/character.interface';
 import {DiceService} from '../../../../common/src/lib/services/dice.service';
+import {RoomService} from './room.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StateService {
 
-  constructor(diceService: DiceService) {
+  constructor(diceService: DiceService, private roomService: RoomService) {
     this.character = {
       name: 'Kargunt',
       hitPointsCurrent: 15,
@@ -29,5 +30,11 @@ export class StateService {
 
   public calculateUnexploredRoomsCount() {
     return this.map.filter(room=> room.shape === RoomShape.placeholder).length;
+  }
+
+  initialize() {
+    const room = this.roomService.generateRandomRoom(0, Math.floor(this.roomService.mapWidth / 2))
+    this.map.push(room);
+    this.currentRoom = room;
   }
 }
