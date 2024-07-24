@@ -1,5 +1,8 @@
-<h1>{{character?.name}}</h1>
-<div>hit points: {{character?.hitPointsCurrent}}/{{character?.hitPointsMax}}</div>
-<div>level: {{character?.level}}</div>
-<div>points: {{character?.points}}</div>
-<div>silver: {{character?.silver}}</div>
+<ng-container *ngIf="character">
+  <h1>{{ character.name }}</h1>
+  <div>hit points: {{ character.hitPointsCurrent }}/{{ character.hitPointsMax }}</div>
+  <div>level: {{ character.level }}</div>
+  <div>points: {{ character.points }}</div>
+  <div>silver: {{ character.silver }}</div>
+  <div>weapon: {{ getWeaponName(character.weapon) }}</div>
+</ng-container>

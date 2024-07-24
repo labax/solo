@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ICharacter, Room, RoomShape, Status} from '../models/character.interface';
+import {ICharacter, initialWeaponsTable, Room, RoomShape, Status} from '../models/character.interface';
 import {DiceService} from '../../../../common/src/lib/services/dice.service';
 import {RoomService} from './room.service';
 
@@ -36,7 +36,8 @@ export class StateService {
       inventory: [],
       level: 0,
       points: 0,
-      silver: this.diceService.rollDice(1,6) + 15
+      silver: this.diceService.rollDice(1,6) + 15,
+      weapon: this.diceService.getRandomElement(initialWeaponsTable)
     }
   }
 

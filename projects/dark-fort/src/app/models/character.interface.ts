@@ -4,7 +4,7 @@ export interface ICharacter {
   hitPointsMax: number;
   silver: number;
   level: number;
-  weapon?: WeaponIdentifier;
+  weapon: WeaponIdentifier;
   inventory: IItem[];
   points: number;
 }
@@ -67,7 +67,7 @@ export const initialWeaponsTable: WeaponIdentifier[] = [
   WeaponIdentifier.flail,
   WeaponIdentifier.dagger,
   WeaponIdentifier.sword,
-  WeaponIdentifier.zweihander
+  WeaponIdentifier.warhammer
 ]
 
 export interface IItem {

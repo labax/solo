@@ -17,6 +17,6 @@ export class AppComponent {
 
 
   constructor(public stateService: StateService) {
-
+    this.stateService.initialize();
   }
 }

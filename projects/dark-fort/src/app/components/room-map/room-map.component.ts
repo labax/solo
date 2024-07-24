@@ -1,6 +1,6 @@
 // src/app/components/room-map/room-map.component.ts
 
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {RoomService} from '../../services/room.service';
 import {Cardinality, Room, RoomShape, Status} from '../../models/character.interface';
 import {NgForOf, NgIf} from '@angular/common';
@@ -16,7 +16,7 @@ import {StateService} from '../../services/state.service';
   ],
   styleUrls: ['./room-map.component.css']
 })
-export class RoomMapComponent implements OnInit {
+export class RoomMapComponent {
 
   height: number[];
   width: number[];
@@ -25,10 +25,6 @@ export class RoomMapComponent implements OnInit {
   constructor(private roomService: RoomService, public stateService: StateService) {
     this.height = Array(this.roomService.mapHeight).fill(1).map((x, i) => i);
     this.width = Array(this.roomService.mapWidth).fill(1).map((x, i) => i);
-  }
-
-  ngOnInit(): void {
-    this.stateService.initialize();
   }
 
   getRoomDescription(room: Room): string {
