@@ -1,11 +1,20 @@
 // src/app/components/room-map/room-map.component.ts
 
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {RoomService} from '../../services/room.service';
-import {Room, RoomShape, Status} from '../../models/character.interface';
+import {Room, RoomShape, roomType, Status} from '../../models/character.interface';
 import {NgForOf, NgIf} from '@angular/common';
 import {StateService} from '../../services/state.service';
 import {DiceService} from '../../../../../common/src/lib/services/dice.service';
+import {MatDialog} from '@angular/material/dialog';
+import {EmptyRoomComponent} from '../rooms/empty-room/empty-room.component';
+import {TrapRoomComponent} from '../rooms/trap-room/trap-room.component';
+import {RiddleRoomComponent} from '../rooms/riddle-room/riddle-room.component';
+import {WeakRoomComponent} from '../rooms/weak-room/weak-room.component';
+import {ToughRoomComponent} from '../rooms/tough-room/tough-room.component';
+import {PeddlerRoomComponent} from '../rooms/peddler-room/peddler-room.component';
+import {ItemRoomComponent} from '../rooms/item-room/item-room.component';
+import {ScrollRoomComponent} from '../rooms/scroll-room/scroll-room.component';
 
 @Component({
   selector: 'dark-fort-room-map',
@@ -21,6 +30,7 @@ export class RoomMapComponent {
 
   height: number[];
   width: number[];
+  readonly dialog = inject(MatDialog);
 
   constructor(private roomService: RoomService, public stateService: StateService, private diceService: DiceService) {
     this.height = Array(this.roomService.mapHeight).fill(1).map((x, i) => i);
@@ -52,14 +62,34 @@ export class RoomMapComponent {
 
   onRoomClick(room: Room) {
     const roomType = this.stateService.resolveRoom(room);
-    if(roomType) {
-      alert(roomType);
-    } else if(this.diceService.rollDice(1,4) === 1) {
-      alert('weak');
+    if (roomType) {
+      this.openDialog(roomType);
+    } else if (this.diceService.rollDice(1, 4) === 1) {
+      this.openDialog('weak');
     }
     const status = this.stateService.calculateWinningConditions();
-    if(status === Status.loss) {
+    if (status === Status.loss) {
       alert('you lost');
+    }
+  }
+
+  private openDialog(roomType: roomType) {
+    if (roomType === 'nothing') {
+      this.dialog.open(EmptyRoomComponent, {disableClose: true});
+    } else if (roomType === 'trap') {
+      this.dialog.open(TrapRoomComponent, {disableClose: true});
+    } else if (roomType === 'riddle') {
+      this.dialog.open(RiddleRoomComponent, {disableClose: true});
+    } else if (roomType === 'weak') {
+      this.dialog.open(WeakRoomComponent, {disableClose: true});
+    } else if (roomType === 'tough') {
+      this.dialog.open(ToughRoomComponent, {disableClose: true});
+    } else if (roomType === 'peddler') {
+      this.dialog.open(PeddlerRoomComponent, {disableClose: true});
+    } else if (roomType === 'item') {
+      this.dialog.open(ItemRoomComponent, {disableClose: true});
+    } else if (roomType === 'scroll') {
+      this.dialog.open(ScrollRoomComponent, {disableClose: true});
     }
   }
 }
