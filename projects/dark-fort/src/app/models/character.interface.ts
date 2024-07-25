@@ -22,10 +22,10 @@ export interface IWeapon {
 }
 
 export type WeaponIdentifier =
-  'warhammer'|
-  'dagger'|
-  'sword'|
-  'flail'|
+  'warhammer' |
+  'dagger' |
+  'sword' |
+  'flail' |
   'zweihander'
 
 
@@ -151,13 +151,13 @@ export interface IMonster {
 }
 
 export type MonsterIdentifier =
-  'skeleton'|
-  'cultist'|
-  'goblin'|
-  'hound'|
-  'sorcerer'|
-  'troll'|
-  'medusa'|
+  'skeleton' |
+  'cultist' |
+  'goblin' |
+  'hound' |
+  'sorcerer' |
+  'troll' |
+  'medusa' |
   'basilisk'
 
 
@@ -166,13 +166,13 @@ export interface IState {
 }
 
 export type EffectIdetifier =
-  'daemon'|
+  'daemon' |
   'invisible'
 
 export type Cardinality =
-  'north'|
-  'east'|
-  'south'|
+  'north' |
+  'east' |
+  'south' |
   'west'
 
 export enum RoomShape {
@@ -193,6 +193,7 @@ export interface Room {
   exits: Cardinality[];
   x: number;
   y: number;
+  type: roomType;
 }
 
 export enum Status {
@@ -200,3 +201,8 @@ export enum Status {
   loss,
   continue
 }
+
+export type roomType = 'nothing' | 'trap' | 'riddle' | 'weak' | 'tough' | 'peddler' | 'item' | 'scroll'
+
+export const roomTypes: roomType[] = ['nothing', 'trap', 'riddle', 'weak', 'tough', 'peddler']
+export const initialRoomTypes: roomType[] = ['item', 'weak', 'scroll', 'nothing']

@@ -5,7 +5,7 @@ import {
   initialWeaponsTable,
   ItemIdentifier, itemsTable,
   Room,
-  RoomShape,
+  RoomShape, roomType,
   Status
 } from '../models/character.interface';
 import {DiceService} from '../../../../common/src/lib/services/dice.service';
@@ -68,23 +68,27 @@ export class StateService {
     this.character.inventory[itemId] += 1;
   }
 
-  next(room: Room): Status {
+  resolveRoom(room: Room): roomType | undefined {
     if (this.roomService.canTravel(this.currentRoom, room) || this.map.length === 1) {
       this.currentRoom = room;
       if (room.shape === RoomShape.placeholder) {
-        const rooms = this.roomService.materializeRoom(room, this.map);
-
-        for (const coordinate of rooms) {
-          if (!this.map.find(room => room.x === coordinate.x && room.y === coordinate.y)) {
-            const cardinality = this.roomService.calculateEntrance(room.x, room.y, coordinate.x, coordinate.y)
-            this.map.push(this.roomService.generateRandomRoom(coordinate.x, coordinate.y, [cardinality]));
+        const materializedRoom = this.roomService.materializeRoom(room, this.map);
+        const neighbors = this.roomService.getNeighboringCoordinates(materializedRoom);
+        for (const neighbor of neighbors) {
+          if (!this.map.find(room => room.x === neighbor.x && room.y === neighbor.y)) {
+            const cardinality = this.roomService.calculateEntrance(room.x, room.y, neighbor.x, neighbor.y)
+            this.map.push(this.roomService.generateRandomRoom(neighbor.x, neighbor.y, [cardinality]));
           }
         }
+        return materializedRoom.type;
+      }
+    }
+    return undefined;
+  }
 
-      }
-      if (this.calculateUnexploredRoomsCount() === 0) {
-        return Status.loss;
-      }
+  calculateWinningConditions(): Status {
+    if (this.calculateUnexploredRoomsCount() === 0) {
+      return Status.loss;
     }
 
     return Status.continue;

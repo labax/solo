@@ -5,6 +5,7 @@ import {RoomService} from '../../services/room.service';
 import {Room, RoomShape, Status} from '../../models/character.interface';
 import {NgForOf, NgIf} from '@angular/common';
 import {StateService} from '../../services/state.service';
+import {DiceService} from '../../../../../common/src/lib/services/dice.service';
 
 @Component({
   selector: 'dark-fort-room-map',
@@ -21,7 +22,7 @@ export class RoomMapComponent {
   height: number[];
   width: number[];
 
-  constructor(private roomService: RoomService, public stateService: StateService) {
+  constructor(private roomService: RoomService, public stateService: StateService, private diceService: DiceService) {
     this.height = Array(this.roomService.mapHeight).fill(1).map((x, i) => i);
     this.width = Array(this.roomService.mapWidth).fill(1).map((x, i) => i);
   }
@@ -50,8 +51,13 @@ export class RoomMapComponent {
   }
 
   onRoomClick(room: Room) {
-    const status = this.stateService.next(room);
-
+    const roomType = this.stateService.resolveRoom(room);
+    if(roomType) {
+      alert(roomType);
+    } else if(this.diceService.rollDice(1,4) === 1) {
+      alert('weak');
+    }
+    const status = this.stateService.calculateWinningConditions();
     if(status === Status.loss) {
       alert('you lost');
     }

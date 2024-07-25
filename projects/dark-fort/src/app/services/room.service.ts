@@ -1,7 +1,8 @@
 // src/app/services/room.service.ts
 
 import {Injectable} from '@angular/core';
-import {Cardinality, Room, RoomShape} from '../models/character.interface';
+import {Cardinality, initialRoomTypes, Room, RoomShape, roomTypes} from '../models/character.interface';
+import {DiceService} from '../../../../common/src/lib/services/dice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class RoomService {
     return this._mapHeight;
   }
 
-  constructor() {
+  constructor(private diceService: DiceService) {
     this._mapWidth = 11;
     this._mapHeight = 11;
   }
@@ -27,10 +28,10 @@ export class RoomService {
 
     const roomExits = new Set(existingExits);
 
-    return {shape: RoomShape.placeholder, exits: Array.from(roomExits), x, y};
+    return {shape: RoomShape.placeholder, exits: Array.from(roomExits), x, y, type: 'nothing'};
   }
 
-  materializeRoom(room: Room, map: Room[]): { x: number, y: number }[] {
+  materializeRoom(room: Room, map: Room[]): Room {
     const shapes = Object.values(RoomShape).filter(value => typeof value === 'number')
       .filter(shape => shape !== RoomShape.placeholder);
 
@@ -51,8 +52,8 @@ export class RoomService {
 
     room.exits = Array.from(roomExits);
     room.shape = roomShape;
-
-    return this.getNeighboringCoordinates(room);
+    room.type = map.length === 1 ? this.diceService.getRandomElement(initialRoomTypes) : this.diceService.getRandomElement(roomTypes);
+    return room;
   }
 
   calculateInvalidCardinalities(room: Room, map: Room[]): Cardinality[] {
