@@ -41,7 +41,7 @@ export class StateService {
       'armor': 0,
       'aegis': 0,
       'cloak': 0,
-      'omen': 0,
+      'omen': 1,
       'potion': 0,
       'summon': 0,
       'palms': 0
@@ -112,5 +112,27 @@ export class StateService {
     }
 
     return item;
+  }
+
+  calculateTrap(): number {
+    const roll = this.diceService.rollDice(1, 6);
+    if(this.character.inventory['rope'] > 0) {
+      return roll + 1;
+    }
+
+    return roll;
+  }
+
+  calculateDamage(damageDie: number, damageBonus: number, ignoresArmor: boolean): number {
+    const roll = this.diceService.rollDice(1, damageDie) + damageBonus;
+    if(this.character.inventory['armor'] > 0 && !ignoresArmor) {
+      return roll - this.diceService.rollDice(1, 4);
+    }
+
+    return roll;
+  }
+
+  canReroll(): boolean {
+    return this.character.inventory['omen'] > 0;
   }
 }
