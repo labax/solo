@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {
   EffectIdetifier,
-  ICharacter, initialItemsTable,
+  ICharacter, IItem, initialItemsTable,
   initialWeaponsTable,
-  ItemIdentifier,
+  ItemIdentifier, itemsTable,
   Room,
   RoomShape,
   Status
@@ -99,5 +99,14 @@ export class StateService {
 
   calculateScrollUses() {
     return this.diceService.rollDice(1, 4);
+  }
+
+  getItem(key: string): IItem {
+    const item = itemsTable.find(item => item.id === key);
+    if (!item) {
+      throw new Error('item not found!');
+    }
+
+    return item;
   }
 }

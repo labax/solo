@@ -2,6 +2,6 @@
 
 <ng-container *ngFor="let inventorySlot of stateService.character.inventory | keyvalue">
   <div *ngIf="inventorySlot.value > 0">
-    {{ getItemName(inventorySlot.key) }}: {{ inventorySlot.value }}
+    {{ getItemName(inventorySlot.key) }}: {{ inventorySlot.value }} <button mat-button *ngIf="isUsable(inventorySlot.key)" (click)="use(inventorySlot.key)">Use</button>
   </div>
 </ng-container>

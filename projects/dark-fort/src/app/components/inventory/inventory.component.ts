@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {StateService} from '../../services/state.service';
 import {KeyValuePipe, NgForOf, NgIf} from '@angular/common';
-import {itemsTable} from '../../models/character.interface';
+import {ItemIdentifier} from '../../models/character.interface';
+import {MatButton} from '@angular/material/button';
 
 @Component({
   selector: 'dark-fort-inventory',
@@ -9,7 +10,8 @@ import {itemsTable} from '../../models/character.interface';
   imports: [
     KeyValuePipe,
     NgForOf,
-    NgIf
+    NgIf,
+    MatButton
   ],
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.css'
@@ -20,11 +22,22 @@ export class InventoryComponent {
   }
 
   getItemName(key: string): string {
-    const item = itemsTable.find(item => item.id === key);
-    if (!item) {
-      return ''
-    }
+    const item = this.stateService.getItem(key);
 
     return item.name;
+  }
+
+  isUsable(key: string): boolean {
+    const item = this.stateService.getItem(key);
+
+    return item.onUse !== undefined && item.onUse !== null;
+  }
+
+  use(key: string): void {
+    const item = this.stateService.getItem(key);
+    if(item.onUse !== undefined && item.onUse !== null) {
+      item.onUse(this.stateService);
+      this.stateService.character.inventory[key as ItemIdentifier] += -1;
+    }
   }
 }
