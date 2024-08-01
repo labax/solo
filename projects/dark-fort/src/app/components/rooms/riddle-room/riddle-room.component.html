@@ -1,12 +1,16 @@
-<h2 mat-dialog-title>Pit Trap</h2>
+<h2 mat-dialog-title>Riddling Soothsayer</h2>
 <mat-dialog-content class="mat-typography">
-  <div>You stumbled on a pit trap.</div>
+  <div>You encounter a riddling soothsayer.</div>
   <div>You roll a {{solveRoll}}</div>
   <div *ngIf="!solved(); else avoid">
     You fall in the trap and take {{damageRoll}} damage
   </div>
   <ng-template #avoid>
     You avoid the trap
+    <mat-radio-group [(ngModel)]="reward">
+      <mat-radio-button value="silver">Get 10 Silver</mat-radio-button>
+      <mat-radio-button value="points">Get 3 Points</mat-radio-button>
+    </mat-radio-group>
   </ng-template>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
