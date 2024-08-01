@@ -1,1 +1,15 @@
-<p>riddle-room works!</p>
+<h2 mat-dialog-title>Pit Trap</h2>
+<mat-dialog-content class="mat-typography">
+  <div>You stumbled on a pit trap.</div>
+  <div>You roll a {{solveRoll}}</div>
+  <div *ngIf="!solved(); else avoid">
+    You fall in the trap and take {{damageRoll}} damage
+  </div>
+  <ng-template #avoid>
+    You avoid the trap
+  </ng-template>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button *ngIf="stateService.canReroll()" (click)="onReroll()">Reroll</button>
+  <button mat-button mat-dialog-close (click)="resolveRiddle()">OK</button>
+</mat-dialog-actions>
