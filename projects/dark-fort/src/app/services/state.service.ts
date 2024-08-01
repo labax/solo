@@ -3,10 +3,10 @@ import {
   EffectIdetifier,
   ICharacter, IItem, initialItemsTable,
   initialWeaponsTable,
-  ItemIdentifier, itemsTable,
+  ItemIdentifier, itemsTable, IWeapon,
   Room,
   RoomShape, roomType,
-  Status
+  Status, WeaponIdentifier, weaponsTable
 } from '../models/character.interface';
 import {DiceService} from '../../../../common/src/lib/services/dice.service';
 import {RoomService} from './room.service';
@@ -47,6 +47,14 @@ export class StateService {
       'palms': 0
     }
 
+    const weapons: Record<WeaponIdentifier, number> = {
+      'dagger': 0,
+      'sword': 0,
+      'flail': 0,
+      'zweihander': 0,
+      'warhammer': 0
+    }
+
     const effects: Record<EffectIdetifier, number> = {
       'invisible': 0,
       'daemon': 0
@@ -61,6 +69,7 @@ export class StateService {
       points: 0,
       silver: this.diceService.rollDice(1, 6) + 15,
       weapon: this.diceService.getRandomElement(initialWeaponsTable),
+      weapons: weapons,
       effects: effects
     }
 
@@ -107,6 +116,15 @@ export class StateService {
 
   getItem(key: string): IItem {
     const item = itemsTable.find(item => item.id === key);
+    if (!item) {
+      throw new Error('item not found!');
+    }
+
+    return item;
+  }
+
+  getWeapon(key: string): IWeapon {
+    const item = weaponsTable.find(item => item.id === key);
     if (!item) {
       throw new Error('item not found!');
     }

@@ -9,6 +9,7 @@ export interface ICharacter {
   weapon: WeaponIdentifier;
   inventory: Record<ItemIdentifier, number>;
   effects: Record<EffectIdetifier, number>;
+  weapons: Record<WeaponIdentifier, number>;
   points: number;
 }
 
@@ -59,7 +60,7 @@ export const weaponsTable: IWeapon[] = [{
   id: 'flail'
 }, {
   attackBonus: 0,
-  silver: 16,
+  silver: 25,
   damageBonus: 2,
   damageDie: 6,
   name: 'Mighty Zweihander',

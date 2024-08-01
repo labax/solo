@@ -5,3 +5,9 @@
     {{ getItemName(inventorySlot.key) }}: {{ inventorySlot.value }} <button mat-button *ngIf="isUsable(inventorySlot.key)" (click)="use(inventorySlot.key)">Use</button>
   </div>
 </ng-container>
+
+<ng-container *ngFor="let weaponSlot of stateService.character.weapons | keyvalue">
+  <div *ngIf="weaponSlot.value > 0">
+    {{ getWeaponName(weaponSlot.key) }}: {{ weaponSlot.value }} <button mat-button (click)="equip(weaponSlot.key)">Equip</button>
+  </div>
+</ng-container>

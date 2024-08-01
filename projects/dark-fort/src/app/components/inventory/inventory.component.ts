@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {StateService} from '../../services/state.service';
 import {KeyValuePipe, NgForOf, NgIf} from '@angular/common';
-import {ItemIdentifier} from '../../models/character.interface';
+import {ItemIdentifier, WeaponIdentifier} from '../../models/character.interface';
 import {MatButton} from '@angular/material/button';
 
 @Component({
@@ -27,6 +27,12 @@ export class InventoryComponent {
     return item.name;
   }
 
+  getWeaponName(key: string): string {
+    const item = this.stateService.getWeapon(key);
+
+    return item.name;
+  }
+
   isUsable(key: string): boolean {
     const item = this.stateService.getItem(key);
 
@@ -39,5 +45,15 @@ export class InventoryComponent {
       item.onUse(this.stateService);
       this.stateService.character.inventory[key as ItemIdentifier] += -1;
     }
+  }
+
+  equip(key: string) {
+    const buffer = this.stateService.character.weapon;
+
+    this.stateService.character.weapons[key as WeaponIdentifier] += -1;
+    if(buffer) {
+      this.stateService.character.weapons[buffer] += 1;
+    }
+    this.stateService.character.weapon = key as WeaponIdentifier;
   }
 }
