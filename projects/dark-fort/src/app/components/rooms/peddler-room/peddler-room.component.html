@@ -1,1 +1,14 @@
-<p>peddler-room works!</p>
+<h2 mat-dialog-title>Peddler</h2>
+<mat-dialog-content class="mat-typography">
+  A peddler from beyond the void offers trinkets and steel for blood-soaked coins.
+  <ng-container *ngFor="let item of itemsTable">
+    <div *ngIf="isListed(item)">
+      {{ item.name }}
+      <button mat-button *ngIf="canBuy(item)" (click)="buy(item)">Buy</button>
+      <button mat-button *ngIf="canSell(item)" (click)="sell(item)">Sell</button>
+    </div>
+  </ng-container>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>OK</button>
+</mat-dialog-actions>

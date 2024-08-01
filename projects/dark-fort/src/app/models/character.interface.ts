@@ -204,5 +204,5 @@ export enum Status {
 
 export type roomType = 'nothing' | 'trap' | 'riddle' | 'weak' | 'tough' | 'peddler' | 'item' | 'scroll'
 
-export const roomTypes: roomType[] = ['nothing', 'riddle']//, 'trap', 'riddle', 'weak', 'tough', 'peddler']
+export const roomTypes: roomType[] = ['nothing', 'peddler']//, 'trap', 'riddle', 'weak', 'tough', 'peddler']
 export const initialRoomTypes: roomType[] = ['nothing']//['item', 'weak', 'scroll', 'nothing']
