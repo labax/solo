@@ -3,10 +3,10 @@ import {
   EffectIdetifier,
   ICharacter, IItem, initialItemsTable,
   initialWeaponsTable,
-  ItemIdentifier, itemsTable, IWeapon,
+  ItemIdentifier, itemIdentifiers, itemsTable, IWeapon,
   Room,
   RoomShape, roomType,
-  Status, WeaponIdentifier, weaponsTable
+  Status, WeaponIdentifier, weaponIdentifiers, weaponsTable
 } from '../models/character.interface';
 import {DiceService} from '../../../../common/src/lib/services/dice.service';
 import {RoomService} from './room.service';
@@ -152,5 +152,13 @@ export class StateService {
 
   canReroll(): boolean {
     return this.character.inventory['omen'] > 0;
+  }
+
+  isItemIdentifier(value: any): value is ItemIdentifier {
+    return itemIdentifiers.includes(value);
+  }
+
+  isWeaponIdentifier(value: any): value is WeaponIdentifier {
+    return weaponIdentifiers.includes(value);
   }
 }

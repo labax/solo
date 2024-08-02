@@ -208,4 +208,23 @@ export const scrollTable: ItemIdentifier[] = ['summon', 'palms', 'aegis', 'omen'
 export type roomType = 'nothing' | 'trap' | 'riddle' | 'weak' | 'tough' | 'peddler' | 'item' | 'scroll'
 
 export const roomTypes: roomType[] = ['nothing', 'peddler']//, 'trap', 'riddle', 'weak', 'tough', 'peddler']
-export const initialRoomTypes: roomType[] = ['scroll']//['item', 'weak', 'scroll', 'nothing']
+export const initialRoomTypes: roomType[] = ['item']//['item', 'weak', 'scroll', 'nothing']
+
+export const itemIdentifiers: ItemIdentifier[] = [
+  'potion',
+  'rope',
+  'armor',
+  'cloak',
+  'summon',
+  'palms',
+  'aegis',
+  'omen'
+];
+
+export const weaponIdentifiers: WeaponIdentifier[] = [
+  'warhammer',
+  'dagger',
+  'sword',
+  'flail',
+  'zweihander'
+]

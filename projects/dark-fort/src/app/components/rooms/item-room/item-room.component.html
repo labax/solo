@@ -1,1 +1,8 @@
-<p>item-room works!</p>
+<h2 mat-dialog-title>Item</h2>
+<mat-dialog-content class="mat-typography">
+  <div>You find a {{getItemName(item)}}.</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button *ngIf="stateService.canReroll()" (click)="onReroll()">Reroll</button>
+  <button mat-button mat-dialog-close (click)="resolveItem()">OK</button>
+</mat-dialog-actions>
