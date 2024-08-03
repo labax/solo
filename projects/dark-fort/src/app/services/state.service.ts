@@ -3,7 +3,7 @@ import {
   EffectIdetifier,
   ICharacter, IItem, initialItemsTable,
   initialWeaponsTable,
-  ItemIdentifier, itemIdentifiers, itemsTable, IWeapon,
+  ItemIdentifier, itemIdentifiers, itemsTable, IWeapon, monstersTable,
   Room,
   RoomShape, roomType,
   Status, WeaponIdentifier, weaponIdentifiers, weaponsTable
@@ -131,6 +131,15 @@ export class StateService {
     }
 
     return item;
+  }
+
+  getMonster(key: string) {
+    const monster = monstersTable.find(monster => monster.id === key);
+    if(!monster) {
+      throw new Error('monster not found!');
+    }
+
+    return monster;
   }
 
   calculateTrap(): number {
