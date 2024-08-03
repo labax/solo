@@ -22,7 +22,8 @@ export class StateService {
 
   public map: Room[] = [];
   public currentRoom!: Room;
-  public character!: ICharacter
+  public character!: ICharacter;
+  public combatRound: number = 0;
 
   public calculateExploredRoomsCount(): number {
     return this.map.filter(room => room.shape !== RoomShape.placeholder).length;
@@ -160,5 +161,9 @@ export class StateService {
 
   isWeaponIdentifier(value: any): value is WeaponIdentifier {
     return weaponIdentifiers.includes(value);
+  }
+
+  calculateCombatDamage(dice: number, sides: number, bonus: number): number {
+    return this.diceService.rollDice(dice, sides) + bonus;
   }
 }
