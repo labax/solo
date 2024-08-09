@@ -66,29 +66,33 @@ export class RoomMapComponent {
     } else if (this.diceService.rollDice(1, 4) === 1) {
       this.openDialog('weak');
     }
-    const status = this.stateService.calculateWinningConditions();
-    if (status === Status.loss) {
-      alert('you lost');
-    }
   }
 
   private openDialog(roomType: roomType) {
+    let dialogRef
     if (roomType === 'nothing') {
-      this.dialog.open(EmptyRoomComponent, {disableClose: true});
+      dialogRef = this.dialog.open(EmptyRoomComponent, {disableClose: true});
     } else if (roomType === 'trap') {
-      this.dialog.open(TrapRoomComponent, {disableClose: true});
+      dialogRef = this.dialog.open(TrapRoomComponent, {disableClose: true});
     } else if (roomType === 'riddle') {
-      this.dialog.open(RiddleRoomComponent, {disableClose: true});
+      dialogRef = this.dialog.open(RiddleRoomComponent, {disableClose: true});
     } else if (roomType === 'weak') {
-      this.dialog.open(WeakRoomComponent, {disableClose: true, data: weakMonsters});
+      dialogRef = this.dialog.open(WeakRoomComponent, {disableClose: true, data: weakMonsters});
     } else if (roomType === 'tough') {
-      this.dialog.open(WeakRoomComponent, {disableClose: true, data: strongMonsters});
+      dialogRef = this.dialog.open(WeakRoomComponent, {disableClose: true, data: strongMonsters});
     } else if (roomType === 'peddler') {
-      this.dialog.open(PeddlerRoomComponent, {disableClose: true});
+      dialogRef = this.dialog.open(PeddlerRoomComponent, {disableClose: true});
     } else if (roomType === 'item') {
-      this.dialog.open(ItemRoomComponent, {disableClose: true});
+      dialogRef = this.dialog.open(ItemRoomComponent, {disableClose: true});
     } else if (roomType === 'scroll') {
-      this.dialog.open(ScrollRoomComponent, {disableClose: true});
+      dialogRef = this.dialog.open(ScrollRoomComponent, {disableClose: true});
     }
+
+    dialogRef?.afterClosed().subscribe(result => {
+      const status = this.stateService.calculateWinningConditions();
+      if (status === Status.loss) {
+        alert('you lost');
+      }
+    })
   }
 }
