@@ -34,4 +34,7 @@ export class LevelUpComponent implements OnInit {
     this.stateService.levels.splice(index, 1);
   }
 
+  resetMap() {
+    this.stateService.initilizeMap();
+  }
 }

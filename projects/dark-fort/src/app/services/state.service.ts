@@ -34,10 +34,15 @@ export class StateService {
     return this.map.filter(room => room.shape === RoomShape.placeholder).length;
   }
 
-  initialize() {
+  initilizeMap() {
+    this.map = [];
     const room = this.roomService.generateRandomRoom(0, Math.floor(this.roomService.mapWidth / 2))
     this.map.push(room);
     this.currentRoom = room;
+  }
+
+  initialize() {
+    this.initilizeMap();
     const inventory: Record<ItemIdentifier, number> = {
       'rope': 0,
       'armor': 0,
