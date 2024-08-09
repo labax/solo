@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
 import {StateService} from '../../../services/state.service';
@@ -20,15 +20,25 @@ import {NgIf} from '@angular/common';
   templateUrl: './weak-room.component.html',
   styleUrl: './weak-room.component.css'
 })
-export class WeakRoomComponent {
+export class WeakRoomComponent implements OnInit, OnDestroy  {
 
   monster!: MonsterIdentifier;
   hitPoints!: number;
   monsterName!: string;
   message!: string;
+  daemon!: boolean;
 
   constructor(public stateService: StateService, private diceService: DiceService) {
+
+  }
+
+  ngOnInit() {
     this.rollMonster();
+    this.daemon = false;
+  }
+
+  ngOnDestroy() {
+    this.daemon = false;
   }
 
   rollMonster(): void {
@@ -54,6 +64,12 @@ export class WeakRoomComponent {
       const damage = this.stateService.calculatePlayerDamage();
       this.message = `you hit the monster for ${damage} damage`;
       this.hitPoints += -damage;
+      if(this.daemon){
+        const daemonDamage = this.stateService.calculateCombatDamage(1,4, 0);
+        this.message += ` your summoned daemon inflicts ${daemonDamage} damage`;
+        this.hitPoints += -daemonDamage;
+      }
+
     } else {
       const damage = this.stateService.calculateMonsterDamage(this.monster);
       this.message = `the monster hits you for ${damage} damage`;
@@ -100,5 +116,10 @@ export class WeakRoomComponent {
     this.hitPoints += -damage;
     this.message=`you inflict ${damage} damage`;
     this.stateService.character.inventory['palms'] += -1;
+  }
+
+  useSummon() {
+    this.daemon = true;
+    this.stateService.character.inventory['summon'] += -1;
   }
 }

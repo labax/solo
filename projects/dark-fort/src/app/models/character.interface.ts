@@ -9,7 +9,6 @@ export interface ICharacter {
   level: number;
   weapon: WeaponIdentifier;
   inventory: Record<ItemIdentifier, number>;
-  effects: Record<EffectIdetifier, number>;
   weapons: Record<WeaponIdentifier, number>;
   points: number;
   attackBonus: number;
@@ -112,17 +111,11 @@ export const itemsTable: IItem[] = [{
 }, {
   name: 'cloak of invisibility',
   silver: 15,
-  id: 'cloak',
-  onUse: (state: StateService) => {
-    state.character.effects['invisible'] += state.calculateScrollUses();
-  }
+  id: 'cloak'
 }, {
   name: 'Summon weak daemon',
   silver: 0,
-  id: 'summon',
-  onUse: (state: StateService) => {
-    state.character.effects['daemon'] += state.calculateScrollUses();
-  }
+  id: 'summon'
 }, {
   name: 'Palms Open the Southern Gate',
   silver: 0,
@@ -265,10 +258,6 @@ export const strongMonsters: MonsterIdentifier[] = ['sorcerer', 'troll', 'medusa
 export interface IState {
   character: ICharacter;
 }
-
-export type EffectIdetifier =
-  'daemon' |
-  'invisible'
 
 export type Cardinality =
   'north' |

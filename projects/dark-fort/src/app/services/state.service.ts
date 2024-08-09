@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {
-  EffectIdetifier,
   ICharacter, IItem, initialItemsTable,
   initialWeaponsTable,
   ItemIdentifier, itemIdentifiers, itemsTable, IWeapon, MonsterIdentifier, monstersTable,
@@ -45,7 +44,7 @@ export class StateService {
       'omen': 0,
       'potion': 0,
       'summon': 0,
-      'palms': 1
+      'palms': 0
     }
 
     const weapons: Record<WeaponIdentifier, number> = {
@@ -54,11 +53,6 @@ export class StateService {
       'flail': 0,
       'zweihander': 0,
       'warhammer': 0
-    }
-
-    const effects: Record<EffectIdetifier, number> = {
-      'invisible': 0,
-      'daemon': 0
     }
 
     this.character = {
@@ -71,7 +65,6 @@ export class StateService {
       silver: this.diceService.rollDice(1, 6) + 15,
       weapon: this.diceService.getRandomElement(initialWeaponsTable),
       weapons: weapons,
-      effects: effects,
       attackBonus: 0
     }
 
