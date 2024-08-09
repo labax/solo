@@ -70,4 +70,16 @@ export class WeakRoomComponent {
       }
     }
   }
+
+  hasPotion() {
+    return this.stateService.character.inventory['potion'] > 0
+  }
+
+  usePotion() {
+    const item = this.stateService.getItem('potion');
+    if(item.onUse) {
+      item.onUse(this.stateService)
+    }
+    this.stateService.character.inventory['potion'] += -1;
+  }
 }

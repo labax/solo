@@ -4,6 +4,7 @@
   <div>{{message}}</div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
+  <button mat-button *ngIf="hasPotion()" (click)="usePotion()">Use Potion</button>
   <button mat-button *ngIf="hitPoints > 0 && stateService.character.hitPointsCurrent > 0" (click)="attack()">Attack</button>
   <button mat-button *ngIf="canRerollmonster()" (click)="rerollMonster()">Reroll Monster</button>
   <button mat-button *ngIf="hitPoints <= 0 || stateService.character.hitPointsCurrent <=0" (click)="resolveCombat()" mat-dialog-close>OK</button>
