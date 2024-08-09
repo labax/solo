@@ -42,6 +42,7 @@ export class WeakRoomComponent implements OnInit, OnDestroy  {
   ngOnInit() {
     this.rollMonster();
     this.daemon = false;
+    this.stateService.combatRound = 0;
   }
 
   ngOnDestroy() {
@@ -56,6 +57,7 @@ export class WeakRoomComponent implements OnInit, OnDestroy  {
   }
 
   attack() {
+    this.stateService.combatRound += 1;
     const monster = this.stateService.getMonster(this.monster);
     const hit = this.stateService.calculateMonsterHit(monster.points);
     if (hit) {
