@@ -3,7 +3,7 @@ import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from
 import {MatButton} from '@angular/material/button';
 import {StateService} from '../../../services/state.service';
 import {DiceService} from '../../../../../../common/src/lib/services/dice.service';
-import {MonsterIdentifier, weakMonsters} from '../../../models/character.interface';
+import {ItemIdentifier, MonsterIdentifier, weakMonsters} from '../../../models/character.interface';
 import {NgIf} from '@angular/common';
 
 @Component({
@@ -71,8 +71,8 @@ export class WeakRoomComponent {
     }
   }
 
-  hasPotion() {
-    return this.stateService.character.inventory['potion'] > 0
+  hasItem(item: ItemIdentifier) {
+    return this.stateService.character.inventory[item] > 0
   }
 
   usePotion() {
@@ -81,5 +81,17 @@ export class WeakRoomComponent {
       item.onUse(this.stateService)
     }
     this.stateService.character.inventory['potion'] += -1;
+  }
+
+  useCloak() {
+
+    if(this.monster === 'troll') {
+      this.stateService.character.points += 5;
+    } else {
+      const monster = this.stateService.getMonster(this.monster);
+      this.stateService.character.points += monster.points;
+    }
+
+    this.stateService.character.inventory['cloak'] += -1;
   }
 }
