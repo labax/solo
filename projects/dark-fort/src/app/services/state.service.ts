@@ -196,9 +196,9 @@ export class StateService {
     const monster = this.getMonster(monsterId);
     let damage = monster.damage(this);
     if(this.character.inventory['armor'] > 0) {
-      damage += -1;
+      damage += -this.diceService.rollDice(1,4);
     }
 
-    return damage;
+    return damage >=0 ? damage : 0;
   }
 }
