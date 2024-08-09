@@ -3,10 +3,10 @@
   <div>You encounter a riddling soothsayer.</div>
   <div>You roll a {{solveRoll}}</div>
   <div *ngIf="!solved(); else avoid">
-    You fall in the trap and take {{damageRoll}} damage
+    You fail to solve the riddle and take {{damageRoll}} damage
   </div>
   <ng-template #avoid>
-    You avoid the trap
+    you solve the riddle
     <mat-radio-group [(ngModel)]="reward">
       <mat-radio-button value="silver">Get 10 Silver</mat-radio-button>
       <mat-radio-button value="points">Get 3 Points</mat-radio-button>
