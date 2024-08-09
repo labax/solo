@@ -103,7 +103,7 @@ export class StateService {
       return Status.loss;
     }
 
-    if(this.character.hitPointsCurrent <= 0) {
+    if (this.character.hitPointsCurrent <= 0) {
       return Status.loss;
     }
 
@@ -141,7 +141,7 @@ export class StateService {
 
   getMonster(key: string) {
     const monster = monstersTable.find(monster => monster.id === key);
-    if(!monster) {
+    if (!monster) {
       throw new Error('monster not found!');
     }
 
@@ -150,7 +150,7 @@ export class StateService {
 
   calculateTrap(): number {
     const roll = this.diceService.rollDice(1, 6);
-    if(this.character.inventory['rope'] > 0) {
+    if (this.character.inventory['rope'] > 0) {
       return roll + 1;
     }
 
@@ -159,7 +159,7 @@ export class StateService {
 
   calculateDamage(damageDie: number, damageBonus: number, ignoresArmor: boolean): number {
     const roll = this.diceService.rollDice(1, damageDie) + damageBonus;
-    if(this.character.inventory['armor'] > 0 && !ignoresArmor) {
+    if (this.character.inventory['armor'] > 0 && !ignoresArmor) {
       return roll - this.diceService.rollDice(1, 4);
     }
 
@@ -183,7 +183,7 @@ export class StateService {
   }
 
   calculateMonsterHit(points: number): boolean {
-    const roll = this.diceService.rollDice(1,6);
+    const roll = this.diceService.rollDice(1, 6);
     const weaponBonus = this.getWeapon(this.character.weapon).attackBonus;
     return roll + weaponBonus + this.character.attackBonus >= points;
   }
@@ -196,10 +196,13 @@ export class StateService {
   calculateMonsterDamage(monsterId: MonsterIdentifier): number {
     const monster = this.getMonster(monsterId);
     let damage = monster.damage(this);
-    if(this.character.inventory['armor'] > 0) {
-      damage += -this.diceService.rollDice(1,4);
+    if (this.halved.find(monster => monster === monsterId)) {
+      damage = damage / 2;
+    }
+    if (this.character.inventory['armor'] > 0) {
+      damage += -this.diceService.rollDice(1, 4);
     }
 
-    return damage >=0 ? damage : 0;
+    return damage >= 0 ? damage : 0;
   }
 }
