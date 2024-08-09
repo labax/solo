@@ -77,7 +77,7 @@ export class WeakRoomComponent {
 
   usePotion() {
     const item = this.stateService.getItem('potion');
-    if(item.onUse) {
+    if (item.onUse) {
       item.onUse(this.stateService)
     }
     this.stateService.character.inventory['potion'] += -1;
@@ -85,7 +85,7 @@ export class WeakRoomComponent {
 
   useCloak() {
 
-    if(this.monster === 'troll') {
+    if (this.monster === 'troll') {
       this.stateService.character.points += 5;
     } else {
       const monster = this.stateService.getMonster(this.monster);
@@ -93,5 +93,12 @@ export class WeakRoomComponent {
     }
 
     this.stateService.character.inventory['cloak'] += -1;
+  }
+
+  usePalms() {
+    const damage = this.stateService.calculateCombatDamage(1, 6, 1);
+    this.hitPoints += -damage;
+    this.message=`you inflict ${damage} damage`;
+    this.stateService.character.inventory['palms'] += -1;
   }
 }

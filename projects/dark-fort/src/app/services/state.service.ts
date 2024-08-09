@@ -45,7 +45,7 @@ export class StateService {
       'omen': 0,
       'potion': 0,
       'summon': 0,
-      'palms': 0
+      'palms': 1
     }
 
     const weapons: Record<WeaponIdentifier, number> = {
