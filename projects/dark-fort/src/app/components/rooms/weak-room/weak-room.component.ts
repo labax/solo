@@ -27,6 +27,7 @@ export class WeakRoomComponent implements OnInit, OnDestroy  {
   monsterName!: string;
   message!: string;
   daemon!: boolean;
+  monsterDamage!: number;
 
   constructor(public stateService: StateService, private diceService: DiceService) {
 
@@ -71,9 +72,9 @@ export class WeakRoomComponent implements OnInit, OnDestroy  {
       }
 
     } else {
-      const damage = this.stateService.calculateMonsterDamage(this.monster);
-      this.message = `the monster hits you for ${damage} damage`;
-      this.stateService.character.hitPointsCurrent += -damage;
+      this.monsterDamage = this.stateService.calculateMonsterDamage(this.monster);
+      this.message = `the monster hits you for ${this.monsterDamage} damage`;
+      this.stateService.character.hitPointsCurrent += -this.monsterDamage;
     }
   }
 
@@ -121,5 +122,20 @@ export class WeakRoomComponent implements OnInit, OnDestroy  {
   useSummon() {
     this.daemon = true;
     this.stateService.character.inventory['summon'] += -1;
+  }
+
+  canUseAegis() {
+    return this.monsterDamage > 0 && this.stateService.character.inventory['aegis'] > 0
+  }
+
+  useAegis() {
+    const damageReduction = this.diceService.rollDice(1,4);
+    if(this.monsterDamage < damageReduction) {
+      this.stateService.character.hitPointsCurrent += damageReduction;
+    } else {
+      this.stateService.character.hitPointsCurrent += this.monsterDamage;
+    }
+
+    this.stateService.character.inventory['aegis'] += -1;
   }
 }

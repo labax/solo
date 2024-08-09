@@ -4,11 +4,11 @@
   <div>{{message}}</div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
+  <button mat-button *ngIf="canUseAegis()" (click)="useAegis()">Use Aegis of Sorrow</button>
   <button mat-button *ngIf="hasItem('summon')" (click)="useSummon()">Summon Weak Daemon</button>
   <button mat-button *ngIf="hasItem('palms')" (click)="usePalms()">Use Palms open the south gate</button>
   <button mat-button *ngIf="hasItem('potion')" (click)="usePotion()">Use Potion</button>
   <button mat-button *ngIf="hasItem('cloak')" (click)="useCloak()" mat-dialog-close>Use Cloak of invisibility</button>
   <button mat-button *ngIf="hitPoints > 0 && stateService.character.hitPointsCurrent > 0" (click)="attack()">Attack</button>
-  <button mat-button *ngIf="canRerollmonster()" (click)="rerollMonster()">Reroll Monster</button>
   <button mat-button *ngIf="hitPoints <= 0 || stateService.character.hitPointsCurrent <=0" (click)="resolveCombat()" mat-dialog-close>OK</button>
 </mat-dialog-actions>
