@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {StateService} from '../../services/state.service';
 import {MatButton} from "@angular/material/button";
 import {NgIf} from "@angular/common";
+import {MatDialog} from "@angular/material/dialog";
+import {LevelUpComponent} from "../leveling/level-up/level-up.component";
 
 @Component({
   selector: 'dark-fort-score',
@@ -15,6 +17,8 @@ import {NgIf} from "@angular/common";
 })
 export class ScoreComponent {
 
+  readonly dialog = inject(MatDialog);
+
   constructor(public stateService: StateService) {
   }
 
@@ -24,5 +28,13 @@ export class ScoreComponent {
 
   canLevelSilver(): boolean {
     return this.stateService.character.silver > 40;
+  }
+
+  levelPoints() {
+    const dialogRef = this.dialog.open(LevelUpComponent, {disableClose: true});
+  }
+
+  levelSilver() {
+    const dialogRef = this.dialog.open(LevelUpComponent, {disableClose: true});
   }
 }

@@ -317,3 +317,5 @@ export const weaponIdentifiers: WeaponIdentifier[] = [
   'flail',
   'zweihander'
 ]
+
+export type levelIdentified = 'sir' | 'attach' | 'hitPoints' | 'potions' | 'zweihander' | 'half'
