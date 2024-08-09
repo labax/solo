@@ -25,6 +25,7 @@ export class WeakRoomComponent {
   monster!: MonsterIdentifier;
   hitPoints!: number;
   monsterName!: string;
+  message!: string;
 
   constructor(public stateService: StateService, private diceService: DiceService) {
     this.rollMonster();
@@ -44,5 +45,29 @@ export class WeakRoomComponent {
   rerollMonster() {
     this.rollMonster();
     this.stateService.character.inventory['omen'] += -1;
+  }
+
+  attack() {
+    const monster = this.stateService.getMonster(this.monster);
+    const hit = this.stateService.calculateMonsterHit(monster.points);
+    if (hit) {
+      const damage = this.stateService.calculatePlayerDamage();
+      this.message = `you hit the monster for ${damage} damage`;
+      this.hitPoints += -damage;
+    } else {
+      const damage = this.stateService.calculateMonsterDamage(this.monster);
+      this.message = `the monster hits you for ${damage} damage`;
+      this.stateService.character.hitPointsCurrent += -damage;
+    }
+  }
+
+  resolveCombat() {
+    if (this.stateService.character.hitPointsCurrent >= 0) {
+      const monster = this.stateService.getMonster(this.monster);
+      this.stateService.character.points += monster.points;
+      if (monster.onKill) {
+        monster.onKill(this.stateService, this.diceService);
+      }
+    }
   }
 }

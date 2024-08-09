@@ -12,6 +12,7 @@ export interface ICharacter {
   effects: Record<EffectIdetifier, number>;
   weapons: Record<WeaponIdentifier, number>;
   points: number;
+  attackBonus: number;
 }
 
 export interface IWeapon {

@@ -3,7 +3,7 @@ import {
   EffectIdetifier,
   ICharacter, IItem, initialItemsTable,
   initialWeaponsTable,
-  ItemIdentifier, itemIdentifiers, itemsTable, IWeapon, monstersTable,
+  ItemIdentifier, itemIdentifiers, itemsTable, IWeapon, MonsterIdentifier, monstersTable,
   Room,
   RoomShape, roomType,
   Status, WeaponIdentifier, weaponIdentifiers, weaponsTable
@@ -42,7 +42,7 @@ export class StateService {
       'armor': 0,
       'aegis': 0,
       'cloak': 0,
-      'omen': 1,
+      'omen': 0,
       'potion': 0,
       'summon': 0,
       'palms': 0
@@ -71,7 +71,8 @@ export class StateService {
       silver: this.diceService.rollDice(1, 6) + 15,
       weapon: this.diceService.getRandomElement(initialWeaponsTable),
       weapons: weapons,
-      effects: effects
+      effects: effects,
+      attackBonus: 0
     }
 
     const itemId = this.diceService.getRandomElement(initialItemsTable);
@@ -98,6 +99,10 @@ export class StateService {
 
   calculateWinningConditions(): Status {
     if (this.calculateUnexploredRoomsCount() === 0) {
+      return Status.loss;
+    }
+
+    if(this.character.hitPointsCurrent <= 0) {
       return Status.loss;
     }
 
@@ -174,5 +179,26 @@ export class StateService {
 
   calculateCombatDamage(dice: number, sides: number, bonus: number): number {
     return this.diceService.rollDice(dice, sides) + bonus;
+  }
+
+  calculateMonsterHit(points: number): boolean {
+    const roll = this.diceService.rollDice(1,6);
+    const weaponBonus = this.getWeapon(this.character.weapon).attackBonus;
+    return roll + weaponBonus + this.character.attackBonus >= points;
+  }
+
+  calculatePlayerDamage(): number {
+    const weapon = this.getWeapon(this.character.weapon);
+    return this.calculateCombatDamage(1, weapon.damageDie, weapon.damageBonus);
+  }
+
+  calculateMonsterDamage(monsterId: MonsterIdentifier): number {
+    const monster = this.getMonster(monsterId);
+    let damage = monster.damage(this);
+    if(this.character.inventory['armor'] > 0) {
+      damage += -1;
+    }
+
+    return damage;
   }
 }
