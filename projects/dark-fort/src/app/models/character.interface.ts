@@ -200,7 +200,7 @@ export const monstersTable: IMonster[] = [
   {
     name: 'NECRO-SORCERER',
     damage: (state: StateService) => {
-      if(state.combatRound % 2 === 0) {
+      if (state.combatRound % 2 === 0) {
         return state.calculateCombatDamage(1, 6, 0);
       }
       return state.calculateCombatDamage(1, 4, 0);
@@ -234,7 +234,7 @@ export const monstersTable: IMonster[] = [
       if (roll <= 1) {
         state.character.hitPointsCurrent = -1;
       }
-      state.character.silver += dice.rollDice(1,4) * dice.rollDice(1, 6);
+      state.character.silver += dice.rollDice(1, 4) * dice.rollDice(1, 6);
     }
   },
   {
@@ -319,4 +319,36 @@ export const weaponIdentifiers: WeaponIdentifier[] = [
 ]
 
 export type levelIdentifier = 'sir' | 'attack' | 'hitPoints' | 'potions' | 'zweihander' | 'half'
-export let levels: levelIdentifier[] = ['sir', 'attack', 'hitPoints', 'potions', 'zweihander', 'half']
+
+export interface ILevel {
+  id: levelIdentifier,
+  description: string,
+  onLevel: (state: StateService, name?: string, halved?: MonsterIdentifier[]) => void,
+}
+
+export const levelTable: ILevel[] = [{
+  id: 'zweihander',
+  description: 'You find a MIGHTY ZWEIHÄNDER',
+  onLevel: state => state.character.weapons.zweihander += 1
+}, {
+  id: 'hitPoints',
+  description: 'Your maximum hit points increase by +5 to 20',
+  onLevel: state => state.character.hitPointsMax = 20
+}, {
+  id: 'attack',
+  description: 'From now on add +1 when attacking monsters.',
+  onLevel: state => state.character.attackBonus += 1
+}, {
+  id: 'sir',
+  description: 'You are knighted and may call yourself sir or lady Kargunt! But a name or title won’t save you.',
+  onLevel: (state, name?: string) => state.character.name = `${name} Kargunt`
+}, {
+  id: 'potions',
+  description: 'a not very occult herbmaster salutes your endeavors and gives you 5 potions.',
+  onLevel: (state) => state.character.inventory.potion += 5
+}, {
+  id: 'half',
+  description: 'Choose one WEAK monster and one TOUGH monster from the monster tables. From now on their damage is halved. Your chosen monsters can never be changed.',
+  onLevel: (state, name?: string, halved?: MonsterIdentifier[]) => halved ? state.halved = halved : ''
+}]
+

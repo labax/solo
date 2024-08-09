@@ -23,6 +23,7 @@ export class StateService {
   public currentRoom!: Room;
   public character!: ICharacter;
   public combatRound: number = 0;
+  public halved: MonsterIdentifier[] = []
 
   public levels: levelIdentifier[] = ['sir', 'attack', 'hitPoints', 'potions', 'zweihander', 'half']
 
