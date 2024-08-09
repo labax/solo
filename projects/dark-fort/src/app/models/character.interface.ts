@@ -318,4 +318,5 @@ export const weaponIdentifiers: WeaponIdentifier[] = [
   'zweihander'
 ]
 
-export type levelIdentified = 'sir' | 'attach' | 'hitPoints' | 'potions' | 'zweihander' | 'half'
+export type levelIdentifier = 'sir' | 'attack' | 'hitPoints' | 'potions' | 'zweihander' | 'half'
+export let levels: levelIdentifier[] = ['sir', 'attack', 'hitPoints', 'potions', 'zweihander', 'half']

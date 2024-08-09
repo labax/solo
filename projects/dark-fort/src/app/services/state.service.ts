@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {
   ICharacter, IItem, initialItemsTable,
   initialWeaponsTable,
-  ItemIdentifier, itemIdentifiers, itemsTable, IWeapon, MonsterIdentifier, monstersTable,
+  ItemIdentifier, itemIdentifiers, itemsTable, IWeapon, levelIdentifier, MonsterIdentifier, monstersTable,
   Room,
   RoomShape, roomType,
   Status, WeaponIdentifier, weaponIdentifiers, weaponsTable
@@ -23,6 +23,8 @@ export class StateService {
   public currentRoom!: Room;
   public character!: ICharacter;
   public combatRound: number = 0;
+
+  public levels: levelIdentifier[] = ['sir', 'attack', 'hitPoints', 'potions', 'zweihander', 'half']
 
   public calculateExploredRoomsCount(): number {
     return this.map.filter(room => room.shape !== RoomShape.placeholder).length;
