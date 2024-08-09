@@ -2,7 +2,7 @@
 
 import {Component, inject} from '@angular/core';
 import {RoomService} from '../../services/room.service';
-import {Room, RoomShape, roomType, Status} from '../../models/character.interface';
+import {Room, RoomShape, roomType, Status, strongMonsters, weakMonsters} from '../../models/character.interface';
 import {NgForOf, NgIf} from '@angular/common';
 import {StateService} from '../../services/state.service';
 import {DiceService} from '../../../../../common/src/lib/services/dice.service';
@@ -11,7 +11,6 @@ import {EmptyRoomComponent} from '../rooms/empty-room/empty-room.component';
 import {TrapRoomComponent} from '../rooms/trap-room/trap-room.component';
 import {RiddleRoomComponent} from '../rooms/riddle-room/riddle-room.component';
 import {WeakRoomComponent} from '../rooms/weak-room/weak-room.component';
-import {ToughRoomComponent} from '../rooms/tough-room/tough-room.component';
 import {PeddlerRoomComponent} from '../rooms/peddler-room/peddler-room.component';
 import {ItemRoomComponent} from '../rooms/item-room/item-room.component';
 import {ScrollRoomComponent} from '../rooms/scroll-room/scroll-room.component';
@@ -81,9 +80,9 @@ export class RoomMapComponent {
     } else if (roomType === 'riddle') {
       this.dialog.open(RiddleRoomComponent, {disableClose: true});
     } else if (roomType === 'weak') {
-      this.dialog.open(WeakRoomComponent, {disableClose: true});
+      this.dialog.open(WeakRoomComponent, {disableClose: true, data: weakMonsters});
     } else if (roomType === 'tough') {
-      this.dialog.open(ToughRoomComponent, {disableClose: true});
+      this.dialog.open(WeakRoomComponent, {disableClose: true, data: strongMonsters});
     } else if (roomType === 'peddler') {
       this.dialog.open(PeddlerRoomComponent, {disableClose: true});
     } else if (roomType === 'item') {

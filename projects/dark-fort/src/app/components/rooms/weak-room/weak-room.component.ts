@@ -1,9 +1,15 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogTitle
+} from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
 import {StateService} from '../../../services/state.service';
 import {DiceService} from '../../../../../../common/src/lib/services/dice.service';
-import {ItemIdentifier, MonsterIdentifier, weakMonsters} from '../../../models/character.interface';
+import {ItemIdentifier, MonsterIdentifier} from '../../../models/character.interface';
 import {NgIf} from '@angular/common';
 
 @Component({
@@ -29,7 +35,7 @@ export class WeakRoomComponent implements OnInit, OnDestroy  {
   daemon!: boolean;
   monsterDamage!: number;
 
-  constructor(public stateService: StateService, private diceService: DiceService) {
+  constructor(public stateService: StateService, private diceService: DiceService, @Inject(MAT_DIALOG_DATA) public data: MonsterIdentifier[]) {
 
   }
 
@@ -43,19 +49,10 @@ export class WeakRoomComponent implements OnInit, OnDestroy  {
   }
 
   rollMonster(): void {
-    this.monster = this.diceService.getRandomElement(weakMonsters);
+    this.monster = this.diceService.getRandomElement(this.data);
     const monster = this.stateService.getMonster(this.monster);
     this.hitPoints = monster.hitPoints;
     this.monsterName = monster.name;
-  }
-
-  canRerollmonster() {
-    return this.stateService.canReroll() && this.stateService.combatRound === 0;
-  }
-
-  rerollMonster() {
-    this.rollMonster();
-    this.stateService.character.inventory['omen'] += -1;
   }
 
   attack() {

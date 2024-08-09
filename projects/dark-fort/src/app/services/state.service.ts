@@ -39,7 +39,7 @@ export class StateService {
     const inventory: Record<ItemIdentifier, number> = {
       'rope': 0,
       'armor': 0,
-      'aegis': 1,
+      'aegis': 0,
       'cloak': 0,
       'omen': 0,
       'potion': 0,
