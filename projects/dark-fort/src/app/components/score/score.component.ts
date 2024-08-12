@@ -4,6 +4,7 @@ import {MatButton} from "@angular/material/button";
 import {NgIf} from "@angular/common";
 import {MatDialog} from "@angular/material/dialog";
 import {LevelUpComponent} from "../leveling/level-up/level-up.component";
+import {Status} from "../../models/character.interface";
 
 @Component({
   selector: 'dark-fort-score',
@@ -32,9 +33,25 @@ export class ScoreComponent {
 
   levelPoints() {
     const dialogRef = this.dialog.open(LevelUpComponent, {disableClose: true});
+    dialogRef.afterClosed().subscribe(result => {
+      const status = this.stateService.calculateWinningConditions();
+      if (status === Status.loss) {
+        alert('you lost');
+      } else if (status === Status.win) {
+        alert('you won');
+      }
+    })
   }
 
   levelSilver() {
     const dialogRef = this.dialog.open(LevelUpComponent, {disableClose: true});
+    dialogRef.afterClosed().subscribe(result => {
+      const status = this.stateService.calculateWinningConditions();
+      if (status === Status.loss) {
+        alert('you lost');
+      } else if (status === Status.win) {
+        alert('you won');
+      }
+    })
   }
 }

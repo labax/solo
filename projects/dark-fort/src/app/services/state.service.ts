@@ -107,6 +107,10 @@ export class StateService {
       return Status.loss;
     }
 
+    if(this.levels.length === 0) {
+      return Status.win;
+    }
+
     return Status.continue;
   }
 
