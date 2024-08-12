@@ -1,12 +1,18 @@
 import {Component, OnInit} from '@angular/core';
 import {MatButton} from "@angular/material/button";
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
-import {levelIdentifier, MonsterIdentifier} from "../../../models/character.interface";
+import {
+  IMonster,
+  levelIdentifier,
+  MonsterIdentifier,
+  monstersTable, strongMonsters,
+  weakMonsters
+} from "../../../models/character.interface";
 import {StateService} from "../../../services/state.service";
 import {DiceService} from "../../../../../../common/src/lib/services/dice.service";
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 import {FormsModule} from "@angular/forms";
-import {NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'dark-fort-level-up',
@@ -20,7 +26,8 @@ import {NgIf} from "@angular/common";
     MatRadioButton,
     MatRadioGroup,
     FormsModule,
-    NgIf
+    NgIf,
+    NgForOf
   ],
   templateUrl: './level-up.component.html',
   styleUrl: './level-up.component.css'
@@ -30,7 +37,8 @@ export class LevelUpComponent implements OnInit {
   level!: levelIdentifier
   name!: string
   levelDescription!: string;
-  halved!: MonsterIdentifier[];
+  weakMonster!: MonsterIdentifier;
+  toughMonster!: MonsterIdentifier;
 
   constructor(private stateService: StateService, private diceService: DiceService) {
   }
@@ -51,6 +59,17 @@ export class LevelUpComponent implements OnInit {
 
   resolveLevel() {
     const level = this.stateService.getLevel(this.level);
-    level.onLevel(this.stateService, this.name, this.halved);
+    if (this.weakMonster && this.toughMonster) {
+      level.onLevel(this.stateService, this.name, [this.weakMonster, this.toughMonster]);
+    } else {
+      level.onLevel(this.stateService, this.name);
+    }
   }
+
+  getMonsters(table: MonsterIdentifier[]): IMonster[] {
+    return monstersTable.filter(monster=> table.indexOf(monster.id) > -1);
+  }
+
+  protected readonly weakMonsters = weakMonsters;
+  protected readonly strongMonsters = strongMonsters;
 }

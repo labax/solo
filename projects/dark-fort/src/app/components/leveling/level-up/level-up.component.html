@@ -1,11 +1,25 @@
 <h2 mat-dialog-title>Level Up</h2>
 <mat-dialog-content class="mat-typography">
-  {{levelDescription}}
+  {{ levelDescription }}
   <mat-radio-group [(ngModel)]="name" *ngIf="level === 'sir'">
     <mat-radio-button value="sir">Sir</mat-radio-button>
     <mat-radio-button value="lady">Lady</mat-radio-button>
   </mat-radio-group>
+
+  <ng-container *ngIf="level === 'half'">
+    <div>Weak Monster</div>
+    <mat-radio-group [(ngModel)]="weakMonster">
+      <mat-radio-button *ngFor="let monster of getMonsters(weakMonsters)" value="monster.id">{{ monster.name }}
+      </mat-radio-button>
+    </mat-radio-group>
+    <div>Tough Monster</div>
+    <mat-radio-group [(ngModel)]="toughMonster">
+      <mat-radio-button *ngFor="let monster of getMonsters(strongMonsters)" value="monster.id">{{ monster.name }}
+      </mat-radio-button>
+    </mat-radio-group>
+  </ng-container>
 </mat-dialog-content>
+
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close (click)="resolveLevel()">Continue Exploring</button>
   <button mat-button mat-dialog-close (click)="resetMap()">Explore New Dungeon</button>

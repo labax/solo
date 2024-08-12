@@ -25,7 +25,7 @@ export class StateService {
   public combatRound: number = 0;
   public halved: MonsterIdentifier[] = []
 
-  public levels: levelIdentifier[] = ['sir', 'potions']//['sir', 'attack', 'hitPoints', 'potions', 'zweihander', 'half']
+  public levels: levelIdentifier[] = ['sir', 'attack', 'hitPoints', 'potions', 'zweihander', 'half'];
 
   public calculateExploredRoomsCount(): number {
     return this.map.filter(room => room.shape !== RoomShape.placeholder).length;

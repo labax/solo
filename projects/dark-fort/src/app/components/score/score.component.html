@@ -1,4 +1,4 @@
 <div>explored rooms: {{stateService.calculateExploredRoomsCount()}}</div>
 <div>level: {{ stateService.character.level }}</div>
-<div>points: {{ stateService.character.points }} <button mat-button *ngIf="canLevelPoints()" (click)="levelPoints()">Level Up</button></div>
+<div>points: {{ stateService.character.points }} <button mat-button (click)="levelPoints()">Level Up</button></div>
 <div>silver: {{ stateService.character.silver }} <button mat-button *ngIf="canLevelSilver()" (click)="levelSilver()">Level Up</button></div>
