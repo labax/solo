@@ -8,7 +8,7 @@ export interface ICharacter {
   silver: number;
   level: number;
   weapon: WeaponIdentifier;
-  inventory: Record<ItemIdentifier, number>;
+  inventory: IInventoryItem[];
   weapons: Record<WeaponIdentifier, number>;
   points: number;
   attackBonus: number;
@@ -80,6 +80,7 @@ export interface IItem {
   silver: number;
   id: ItemIdentifier;
   onUse?: (state: StateService) => void;
+  chargeable: boolean;
 }
 
 export type ItemIdentifier =
@@ -99,35 +100,43 @@ export const itemsTable: IItem[] = [{
   id: 'potion',
   onUse: (state: StateService) => {
     state.healCharacter();
-  }
+  },
+  chargeable: false
 }, {
   name: 'Rope',
   silver: 5,
-  id: 'rope'
+  id: 'rope',
+  chargeable: false
 }, {
   name: 'Armor',
   silver: 10,
-  id: 'armor'
+  id: 'armor',
+  chargeable: false
 }, {
   name: 'cloak of invisibility',
   silver: 15,
-  id: 'cloak'
+  id: 'cloak',
+  chargeable: true
 }, {
   name: 'Summon weak daemon',
   silver: 0,
-  id: 'summon'
+  id: 'summon',
+  chargeable: true
 }, {
   name: 'Palms Open the Southern Gate',
   silver: 0,
-  id: 'palms'
+  id: 'palms',
+  chargeable:true
 }, {
   name: 'Aegis of Sorrow',
   silver: 0,
-  id: 'aegis'
+  id: 'aegis',
+  chargeable: true
 }, {
   name: 'False Omen',
   silver: 0,
-  id: 'omen'
+  id: 'omen',
+  chargeable: false
 }]
 
 export const initialItemsTable: ItemIdentifier[] = [
@@ -186,7 +195,7 @@ export const monstersTable: IMonster[] = [
     onKill: (state: StateService, dice: DiceService) => {
       const roll = dice.rollDice(1, 6);
       if (roll <= 2) {
-        state.character.inventory['rope'] += 1;
+        state.addItemToInventory('rope');
       }
     }
   },
@@ -345,10 +354,18 @@ export const levelTable: ILevel[] = [{
 }, {
   id: 'potions',
   description: 'a not very occult herbmaster salutes your endeavors and gives you 5 potions.',
-  onLevel: (state) => state.character.inventory.potion += 5
+  onLevel: (state) => {
+    for (let i = 0; i < 5; i++) {
+      state.addItemToInventory('potion')
+    }
+  }
 }, {
   id: 'half',
   description: 'Choose one WEAK monster and one TOUGH monster from the monster tables. From now on their damage is halved. Your chosen monsters can never be changed.',
   onLevel: (state, name?: string, halved?: MonsterIdentifier[]) => halved ? state.halved = halved : ''
 }]
 
+export interface IInventoryItem {
+  id: ItemIdentifier;
+  charges: number;
+}

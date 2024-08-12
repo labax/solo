@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {
-  ICharacter, IItem, ILevel, initialItemsTable,
+  ICharacter, IInventoryItem, IItem, ILevel, initialItemsTable,
   initialWeaponsTable,
   ItemIdentifier, itemIdentifiers, itemsTable, IWeapon, levelIdentifier, levelTable, MonsterIdentifier, monstersTable,
   Room,
@@ -67,7 +67,7 @@ export class StateService {
       name: 'Kargunt',
       hitPointsCurrent: 15,
       hitPointsMax: 15,
-      inventory: inventory,
+      inventory: [],
       level: 0,
       points: 0,
       silver: this.diceService.rollDice(1, 6) + 15,
@@ -77,7 +77,21 @@ export class StateService {
     }
 
     const itemId = this.diceService.getRandomElement(initialItemsTable);
-    this.character.inventory[itemId] += 1;
+    this.addItemToInventory(itemId);
+  }
+
+  addItemToInventory(key: ItemIdentifier) {
+    const item = this.getItem(key);
+    const inventoryItem: IInventoryItem = {
+      id: item.id,
+      charges: 0
+    }
+
+    if(item.chargeable) {
+      inventoryItem.charges = this.diceService.rollDice(1,4);
+    }
+
+    this.character.inventory.push(inventoryItem);
   }
 
   resolveRoom(room: Room): roomType | undefined {
@@ -161,9 +175,17 @@ export class StateService {
     return level;
   }
 
+  hasItem(key:ItemIdentifier): boolean {
+    if(this.character.inventory.find(item => item.id === key)) {
+      return true;
+    }
+
+    return false;
+  }
+
   calculateTrap(): number {
     const roll = this.diceService.rollDice(1, 6);
-    if (this.character.inventory['rope'] > 0) {
+    if (this.hasItem('rope')) {
       return roll + 1;
     }
 
@@ -172,7 +194,7 @@ export class StateService {
 
   calculateDamage(damageDie: number, damageBonus: number, ignoresArmor: boolean): number {
     const roll = this.diceService.rollDice(1, damageDie) + damageBonus;
-    if (this.character.inventory['armor'] > 0 && !ignoresArmor) {
+    if (this.hasItem('armor') && !ignoresArmor) {
       return roll - this.diceService.rollDice(1, 4);
     }
 
@@ -180,7 +202,7 @@ export class StateService {
   }
 
   canReroll(): boolean {
-    return this.character.inventory['omen'] > 0;
+    return this.hasItem('omen');
   }
 
   isItemIdentifier(value: any): value is ItemIdentifier {
@@ -212,7 +234,7 @@ export class StateService {
     if (this.halved.find(monster => monster === monsterId)) {
       damage = damage / 2;
     }
-    if (this.character.inventory['armor'] > 0) {
+    if (this.hasItem('armor')) {
       damage += -this.diceService.rollDice(1, 4);
     }
 
