@@ -64,6 +64,7 @@ export class LevelUpComponent implements OnInit {
     } else {
       level.onLevel(this.stateService, this.name);
     }
+    this.stateService.character.level += 1;
   }
 
   getMonsters(table: MonsterIdentifier[]): IMonster[] {
