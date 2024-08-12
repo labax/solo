@@ -1,8 +1,12 @@
 <h2 mat-dialog-title>Level Up</h2>
 <mat-dialog-content class="mat-typography">
-  {{level}}
+  {{levelDescription}}
+  <mat-radio-group [(ngModel)]="name" *ngIf="level === 'sir'">
+    <mat-radio-button value="sir">Sir</mat-radio-button>
+    <mat-radio-button value="lady">Lady</mat-radio-button>
+  </mat-radio-group>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Continue Exploring</button>
+  <button mat-button mat-dialog-close (click)="resolveLevel()">Continue Exploring</button>
   <button mat-button mat-dialog-close (click)="resetMap()">Explore New Dungeon</button>
 </mat-dialog-actions>

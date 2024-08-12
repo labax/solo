@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {
-  ICharacter, IItem, initialItemsTable,
+  ICharacter, IItem, ILevel, initialItemsTable,
   initialWeaponsTable,
-  ItemIdentifier, itemIdentifiers, itemsTable, IWeapon, levelIdentifier, MonsterIdentifier, monstersTable,
+  ItemIdentifier, itemIdentifiers, itemsTable, IWeapon, levelIdentifier, levelTable, MonsterIdentifier, monstersTable,
   Room,
   RoomShape, roomType,
   Status, WeaponIdentifier, weaponIdentifiers, weaponsTable
@@ -25,7 +25,7 @@ export class StateService {
   public combatRound: number = 0;
   public halved: MonsterIdentifier[] = []
 
-  public levels: levelIdentifier[] = ['sir', 'attack', 'hitPoints', 'potions', 'zweihander', 'half']
+  public levels: levelIdentifier[] = ['sir']//['sir', 'attack', 'hitPoints', 'potions', 'zweihander', 'half']
 
   public calculateExploredRoomsCount(): number {
     return this.map.filter(room => room.shape !== RoomShape.placeholder).length;
@@ -146,6 +146,15 @@ export class StateService {
     }
 
     return monster;
+  }
+
+  getLevel(key: levelIdentifier): ILevel {
+    const level = levelTable.find(level => level.id === key);
+    if(!level) {
+      throw new Error('level not found!');
+    }
+
+    return level;
   }
 
   calculateTrap(): number {
