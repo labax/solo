@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
 import {NgForOf, NgIf} from '@angular/common';
-import {IItem, itemsTable, IWeapon, weaponsTable} from '../../../models/character.interface';
+import {IInventoryItem, IItem, itemsTable, IWeapon, weaponsTable} from '../../../models/character.interface';
 import {StateService} from '../../../services/state.service';
 
 @Component({
@@ -28,17 +28,17 @@ export class PeddlerRoomComponent {
   constructor(public stateService: StateService) {
   }
 
-  sellItem(item: IItem) {
-    this.stateService.character.inventory[item.id] += -1;
-    this.stateService.character.silver += item.silver;
+  sellItem(item: IInventoryItem) {
+    this.stateService.character.silver += this.stateService.getItem(item.id).silver;
+    this.stateService.removeItemFromInventory(item);
   }
 
   canSellItem(item: IItem): boolean {
-    return this.stateService.character.inventory[item.id] > 0;
+    return this.stateService.hasItem(item.id);
   }
 
   buyItem(item: IItem) {
-    this.stateService.character.inventory[item.id] += 1;
+    this.stateService.addItemToInventory(item.id);
     this.stateService.character.silver += -item.silver;
   }
 

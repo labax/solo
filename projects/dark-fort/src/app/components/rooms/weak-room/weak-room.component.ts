@@ -88,7 +88,7 @@ export class WeakRoomComponent implements OnInit, OnDestroy  {
   }
 
   hasItem(item: ItemIdentifier) {
-    return this.stateService.character.inventory[item] > 0
+    return this.stateService.hasItem(item);
   }
 
   usePotion() {
@@ -96,7 +96,7 @@ export class WeakRoomComponent implements OnInit, OnDestroy  {
     if (item.onUse) {
       item.onUse(this.stateService)
     }
-    this.stateService.character.inventory['potion'] += -1;
+    //this.stateService.character.inventory['potion'] += -1;
   }
 
   useCloak() {
@@ -108,23 +108,23 @@ export class WeakRoomComponent implements OnInit, OnDestroy  {
       this.stateService.character.points += monster.points;
     }
 
-    this.stateService.character.inventory['cloak'] += -1;
+    //this.stateService.character.inventory['cloak'] += -1;
   }
 
   usePalms() {
     const damage = this.stateService.calculateCombatDamage(1, 6, 1);
     this.hitPoints += -damage;
     this.message=`you inflict ${damage} damage`;
-    this.stateService.character.inventory['palms'] += -1;
+    //this.stateService.character.inventory['palms'] += -1;
   }
 
   useSummon() {
     this.daemon = true;
-    this.stateService.character.inventory['summon'] += -1;
+    //this.stateService.character.inventory['summon'] += -1;
   }
 
   canUseAegis() {
-    return this.monsterDamage > 0 && this.stateService.character.inventory['aegis'] > 0
+    return true; //this.monsterDamage > 0 && this.stateService.character.inventory['aegis'] > 0
   }
 
   useAegis() {
@@ -135,6 +135,6 @@ export class WeakRoomComponent implements OnInit, OnDestroy  {
       this.stateService.character.hitPointsCurrent += this.monsterDamage;
     }
 
-    this.stateService.character.inventory['aegis'] += -1;
+    //this.stateService.character.inventory['aegis'] += -1;
   }
 }

@@ -80,6 +80,11 @@ export class StateService {
     this.addItemToInventory(itemId);
   }
 
+  removeItemFromInventory(item: IInventoryItem) {
+    const index = this.character.inventory.findIndex(x => x === item);
+    this.character.inventory.splice(index, 1);
+  }
+
   addItemToInventory(key: ItemIdentifier) {
     const item = this.getItem(key);
     const inventoryItem: IInventoryItem = {
@@ -87,8 +92,8 @@ export class StateService {
       charges: 0
     }
 
-    if(item.chargeable) {
-      inventoryItem.charges = this.diceService.rollDice(1,4);
+    if (item.chargeable) {
+      inventoryItem.charges = this.diceService.rollDice(1, 4);
     }
 
     this.character.inventory.push(inventoryItem);
@@ -121,7 +126,7 @@ export class StateService {
       return Status.loss;
     }
 
-    if(this.levels.length === 0) {
+    if (this.levels.length === 0) {
       return Status.win;
     }
 
@@ -168,15 +173,15 @@ export class StateService {
 
   getLevel(key: levelIdentifier): ILevel {
     const level = levelTable.find(level => level.id === key);
-    if(!level) {
+    if (!level) {
       throw new Error('level not found!');
     }
 
     return level;
   }
 
-  hasItem(key:ItemIdentifier): boolean {
-    if(this.character.inventory.find(item => item.id === key)) {
+  hasItem(key: ItemIdentifier): boolean {
+    if (this.character.inventory.find(item => item.id === key)) {
       return true;
     }
 

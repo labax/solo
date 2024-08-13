@@ -35,12 +35,7 @@ export class ScrollRoomComponent {
     return this.stateService.getItem(scroll).name;
   }
 
-  onReroll() {
-    this.scroll = this.roll();
-    this.stateService.character.inventory['omen'] += -1;
-  }
-
   resolveScroll() {
-    this.stateService.character.inventory[this.scroll] += 1;
+    this.stateService.addItemToInventory(this.scroll);
   }
 }

@@ -41,11 +41,6 @@ export class RiddleRoomComponent {
     return this.solveRoll % 2 === 0;
   }
 
-  onReroll() {
-    this.roll();
-    this.stateService.character.inventory['omen'] += -1;
-  }
-
   resolveRiddle() {
     if(!this.solved()){
       this.stateService.character.hitPointsCurrent -= this.damageRoll;

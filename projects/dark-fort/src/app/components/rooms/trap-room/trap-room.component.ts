@@ -35,11 +35,6 @@ export class TrapRoomComponent implements OnInit {
     this.damageRoll = this.stateService.calculateDamage(6, 0, false);
   }
 
-  onReroll() {
-    this.roll();
-    this.stateService.character.inventory['omen'] += -1;
-  }
-
   avoided(): boolean {
     return this.avoidRoll > 3;
   }
