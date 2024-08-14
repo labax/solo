@@ -1,11 +1,23 @@
 import {Component, Inject} from '@angular/core';
 import {DiceDialog} from '../../../../../common/src/lib/models/DiceDialog';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogActions,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle
+} from '@angular/material/dialog';
+import {MatButton} from '@angular/material/button';
 
 @Component({
   selector: 'dark-fort-roll-dialog',
   standalone: true,
-  imports: [],
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton
+  ],
   templateUrl: './roll-dialog.component.html',
   styleUrl: './roll-dialog.component.css'
 })
