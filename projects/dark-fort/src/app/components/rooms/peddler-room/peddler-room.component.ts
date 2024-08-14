@@ -1,9 +1,18 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
-import {NgForOf, NgIf} from '@angular/common';
-import {IInventoryItem, IItem, itemsTable, IWeapon, weaponsTable} from '../../../models/character.interface';
+import {KeyValuePipe, NgForOf, NgIf} from '@angular/common';
+import {
+  IInventoryItem,
+  ItemIdentifier,
+  itemsTable,
+  IWeapon, scrollTable,
+  sellableItems, WeaponIdentifier,
+  weaponsTable
+} from '../../../models/character.interface';
 import {StateService} from '../../../services/state.service';
+import {MatTab, MatTabGroup} from '@angular/material/tabs';
+import {DiceService} from '../../../../../../common/src/lib/services/dice.service';
 
 @Component({
   selector: 'dark-fort-peddler-room',
@@ -15,17 +24,24 @@ import {StateService} from '../../../services/state.service';
     MatButton,
     MatDialogClose,
     NgForOf,
-    NgIf
+    NgIf,
+    MatTabGroup,
+    MatTab,
+    KeyValuePipe
   ],
   templateUrl: './peddler-room.component.html',
   styleUrl: './peddler-room.component.css'
 })
-export class PeddlerRoomComponent {
+export class PeddlerRoomComponent implements OnInit {
 
   protected readonly itemsTable = itemsTable;
+  protected scroll!: ItemIdentifier;
 
+  constructor(public stateService: StateService, private diceService: DiceService) {
+  }
 
-  constructor(public stateService: StateService) {
+  ngOnInit(): void {
+    this.scroll = this.diceService.getRandomElement(scrollTable);
   }
 
   sellItem(item: IInventoryItem) {
@@ -33,18 +49,16 @@ export class PeddlerRoomComponent {
     this.stateService.removeItemFromInventory(item);
   }
 
-  canSellItem(item: IItem): boolean {
-    return this.stateService.hasItem(item.id);
-  }
-
-  buyItem(item: IItem) {
-    this.stateService.addItemToInventory(item.id);
+  buyItem(itemIdentifier: ItemIdentifier) {
+    const item = this.stateService.getItem(itemIdentifier);
+    this.stateService.addItemToInventory(itemIdentifier);
     this.stateService.character.silver += -item.silver;
   }
 
-  sellWeapon(item: IWeapon) {
-    this.stateService.character.weapons[item.id] += -1;
-    this.stateService.character.silver += item.silver;
+  sellWeapon(item: string) {
+    const weapon = this.stateService.getWeapon(item)
+    this.stateService.character.weapons[item as WeaponIdentifier] += -1;
+    this.stateService.character.silver += weapon.silver;
   }
 
   canSellWeapon(item: IWeapon): boolean {
@@ -56,13 +70,16 @@ export class PeddlerRoomComponent {
     this.stateService.character.silver += -item.silver;
   }
 
-  canBuy(item: IItem | IWeapon): boolean {
+  canBuyItem(itemIdentifier: ItemIdentifier): boolean {
+    const item = this.stateService.getItem(itemIdentifier);
     return this.stateService.character.silver >= item.silver;
   }
 
-  isListed(item: IItem | IWeapon): boolean {
-    return item.silver > 0
-  }
 
   protected readonly weaponsTable = weaponsTable;
+  protected readonly sellableItems: ItemIdentifier[] = sellableItems;
+
+  canBuyWeapon(weapon: IWeapon) {
+    return weapon.silver <= this.stateService.character.silver;
+  }
 }

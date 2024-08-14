@@ -119,22 +119,22 @@ export const itemsTable: IItem[] = [{
   chargeable: true
 }, {
   name: 'Summon weak daemon',
-  silver: 0,
+  silver: 7,
   id: 'summon',
   chargeable: true
 }, {
   name: 'Palms Open the Southern Gate',
-  silver: 0,
+  silver: 7,
   id: 'palms',
   chargeable:true
 }, {
   name: 'Aegis of Sorrow',
-  silver: 0,
+  silver: 7,
   id: 'aegis',
   chargeable: true
 }, {
   name: 'False Omen',
-  silver: 0,
+  silver: 7,
   id: 'omen',
   chargeable: false
 }]
@@ -369,3 +369,5 @@ export interface IInventoryItem {
   id: ItemIdentifier;
   charges: number;
 }
+
+export const sellableItems: ItemIdentifier[] = ['potion', 'rope', 'armor', 'cloak'];

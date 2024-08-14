@@ -1,20 +1,50 @@
 <h2 mat-dialog-title>Peddler</h2>
-<!-- mat-dialog-content class="mat-typography">
+<mat-dialog-content class="mat-typography">
   A peddler from beyond the void offers trinkets and steel for blood-soaked coins.
-  <ng-container *ngFor="let item of stateService.character.inventory">
-    <div *ngIf="isListed(item)">
-      {{ item.name }}
-      <button mat-button *ngIf="canBuy(item)" (click)="buyItem(item)">Buy</button>
-      <button mat-button *ngIf="canSellItem(item)" (click)="sellItem(item)">Sell</button>
-    </div>
-  </ng-container>
-  <ng-container *ngFor="let weapon of weaponsTable">
-    <div *ngIf="isListed(weapon)">
-      {{ weapon.name }}
-      <button mat-button *ngIf="canBuy(weapon)" (click)="buyWeapon(weapon)">Buy</button>
-      <button mat-button *ngIf="canSellWeapon(weapon)" (click)="sellWeapon(weapon)">Sell</button>
-    </div>
-  </ng-container>
+  <mat-tab-group>
+    <mat-tab label="Buy">
+      <div *ngFor="let item of sellableItems">
+        {{ stateService.getItem(item).name }}: {{ stateService.getItem(item).silver }}s
+        <button mat-button [disabled]="!canBuyItem(item)" (click)="buyItem(item)">Buy</button>
+      </div>
+      <div>
+        {{ stateService.getItem(scroll).name }}: {{ stateService.getItem(scroll).silver }}s
+        <button mat-button [disabled]="!canBuyItem(scroll)" (click)="buyItem(scroll)">Buy</button>
+      </div>
+      <div *ngFor="let weapon of weaponsTable">
+        {{ weapon.name }}: {{ weapon.silver }}
+        <button mat-button [disabled]="!canBuyWeapon(weapon)" (click)="buyWeapon(weapon)">Buy</button>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Sell">
+      <div *ngFor="let item of stateService.character.inventory">
+        {{ stateService.getItem(item.id).name }}: {{ stateService.getItem(item.id).silver }}s
+        <button mat-button (click)="sellItem(item)">Sell</button>
+      </div>
+      <ng-container *ngFor="let item of stateService.character.weapons | keyvalue">
+        <div *ngIf="item.value > 0">
+          {{ stateService.getWeapon(item.key).name }}: {{ stateService.getWeapon(item.key).silver }}s
+          <button mat-button (click)="sellWeapon(item.key)">Sell</button>
+        </div>
+      </ng-container>
+    </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>
+<!-- ng-container *ngFor="let item of stateService.character.inventory">
+  <div *ngIf="isListed(item)">
+    {{ item.name }}
+    <button mat-button *ngIf="canBuy(item)" (click)="buyItem(item)">Buy</button>
+    <button mat-button *ngIf="canSellItem(item)" (click)="sellItem(item)">Sell</button>
+  </div>
+</ng-container>
+<ng-container *ngFor="let weapon of weaponsTable">
+  <div *ngIf="isListed(weapon)">
+    {{ weapon.name }}
+    <button mat-button *ngIf="canBuy(weapon)" (click)="buyWeapon(weapon)">Buy</button>
+    <button mat-button *ngIf="canSellWeapon(weapon)" (click)="sellWeapon(weapon)">Sell</button>
+  </div>
+</ng-container>
 </mat-dialog-content -->
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>OK</button>
