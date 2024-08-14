@@ -305,7 +305,7 @@ export const scrollTable: ItemIdentifier[] = ['summon', 'palms', 'aegis', 'omen'
 
 export type roomType = 'nothing' | 'trap' | 'riddle' | 'weak' | 'tough' | 'peddler' | 'item' | 'scroll'
 
-export const roomTypes: roomType[] = ['nothing', 'trap', 'riddle', 'weak', 'tough', 'peddler']
+export const roomTypes: roomType[] = ['trap', 'riddle', 'weak', 'tough', 'peddler']
 export const initialRoomTypes: roomType[] = ['item', 'weak', 'scroll', 'nothing']
 
 export const itemIdentifiers: ItemIdentifier[] = [

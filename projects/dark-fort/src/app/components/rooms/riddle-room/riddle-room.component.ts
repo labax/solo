@@ -32,8 +32,8 @@ export class RiddleRoomComponent {
     this.roll();
   }
 
-  roll() {
-    this.solveRoll = this.stateService.calculateTrap();
+  async roll() {
+    this.solveRoll = await this.stateService.calculateTrap();
     this.damageRoll = this.stateService.calculateDamage(4, 0, true);
   }
 

@@ -9,6 +9,7 @@ import {
 } from '../models/character.interface';
 import {DiceService} from '../../../../common/src/lib/services/dice.service';
 import {RoomService} from './room.service';
+import {RollDialogComponent} from '../components/roll-dialog/roll-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -178,8 +179,8 @@ export class StateService {
     return false;
   }
 
-  calculateTrap(): number {
-    const roll = this.diceService.rollAndSumDice(1, 6);
+  async calculateTrap(): Promise<number> {
+    const roll = await this.diceService.rollAndSumDiceWithConfirmation(1, 6, RollDialogComponent);
     if (this.hasItem('rope')) {
       return roll + 1;
     }
