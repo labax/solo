@@ -34,6 +34,7 @@ export class ScoreComponent {
   levelPoints() {
     const dialogRef = this.dialog.open(LevelUpComponent, {disableClose: true});
     dialogRef.afterClosed().subscribe(result => {
+      this.stateService.character.points -= 15;
       const status = this.stateService.calculateWinningConditions();
       if (status === Status.loss) {
         alert('you lost');
@@ -46,6 +47,7 @@ export class ScoreComponent {
   levelSilver() {
     const dialogRef = this.dialog.open(LevelUpComponent, {disableClose: true});
     dialogRef.afterClosed().subscribe(result => {
+      this.stateService.character.silver -= 40;
       const status = this.stateService.calculateWinningConditions();
       if (status === Status.loss) {
         alert('you lost');
