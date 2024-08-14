@@ -43,7 +43,7 @@ export class InventoryComponent {
     const item = this.stateService.getItem(key);
     if(item.onUse !== undefined && item.onUse !== null) {
       item.onUse(this.stateService);
-      this.stateService.character.inventory[key as ItemIdentifier] += -1;
+      this.stateService
     }
   }
 

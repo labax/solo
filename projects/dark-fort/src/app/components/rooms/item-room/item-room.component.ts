@@ -41,14 +41,9 @@ export class ItemRoomComponent {
     return this.stateService.getWeapon(item).name;
   }
 
-  onReroll() {
-    this.roll();
-    this.stateService.character.inventory['omen'] += -1;
-  }
-
   resolveItem() {
     if (this.stateService.isItemIdentifier(this.item)) {
-      this.stateService.character.inventory[this.item] += 1;
+      this.stateService.addItemToInventory(this.item);
     } else {
       this.stateService.character.weapons[this.item] += 1;
     }
