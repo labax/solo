@@ -89,7 +89,7 @@ export class StateService {
     const item = this.getItem(key);
     const inventoryItem: IInventoryItem = {
       id: item.id,
-      charges: 0
+      charges: 1
     }
 
     if (item.chargeable) {
