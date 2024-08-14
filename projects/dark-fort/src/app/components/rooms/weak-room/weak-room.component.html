@@ -9,7 +9,7 @@
   <mat-menu #menu="matMenu">
     <button *ngFor="let item of getUsableItems()" (click)="useItem(item)" mat-menu-item>{{stateService.getItem(item.id).name}}: {{item.charges}}</button>
   </mat-menu>
-  <button mat-button *ngIf="hitPoints > 0 && stateService.character.hitPointsCurrent > 0" [matMenuTriggerFor]="menu">Use</button>
+  <button mat-button *ngIf="hitPoints > 0 && stateService.character.hitPointsCurrent > 0 && getUsableItems().length > 0" [matMenuTriggerFor]="menu">Use</button>
   <button mat-button *ngIf="hitPoints > 0 && stateService.character.hitPointsCurrent > 0" (click)="attack()">Attack</button>
   <button mat-button *ngIf="hitPoints <= 0 || stateService.character.hitPointsCurrent <=0" (click)="resolveCombat()" mat-dialog-close>OK</button>
 </mat-dialog-actions>
