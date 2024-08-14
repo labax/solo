@@ -133,7 +133,7 @@ export class WeakRoomComponent implements OnInit, OnDestroy {
   }
 
   useAegis() {
-    const damageReduction = this.diceService.rollDice(1, 4);
+    const damageReduction = this.diceService.rollAndSumDice(1, 4);
     if (this.monsterDamage < damageReduction) {
       this.stateService.character.hitPointsCurrent += damageReduction;
     } else {

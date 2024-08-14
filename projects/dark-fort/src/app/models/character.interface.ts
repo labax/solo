@@ -173,7 +173,7 @@ export const monstersTable: IMonster[] = [
     points: 3,
     id: 'skeleton',
     onKill: (state: StateService, dice: DiceService) => {
-      const roll = dice.rollDice(1, 6);
+      const roll = dice.rollAndSumDice(1, 6);
       if (roll <= 2) {
         state.character.weapons['dagger'] += 1;
       }
@@ -193,7 +193,7 @@ export const monstersTable: IMonster[] = [
     points: 3,
     id: 'goblin',
     onKill: (state: StateService, dice: DiceService) => {
-      const roll = dice.rollDice(1, 6);
+      const roll = dice.rollAndSumDice(1, 6);
       if (roll <= 2) {
         state.addItemToInventory('rope');
       }
@@ -218,11 +218,11 @@ export const monstersTable: IMonster[] = [
     points: 4,
     id: 'sorcerer',
     onKill: (state: StateService, dice: DiceService) => {
-      const roll = dice.rollDice(1, 6);
+      const roll = dice.rollAndSumDice(1, 6);
       if (roll <= 1) {
         state.character.hitPointsCurrent = -1;
       }
-      state.character.silver += dice.rollDice(3, 6);
+      state.character.silver += dice.rollAndSumDice(3, 6);
     }
   },
   {
@@ -239,11 +239,11 @@ export const monstersTable: IMonster[] = [
     points: 4,
     id: 'medusa',
     onKill: (state: StateService, dice: DiceService) => {
-      const roll = dice.rollDice(1, 6);
+      const roll = dice.rollAndSumDice(1, 6);
       if (roll <= 1) {
         state.character.hitPointsCurrent = -1;
       }
-      state.character.silver += dice.rollDice(1, 4) * dice.rollDice(1, 6);
+      state.character.silver += dice.rollAndSumDice(1, 4) * dice.rollAndSumDice(1, 6);
     }
   },
   {
@@ -253,7 +253,7 @@ export const monstersTable: IMonster[] = [
     points: 4,
     id: 'basilisk',
     onKill: (state: StateService, dice: DiceService) => {
-      const roll = dice.rollDice(1, 6);
+      const roll = dice.rollAndSumDice(1, 6);
       if (roll <= 1) {
         state.character.points = 15;
       }

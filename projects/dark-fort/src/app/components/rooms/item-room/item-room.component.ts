@@ -50,7 +50,7 @@ export class ItemRoomComponent {
   }
 
   roll(): ItemIdentifier | WeaponIdentifier {
-    const roll: number = this.diceService.rollDice(1, 6);
+    const roll: number = this.diceService.rollAndSumDice(1, 6);
 
     if (roll === 1) {
       return this.diceService.getRandomElement(initialWeaponsTable);

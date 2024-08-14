@@ -63,7 +63,7 @@ export class RoomMapComponent {
     const roomType = this.stateService.resolveRoom(room);
     if (roomType) {
       this.openDialog(roomType);
-    } else if (this.diceService.rollDice(1, 4) === 1) {
+    } else if (this.diceService.rollAndSumDice(1, 4) === 1) {
       this.openDialog('weak');
     }
   }

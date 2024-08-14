@@ -44,16 +44,6 @@ export class StateService {
 
   initialize() {
     this.initilizeMap();
-    const inventory: Record<ItemIdentifier, number> = {
-      'rope': 0,
-      'armor': 0,
-      'aegis': 0,
-      'cloak': 0,
-      'omen': 0,
-      'potion': 0,
-      'summon': 0,
-      'palms': 0
-    }
 
     const weapons: Record<WeaponIdentifier, number> = {
       'dagger': 0,
@@ -70,7 +60,7 @@ export class StateService {
       inventory: [],
       level: 0,
       points: 0,
-      silver: this.diceService.rollDice(1, 6) + 15,
+      silver: this.diceService.rollAndSumDice(1, 6) + 15,
       weapon: this.diceService.getRandomElement(initialWeaponsTable),
       weapons: weapons,
       attackBonus: 0
@@ -93,7 +83,7 @@ export class StateService {
     }
 
     if (item.chargeable) {
-      inventoryItem.charges = this.diceService.rollDice(1, 4);
+      inventoryItem.charges = this.diceService.rollAndSumDice(1, 4);
     }
 
     this.character.inventory.push(inventoryItem);
@@ -134,14 +124,14 @@ export class StateService {
   }
 
   healCharacter(): void {
-    this.character.hitPointsCurrent += this.diceService.rollDice(1, 6);
+    this.character.hitPointsCurrent += this.diceService.rollAndSumDice(1, 6);
     if (this.character.hitPointsCurrent > this.character.hitPointsMax) {
       this.character.hitPointsCurrent = this.character.hitPointsMax;
     }
   }
 
   calculateScrollUses() {
-    return this.diceService.rollDice(1, 4);
+    return this.diceService.rollAndSumDice(1, 4);
   }
 
   getItem(key: string): IItem {
@@ -189,7 +179,7 @@ export class StateService {
   }
 
   calculateTrap(): number {
-    const roll = this.diceService.rollDice(1, 6);
+    const roll = this.diceService.rollAndSumDice(1, 6);
     if (this.hasItem('rope')) {
       return roll + 1;
     }
@@ -198,9 +188,9 @@ export class StateService {
   }
 
   calculateDamage(damageDie: number, damageBonus: number, ignoresArmor: boolean): number {
-    const roll = this.diceService.rollDice(1, damageDie) + damageBonus;
+    const roll = this.diceService.rollAndSumDice(1, damageDie) + damageBonus;
     if (this.hasItem('armor') && !ignoresArmor) {
-      return roll - this.diceService.rollDice(1, 4);
+      return roll - this.diceService.rollAndSumDice(1, 4);
     }
 
     return roll;
@@ -219,11 +209,11 @@ export class StateService {
   }
 
   calculateCombatDamage(dice: number, sides: number, bonus: number): number {
-    return this.diceService.rollDice(dice, sides) + bonus;
+    return this.diceService.rollAndSumDice(dice, sides) + bonus;
   }
 
   calculateMonsterHit(points: number): boolean {
-    const roll = this.diceService.rollDice(1, 6);
+    const roll = this.diceService.rollAndSumDice(1, 6);
     const weaponBonus = this.getWeapon(this.character.weapon).attackBonus;
     return roll + weaponBonus + this.character.attackBonus >= points;
   }
@@ -240,7 +230,7 @@ export class StateService {
       damage = damage / 2;
     }
     if (this.hasItem('armor')) {
-      damage += -this.diceService.rollDice(1, 4);
+      damage += -this.diceService.rollAndSumDice(1, 4);
     }
 
     return damage >= 0 ? damage : 0;
