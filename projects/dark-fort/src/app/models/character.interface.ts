@@ -371,3 +371,4 @@ export interface IInventoryItem {
 }
 
 export const sellableItems: ItemIdentifier[] = ['potion', 'rope', 'armor', 'cloak'];
+export const battleItems: ItemIdentifier[] = ['potion', 'summon', 'palms', 'cloak'];

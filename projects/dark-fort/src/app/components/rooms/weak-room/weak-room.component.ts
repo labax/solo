@@ -9,8 +9,10 @@ import {
 import {MatButton} from '@angular/material/button';
 import {StateService} from '../../../services/state.service';
 import {DiceService} from '../../../../../../common/src/lib/services/dice.service';
-import {ItemIdentifier, MonsterIdentifier} from '../../../models/character.interface';
-import {NgIf} from '@angular/common';
+import {battleItems, IInventoryItem, MonsterIdentifier} from '../../../models/character.interface';
+import {NgForOf, NgIf} from '@angular/common';
+import {MatOption, MatSelect} from '@angular/material/select';
+import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 
 @Component({
   selector: 'dark-fort-weak-room',
@@ -21,12 +23,18 @@ import {NgIf} from '@angular/common';
     MatDialogActions,
     MatButton,
     MatDialogClose,
-    NgIf
+    NgIf,
+    MatSelect,
+    MatOption,
+    NgForOf,
+    MatMenu,
+    MatMenuItem,
+    MatMenuTrigger
   ],
   templateUrl: './weak-room.component.html',
   styleUrl: './weak-room.component.css'
 })
-export class WeakRoomComponent implements OnInit, OnDestroy  {
+export class WeakRoomComponent implements OnInit, OnDestroy {
 
   monster!: MonsterIdentifier;
   hitPoints!: number;
@@ -34,6 +42,7 @@ export class WeakRoomComponent implements OnInit, OnDestroy  {
   message!: string;
   daemon!: boolean;
   monsterDamage!: number;
+  evaded!: boolean;
 
   constructor(public stateService: StateService, private diceService: DiceService, @Inject(MAT_DIALOG_DATA) public data: MonsterIdentifier[]) {
 
@@ -64,8 +73,8 @@ export class WeakRoomComponent implements OnInit, OnDestroy  {
       const damage = this.stateService.calculatePlayerDamage();
       this.message = `you hit the monster for ${damage} damage`;
       this.hitPoints += -damage;
-      if(this.daemon){
-        const daemonDamage = this.stateService.calculateCombatDamage(1,4, 0);
+      if (this.daemon) {
+        const daemonDamage = this.stateService.calculateCombatDamage(1, 4, 0);
         this.message += ` your summoned daemon inflicts ${daemonDamage} damage`;
         this.hitPoints += -daemonDamage;
       }
@@ -80,15 +89,13 @@ export class WeakRoomComponent implements OnInit, OnDestroy  {
   resolveCombat() {
     if (this.stateService.character.hitPointsCurrent >= 0) {
       const monster = this.stateService.getMonster(this.monster);
-      this.stateService.character.points += monster.points;
+      if (!this.evaded) {
+        this.stateService.character.points += monster.points;
+      }
       if (monster.onKill) {
         monster.onKill(this.stateService, this.diceService);
       }
     }
-  }
-
-  hasItem(item: ItemIdentifier) {
-    return this.stateService.hasItem(item);
   }
 
   usePotion() {
@@ -96,11 +103,9 @@ export class WeakRoomComponent implements OnInit, OnDestroy  {
     if (item.onUse) {
       item.onUse(this.stateService)
     }
-    //this.stateService.character.inventory['potion'] += -1;
   }
 
   useCloak() {
-
     if (this.monster === 'troll') {
       this.stateService.character.points += 5;
     } else {
@@ -108,33 +113,53 @@ export class WeakRoomComponent implements OnInit, OnDestroy  {
       this.stateService.character.points += monster.points;
     }
 
-    //this.stateService.character.inventory['cloak'] += -1;
+    this.message = 'you evade the monster';
+    this.hitPoints = 0;
+    this.evaded = true;
   }
 
   usePalms() {
     const damage = this.stateService.calculateCombatDamage(1, 6, 1);
     this.hitPoints += -damage;
-    this.message=`you inflict ${damage} damage`;
-    //this.stateService.character.inventory['palms'] += -1;
+    this.message = `you inflict ${damage} damage`;
   }
 
   useSummon() {
     this.daemon = true;
-    //this.stateService.character.inventory['summon'] += -1;
   }
 
   canUseAegis() {
-    return true; //this.monsterDamage > 0 && this.stateService.character.inventory['aegis'] > 0
+    return this.monsterDamage > 0 && this.stateService.hasItem('aegis');
   }
 
   useAegis() {
-    const damageReduction = this.diceService.rollDice(1,4);
-    if(this.monsterDamage < damageReduction) {
+    const damageReduction = this.diceService.rollDice(1, 4);
+    if (this.monsterDamage < damageReduction) {
       this.stateService.character.hitPointsCurrent += damageReduction;
     } else {
       this.stateService.character.hitPointsCurrent += this.monsterDamage;
     }
+  }
 
-    //this.stateService.character.inventory['aegis'] += -1;
+  getUsableItems(): IInventoryItem[] {
+    return this.stateService.character.inventory.filter(item => item.charges > 0 && battleItems.indexOf(item.id) > -1);
+  }
+
+  useItem(inventoryItem: IInventoryItem) {
+    if (inventoryItem.id === 'potion') {
+      this.usePotion();
+    } else if (inventoryItem.id === 'cloak') {
+      this.useCloak();
+    } else if (inventoryItem.id === 'palms') {
+      this.usePalms();
+    } else if (inventoryItem.id === 'summon') {
+      this.useSummon();
+    }
+    const item = this.stateService.getItem(inventoryItem.id)
+    if (item.chargeable) {
+      inventoryItem.charges -= 1;
+    } else {
+      this.stateService.removeItemFromInventory(inventoryItem);
+    }
   }
 }

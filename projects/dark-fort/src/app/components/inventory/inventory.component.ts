@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {StateService} from '../../services/state.service';
 import {KeyValuePipe, NgForOf, NgIf} from '@angular/common';
-import {IInventoryItem, ItemIdentifier, WeaponIdentifier} from '../../models/character.interface';
+import {IInventoryItem, WeaponIdentifier} from '../../models/character.interface';
 import {MatButton} from '@angular/material/button';
 
 @Component({
@@ -44,7 +44,7 @@ export class InventoryComponent {
     if (item.onUse !== undefined && item.onUse !== null) {
       item.onUse(this.stateService);
       if (item.chargeable) {
-        inventoryItem.charges = -1;
+        inventoryItem.charges -= 1;
       } else {
         this.stateService.removeItemFromInventory(inventoryItem);
       }
