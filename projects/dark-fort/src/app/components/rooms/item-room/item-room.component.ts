@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatButton} from '@angular/material/button';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import {NgIf} from '@angular/common';
@@ -11,6 +11,8 @@ import {
 } from '../../../models/character.interface';
 import {StateService} from '../../../services/state.service';
 import {DiceService} from '../../../../../../common/src/lib/services/dice.service';
+import {LiteralsService} from '../../../services/literals.service';
+import {RollDialogComponent} from '../../roll-dialog/roll-dialog.component';
 
 @Component({
   selector: 'dark-fort-item-room',
@@ -26,11 +28,14 @@ import {DiceService} from '../../../../../../common/src/lib/services/dice.servic
   templateUrl: './item-room.component.html',
   styleUrl: './item-room.component.css'
 })
-export class ItemRoomComponent {
+export class ItemRoomComponent implements OnInit {
   item!: ItemIdentifier | WeaponIdentifier;
 
-  constructor(public stateService: StateService, private diceService: DiceService) {
-    this.item = this.roll();
+  constructor(public stateService: StateService, private diceService: DiceService, private literalsService: LiteralsService) {
+  }
+
+  async ngOnInit(): Promise<void> {
+    this.item = await this.roll();
   }
 
   getItemName(item: ItemIdentifier | WeaponIdentifier) {
@@ -41,16 +46,16 @@ export class ItemRoomComponent {
     return this.stateService.getWeapon(item).name;
   }
 
-  resolveItem() {
+  async resolveItem() {
     if (this.stateService.isItemIdentifier(this.item)) {
-      this.stateService.addItemToInventory(this.item);
+      await this.stateService.addItemToInventory(this.item);
     } else {
       this.stateService.character.weapons[this.item] += 1;
     }
   }
 
-  roll(): ItemIdentifier | WeaponIdentifier {
-    const roll: number = this.diceService.rollAndSumDice(1, 6);
+  async roll(): Promise<ItemIdentifier | WeaponIdentifier> {
+    const roll: number = await this.diceService.rollAndSumDiceWithConfirmation(1, 6, this.literalsService.initialItemRoll, RollDialogComponent);
 
     if (roll === 1) {
       return this.diceService.getRandomElement(initialWeaponsTable);
@@ -58,6 +63,6 @@ export class ItemRoomComponent {
       return this.diceService.getRandomElement(scrollTable);
     }
 
-    return this.diceService.getRandomElement(initialItemsTable);
+    return initialItemsTable[roll-3];
   }
 }
