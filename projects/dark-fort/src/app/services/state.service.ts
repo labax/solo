@@ -5,7 +5,7 @@ import {
   ItemIdentifier, itemIdentifiers, itemsTable, IWeapon, levelIdentifier, levelTable, MonsterIdentifier, monstersTable,
   Room,
   RoomShape, roomType,
-  Status, WeaponIdentifier, weaponIdentifiers, weaponsTable
+  Status, WeaponIdentifier, weaponsTable
 } from '../models/character.interface';
 import {DiceService} from '../../../../common/src/lib/services/dice.service';
 import {RoomService} from './room.service';
@@ -37,7 +37,7 @@ export class StateService {
     return this.map.filter(room => room.shape === RoomShape.placeholder).length;
   }
 
-  initilizeMap() {
+  initializeMap() {
     this.map = [];
     const room = this.roomService.generateRandomRoom(0, Math.floor(this.roomService.mapWidth / 2))
     this.map.push(room);
@@ -45,14 +45,14 @@ export class StateService {
   }
 
   async initialize() {
-    this.initilizeMap();
+    this.initializeMap();
 
     const weapons: Record<WeaponIdentifier, number> = {
       'dagger': 0,
       'sword': 0,
       'flail': 0,
       'zweihander': 0,
-      'warhammer': 0
+      'warHammer': 0
     }
 
     this.character = {
@@ -69,7 +69,7 @@ export class StateService {
     }
 
     const itemId = await this.diceService.getRandomElementWithConfirmation(initialItemsTable, 1, 4, this.literalsService.initialItemRoll, RollDialogComponent);
-    this.addItemToInventory(itemId);
+    await this.addItemToInventory(itemId);
   }
 
   removeItemFromInventory(item: IInventoryItem) {
@@ -132,10 +132,6 @@ export class StateService {
     }
   }
 
-  calculateScrollUses() {
-    return this.diceService.rollAndSumDice(1, 4);
-  }
-
   getItem(key: string): IItem {
     const item = itemsTable.find(item => item.id === key);
     if (!item) {
@@ -173,11 +169,7 @@ export class StateService {
   }
 
   hasItem(key: ItemIdentifier): boolean {
-    if (this.character.inventory.find(item => item.id === key)) {
-      return true;
-    }
-
-    return false;
+    return !!this.character.inventory.find(item => item.id === key);
   }
 
   async calculateTrap(): Promise<number> {
@@ -202,10 +194,6 @@ export class StateService {
 
   isItemIdentifier(value: any): value is ItemIdentifier {
     return itemIdentifiers.includes(value);
-  }
-
-  isWeaponIdentifier(value: any): value is WeaponIdentifier {
-    return weaponIdentifiers.includes(value);
   }
 
   calculateCombatDamage(dice: number, sides: number, bonus: number): number {

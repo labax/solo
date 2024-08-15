@@ -24,7 +24,7 @@ export interface IWeapon {
 }
 
 export type WeaponIdentifier =
-  'warhammer' |
+  'warHammer' |
   'dagger' |
   'sword' |
   'flail' |
@@ -37,7 +37,7 @@ export const weaponsTable: IWeapon[] = [{
   damageBonus: 0,
   damageDie: 6,
   name: 'Warhammer',
-  id: 'warhammer'
+  id: 'warHammer'
 }, {
   attackBonus: 1,
   silver: 6,
@@ -72,7 +72,7 @@ export const initialWeaponsTable: WeaponIdentifier[] = [
   'flail',
   'dagger',
   'sword',
-  'warhammer'
+  'warHammer'
 ]
 
 export interface IItem {
@@ -320,7 +320,7 @@ export const itemIdentifiers: ItemIdentifier[] = [
 ];
 
 export const weaponIdentifiers: WeaponIdentifier[] = [
-  'warhammer',
+  'warHammer',
   'dagger',
   'sword',
   'flail',

@@ -54,7 +54,7 @@ export class LevelUpComponent implements OnInit {
 
   resetMap() {
     this.resolveLevel();
-    this.stateService.initilizeMap();
+    this.stateService.initializeMap();
   }
 
   resolveLevel() {
