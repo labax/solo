@@ -12,4 +12,5 @@ export class LiteralsService {
   public readonly initialItemRoll: string = 'roll for item';
   public readonly chargesRoll: string = 'roll for charges';
   public readonly levelRoll: string = 'roll for level';
+  public readonly moveRoll: string = 'roll for room change';
 }

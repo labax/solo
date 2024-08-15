@@ -1,6 +1,6 @@
 // src/app/components/room-map/room-map.component.ts
 
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {RoomService} from '../../services/room.service';
 import {Room, RoomShape, roomType, Status, strongMonsters, weakMonsters} from '../../models/character.interface';
 import {NgForOf, NgIf} from '@angular/common';
@@ -14,6 +14,8 @@ import {WeakRoomComponent} from '../rooms/weak-room/weak-room.component';
 import {PeddlerRoomComponent} from '../rooms/peddler-room/peddler-room.component';
 import {ItemRoomComponent} from '../rooms/item-room/item-room.component';
 import {ScrollRoomComponent} from '../rooms/scroll-room/scroll-room.component';
+import {LiteralsService} from '../../services/literals.service';
+import {RollDialogComponent} from '../roll-dialog/roll-dialog.component';
 
 @Component({
   selector: 'dark-fort-room-map',
@@ -25,13 +27,18 @@ import {ScrollRoomComponent} from '../rooms/scroll-room/scroll-room.component';
   ],
   styleUrls: ['./room-map.component.css']
 })
-export class RoomMapComponent {
+export class RoomMapComponent implements OnInit {
 
-  height: number[];
-  width: number[];
+  height!: number[];
+  width!: number[];
   readonly dialog = inject(MatDialog);
 
-  constructor(private roomService: RoomService, public stateService: StateService, private diceService: DiceService) {
+  constructor(private roomService: RoomService,
+              public stateService: StateService,
+              private diceService: DiceService,
+              private literalsService: LiteralsService) {}
+
+  ngOnInit(): void {
     this.height = Array(this.roomService.mapHeight).fill(1).map((x, i) => i);
     this.width = Array(this.roomService.mapWidth).fill(1).map((x, i) => i);
   }
@@ -59,11 +66,11 @@ export class RoomMapComponent {
     return this.stateService.map.find(room => room.x === x && room.y === y);
   }
 
-  onRoomClick(room: Room) {
+  async onRoomClick(room: Room) {
     const roomType = this.stateService.resolveRoom(room);
     if (roomType) {
       this.openDialog(roomType);
-    } else if (this.diceService.rollAndSumDice(1, 4) === 1) {
+    } else if (await this.diceService.rollAndSumDiceWithConfirmation(1, 4, this.literalsService.moveRoll, RollDialogComponent) === 1) {
       this.openDialog('weak');
     }
   }
@@ -88,7 +95,7 @@ export class RoomMapComponent {
       dialogRef = this.dialog.open(ScrollRoomComponent, {disableClose: true});
     }
 
-    dialogRef?.afterClosed().subscribe(result => {
+    dialogRef?.afterClosed().subscribe(() => {
       const status = this.stateService.calculateWinningConditions();
       if (status === Status.loss) {
         alert('you lost');
