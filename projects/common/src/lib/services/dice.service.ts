@@ -26,6 +26,16 @@ export class DiceService {
     return array[randomIndex];
   }
 
+  async getRandomElementWithConfirmation<T1, T2 extends DiceDialog>(array: T1[], numberOfDice: number, sides: number, dialogComponent: Type<T2>): Promise<T1> {
+    if (array.length === 0) {
+      throw new Error('Empty array');
+    }
+
+    const roll = await this.rollDiceWithConfirmation(numberOfDice, sides, dialogComponent);
+
+    return array[roll[0] - 1];
+  }
+
   async rollDiceWithConfirmation<T extends DiceDialog>(numberOfDice: number, sides: number, dialogComponent: Type<T>): Promise<number[]> {
     let results: number[] = this.rollDice(numberOfDice, sides);
     let confirmed = false;
@@ -48,7 +58,7 @@ export class DiceService {
     return results;
   }
 
-  async rollAndSumDiceWithConfirmation <T extends DiceDialog>(numberOfDice: number, sides: number, dialogComponent: Type<T>): Promise<number> {
+  async rollAndSumDiceWithConfirmation<T extends DiceDialog>(numberOfDice: number, sides: number, dialogComponent: Type<T>): Promise<number> {
     const results = await this.rollDiceWithConfirmation(numberOfDice, sides, dialogComponent);
     return results.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   }
