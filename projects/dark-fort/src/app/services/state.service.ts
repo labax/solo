@@ -62,13 +62,13 @@ export class StateService {
       inventory: [],
       level: 0,
       points: 0,
-      silver: await this.diceService.rollAndSumDiceWithConfirmation(1, 6, this.literalsService.silver, RollDialogComponent) + 15,
-      weapon: this.diceService.getRandomElement(initialWeaponsTable),
+      silver: await this.diceService.rollAndSumDiceWithConfirmation(1, 6, this.literalsService.silverRoll, RollDialogComponent) + 15,
+      weapon: await this.diceService.getRandomElementWithConfirmation(initialWeaponsTable, 1, 4, this.literalsService.initialWeaponRoll, RollDialogComponent),
       weapons: weapons,
       attackBonus: 0
     }
 
-    const itemId = this.diceService.getRandomElement(initialItemsTable);
+    const itemId = await this.diceService.getRandomElementWithConfirmation(initialItemsTable, 1, 4, this.literalsService.initialItemRoll, RollDialogComponent);
     this.addItemToInventory(itemId);
   }
 
