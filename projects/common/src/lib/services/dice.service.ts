@@ -43,7 +43,8 @@ export class DiceService {
     while (!confirmed) {
       const dialogRef = this.dialog.open(dialogComponent, {
         width: '250px',
-        data: {results, sides, description}
+        data: {results, sides, description},
+        disableClose: true
       });
 
       const result = await dialogRef.afterClosed().toPromise();
