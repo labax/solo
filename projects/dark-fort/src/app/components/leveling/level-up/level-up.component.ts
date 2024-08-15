@@ -13,6 +13,8 @@ import {DiceService} from "../../../../../../common/src/lib/services/dice.servic
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 import {FormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
+import {LiteralsService} from '../../../services/literals.service';
+import {RollDialogComponent} from '../../roll-dialog/roll-dialog.component';
 
 @Component({
   selector: 'dark-fort-level-up',
@@ -40,11 +42,11 @@ export class LevelUpComponent implements OnInit {
   weakMonster!: MonsterIdentifier;
   toughMonster!: MonsterIdentifier;
 
-  constructor(private stateService: StateService, private diceService: DiceService) {
+  constructor(private stateService: StateService, private diceService: DiceService, private literalsService: LiteralsService) {
   }
 
-  ngOnInit(): void {
-    this.level = this.diceService.getRandomElement(this.stateService.levels);
+  async ngOnInit(): Promise<void> {
+    this.level = await this.diceService.getRandomElementWithConfirmation(this.stateService.levels, 1,6, this.literalsService.levelRoll, RollDialogComponent);
 
     const index = this.stateService.levels.findIndex(item => item === this.level);
 

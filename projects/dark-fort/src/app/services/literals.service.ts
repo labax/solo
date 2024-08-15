@@ -11,4 +11,5 @@ export class LiteralsService {
   public readonly initialWeaponRoll: string = 'roll for weapon';
   public readonly initialItemRoll: string = 'roll for item';
   public readonly chargesRoll: string = 'roll for charges';
+  public readonly levelRoll: string = 'roll for level';
 }
