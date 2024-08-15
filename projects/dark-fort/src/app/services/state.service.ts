@@ -10,13 +10,14 @@ import {
 import {DiceService} from '../../../../common/src/lib/services/dice.service';
 import {RoomService} from './room.service';
 import {RollDialogComponent} from '../components/roll-dialog/roll-dialog.component';
+import {LiteralsService} from './literals.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StateService {
 
-  constructor(private diceService: DiceService, private roomService: RoomService) {
+  constructor(private diceService: DiceService, private roomService: RoomService, private literalsService: LiteralsService) {
 
   }
 
@@ -43,7 +44,7 @@ export class StateService {
     this.currentRoom = room;
   }
 
-  initialize() {
+  async initialize() {
     this.initilizeMap();
 
     const weapons: Record<WeaponIdentifier, number> = {
@@ -61,7 +62,7 @@ export class StateService {
       inventory: [],
       level: 0,
       points: 0,
-      silver: this.diceService.rollAndSumDice(1, 6) + 15,
+      silver: await this.diceService.rollAndSumDiceWithConfirmation(1, 6, this.literalsService.silver, RollDialogComponent) + 15,
       weapon: this.diceService.getRandomElement(initialWeaponsTable),
       weapons: weapons,
       attackBonus: 0
