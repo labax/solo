@@ -26,24 +26,24 @@ export class DiceService {
     return array[randomIndex];
   }
 
-  async getRandomElementWithConfirmation<T1, T2 extends DiceDialog>(array: T1[], numberOfDice: number, sides: number, dialogComponent: Type<T2>): Promise<T1> {
+  async getRandomElementWithConfirmation<T1, T2 extends DiceDialog>(array: T1[], numberOfDice: number, sides: number, description: string, dialogComponent: Type<T2>): Promise<T1> {
     if (array.length === 0) {
       throw new Error('Empty array');
     }
 
-    const roll = await this.rollDiceWithConfirmation(numberOfDice, sides, dialogComponent);
+    const roll = await this.rollDiceWithConfirmation(numberOfDice, sides, description, dialogComponent);
 
     return array[roll[0] - 1];
   }
 
-  async rollDiceWithConfirmation<T extends DiceDialog>(numberOfDice: number, sides: number, dialogComponent: Type<T>): Promise<number[]> {
+  async rollDiceWithConfirmation<T extends DiceDialog>(numberOfDice: number, sides: number, description: string, dialogComponent: Type<T>): Promise<number[]> {
     let results: number[] = this.rollDice(numberOfDice, sides);
     let confirmed = false;
 
     while (!confirmed) {
       const dialogRef = this.dialog.open(dialogComponent, {
         width: '250px',
-        data: {results, sides}
+        data: {results, sides, description}
       });
 
       const result = await dialogRef.afterClosed().toPromise();
@@ -58,8 +58,8 @@ export class DiceService {
     return results;
   }
 
-  async rollAndSumDiceWithConfirmation<T extends DiceDialog>(numberOfDice: number, sides: number, dialogComponent: Type<T>): Promise<number> {
-    const results = await this.rollDiceWithConfirmation(numberOfDice, sides, dialogComponent);
+  async rollAndSumDiceWithConfirmation<T extends DiceDialog>(numberOfDice: number, sides: number, description: string, dialogComponent: Type<T>): Promise<number> {
+    const results = await this.rollDiceWithConfirmation(numberOfDice, sides, description, dialogComponent);
     return results.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   }
 

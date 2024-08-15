@@ -180,8 +180,10 @@ export class StateService {
   }
 
   async calculateTrap(): Promise<number> {
-    const roll = await this.diceService.rollAndSumDiceWithConfirmation(1, 6, RollDialogComponent);
-    if (this.hasItem('rope')) {
+    const hasRope = this.hasItem('rope');
+    const description = `roll for trap, success on greater than ${hasRope ? 2 : 3}`
+    const roll = await this.diceService.rollAndSumDiceWithConfirmation(1, 6, description, RollDialogComponent);
+    if (hasRope) {
       return roll + 1;
     }
 
@@ -195,10 +197,6 @@ export class StateService {
     }
 
     return roll;
-  }
-
-  canReroll(): boolean {
-    return this.hasItem('omen');
   }
 
   isItemIdentifier(value: any): value is ItemIdentifier {

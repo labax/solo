@@ -1,5 +1,6 @@
 <h1 mat-dialog-title>Dice Roll</h1>
 <div mat-dialog-content>
+  <p>{{data.description}}</p>
   <p>You rolled {{ data.results.length }} dice with {{ data.sides }} sides each.</p>
   <p>Results: {{ data.results.join(', ') }}</p>
 </div>

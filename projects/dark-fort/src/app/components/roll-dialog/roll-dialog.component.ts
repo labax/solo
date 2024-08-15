@@ -24,7 +24,7 @@ import {MatButton} from '@angular/material/button';
 export class RollDialogComponent implements DiceDialog {
   constructor(
     public dialogRef: MatDialogRef<RollDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { results: number[], sides: number }
+    @Inject(MAT_DIALOG_DATA) public data: { results: number[], sides: number, description: string }
   ) {}
 
   reroll(): void {
