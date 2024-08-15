@@ -77,7 +77,7 @@ export class StateService {
     this.character.inventory.splice(index, 1);
   }
 
-  addItemToInventory(key: ItemIdentifier) {
+  async addItemToInventory(key: ItemIdentifier) {
     const item = this.getItem(key);
     const inventoryItem: IInventoryItem = {
       id: item.id,
@@ -85,7 +85,7 @@ export class StateService {
     }
 
     if (item.chargeable) {
-      inventoryItem.charges = this.diceService.rollAndSumDice(1, 4);
+      inventoryItem.charges = await this.diceService.rollAndSumDiceWithConfirmation(1, 4, this.literalsService.chargesRoll, RollDialogComponent);
     }
 
     this.character.inventory.push(inventoryItem);
