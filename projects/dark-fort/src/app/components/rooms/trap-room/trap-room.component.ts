@@ -26,8 +26,8 @@ export class TrapRoomComponent implements OnInit {
   constructor(public stateService: StateService) {
   }
 
-  ngOnInit(): void {
-    this.roll();
+  async ngOnInit(): Promise<void> {
+    await this.roll();
   }
 
   async roll() {

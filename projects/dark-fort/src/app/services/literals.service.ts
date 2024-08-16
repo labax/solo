@@ -18,4 +18,5 @@ export class LiteralsService {
   public readonly riddleRoll: string = 'roll for riddle, success on odd'
   public readonly damageRoll: string = 'roll for damage';
   public readonly armorRoll: string = 'roll for armor';
+  public readonly monsterRoll: string = 'roll for monster';
 }

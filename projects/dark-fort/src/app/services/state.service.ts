@@ -200,7 +200,7 @@ export class StateService {
   async calculateDamage(damageDie: number, damageBonus: number, ignoresArmor: boolean): Promise<number> {
     const roll = await this.diceService.rollAndSumDiceWithConfirmation(1, damageDie, this.literalsService.damageRoll, RollDialogComponent) + damageBonus;
     if (this.hasItem('armor') && !ignoresArmor) {
-      return roll - await this.diceService.rollAndSumDiceWithConfirmation(1, 4, this.literalsService.damageRoll, RollDialogComponent);
+      return roll - await this.diceService.rollAndSumDiceWithConfirmation(1, 4, this.literalsService.armorRoll, RollDialogComponent);
     }
 
     return roll;
@@ -210,29 +210,31 @@ export class StateService {
     return itemIdentifiers.includes(value);
   }
 
-  calculateCombatDamage(dice: number, sides: number, bonus: number): number {
-    return this.diceService.rollAndSumDice(dice, sides) + bonus;
+  async calculateCombatDamage(dice: number, sides: number, bonus: number): Promise<number> {
+    return await this.diceService.rollAndSumDiceWithConfirmation(dice, sides, this.literalsService.damageRoll, RollDialogComponent) + bonus;
   }
 
-  calculateMonsterHit(points: number): boolean {
-    const roll = this.diceService.rollAndSumDice(1, 6);
+  async calculateMonsterHit(points: number): Promise<boolean> {
     const weaponBonus = this.getWeapon(this.character.weapon).attackBonus;
+    const description = `roll for monster hit success on more than ${points - weaponBonus - this.character.attackBonus}`
+    const roll = await this.diceService.rollAndSumDiceWithConfirmation(1, 6, description, RollDialogComponent);
+
     return roll + weaponBonus + this.character.attackBonus >= points;
   }
 
-  calculatePlayerDamage(): number {
+  async calculatePlayerDamage(): Promise<number> {
     const weapon = this.getWeapon(this.character.weapon);
-    return this.calculateCombatDamage(1, weapon.damageDie, weapon.damageBonus);
+    return await this.calculateCombatDamage(1, weapon.damageDie, weapon.damageBonus);
   }
 
-  calculateMonsterDamage(monsterId: MonsterIdentifier): number {
+  async calculateMonsterDamage(monsterId: MonsterIdentifier): Promise<number> {
     const monster = this.getMonster(monsterId);
-    let damage = monster.damage(this);
+    let damage = await monster.damage(this);
     if (this.halved.find(monster => monster === monsterId)) {
       damage = damage / 2;
     }
     if (this.hasItem('armor')) {
-      damage += -this.diceService.rollAndSumDice(1, 4);
+      damage -= await this.diceService.rollAndSumDiceWithConfirmation(1, 4, this.literalsService.armorRoll, RollDialogComponent);
     }
 
     return damage >= 0 ? damage : 0;

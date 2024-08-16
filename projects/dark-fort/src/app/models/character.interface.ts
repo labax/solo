@@ -1,5 +1,6 @@
 import {StateService} from '../services/state.service';
 import {DiceService} from '../../../../common/src/lib/services/dice.service';
+import {RollDialogComponent} from "../components/roll-dialog/roll-dialog.component";
 
 export interface ICharacter {
   name: string;
@@ -148,11 +149,11 @@ export const initialItemsTable: ItemIdentifier[] = [
 
 export interface IMonster {
   name: string;
-  damage: (state: StateService) => number;
+  damage: (state: StateService) => Promise<number>;
   hitPoints: number;
   points: number;
   id: MonsterIdentifier;
-  onKill?: (state: StateService, dice: DiceService) => void;
+  onKill?: (state: StateService, dice: DiceService) => Promise<void>;
 }
 
 export type MonsterIdentifier =
@@ -168,12 +169,13 @@ export type MonsterIdentifier =
 export const monstersTable: IMonster[] = [
   {
     name: 'BLOOD-DRENCHED SKELETON',
-    damage: (state: StateService) => state.calculateCombatDamage(1, 4, 0),
+    damage: async (state: StateService) => await state.calculateCombatDamage(1, 4, 0),
     hitPoints: 6,
     points: 3,
     id: 'skeleton',
-    onKill: (state: StateService, dice: DiceService) => {
-      const roll = dice.rollAndSumDice(1, 6);
+    onKill: async (state: StateService, dice: DiceService) => {
+      const description = 'roll for loot'
+      const roll = await dice.rollAndSumDiceWithConfirmation(1, 6, description, RollDialogComponent);
       if (roll <= 2) {
         state.character.weapons['dagger'] += 1;
       }
@@ -181,79 +183,81 @@ export const monstersTable: IMonster[] = [
   },
   {
     name: 'CATACOMB CULTIST',
-    damage: (state: StateService) => state.calculateCombatDamage(1, 4, 0),
+    damage: async (state: StateService) => await state.calculateCombatDamage(1, 4, 0),
     hitPoints: 6,
     points: 3,
     id: 'cultist'
   },
   {
     name: 'GOBLIN',
-    damage: (state: StateService) => state.calculateCombatDamage(1, 4, 0),
+    damage: async (state: StateService) => await state.calculateCombatDamage(1, 4, 0),
     hitPoints: 5,
     points: 3,
     id: 'goblin',
-    onKill: (state: StateService, dice: DiceService) => {
-      const roll = dice.rollAndSumDice(1, 6);
+    onKill: async (state: StateService, dice: DiceService) => {
+      const description = 'roll for loot';
+      const roll = await dice.rollAndSumDiceWithConfirmation(1, 6, description, RollDialogComponent);
       if (roll <= 2) {
-        state.addItemToInventory('rope');
+        await state.addItemToInventory('rope');
       }
     }
   },
   {
     name: 'UNDEAD HOUND',
-    damage: (state: StateService) => state.calculateCombatDamage(1, 4, 0),
+    damage: async (state: StateService) => await state.calculateCombatDamage(1, 4, 0),
     hitPoints: 6,
     points: 4,
     id: 'hound'
   },
   {
     name: 'NECRO-SORCERER',
-    damage: (state: StateService) => {
+    damage: async (state: StateService) => {
       if (state.combatRound % 2 === 0) {
-        return state.calculateCombatDamage(1, 6, 0);
+        return await state.calculateCombatDamage(1, 6, 0);
       }
-      return state.calculateCombatDamage(1, 4, 0);
+      return await state.calculateCombatDamage(1, 4, 0);
     },
     hitPoints: 8,
     points: 4,
     id: 'sorcerer',
-    onKill: (state: StateService, dice: DiceService) => {
-      const roll = dice.rollAndSumDice(1, 6);
+    onKill: async (state: StateService, dice: DiceService) => {
+      const description = 'roll for death';
+      const roll = await dice.rollAndSumDiceWithConfirmation(1, 6, description, RollDialogComponent);
       if (roll <= 1) {
         state.character.hitPointsCurrent = -1;
       }
-      state.character.silver += dice.rollAndSumDice(3, 6);
+      state.character.silver += await dice.rollAndSumDiceWithConfirmation(3, 6, 'roll for silver', RollDialogComponent);
     }
   },
   {
     name: 'SMALL STONE TROLL',
-    damage: (state: StateService) => state.calculateCombatDamage(1, 6, 1),
+    damage: async (state: StateService) => await state.calculateCombatDamage(1, 6, 1),
     hitPoints: 9,
     points: 7,
     id: 'troll'
   },
   {
     name: 'MEDUSA',
-    damage: (state: StateService) => state.calculateCombatDamage(1, 6, 0),
+    damage: async (state: StateService) => await state.calculateCombatDamage(1, 6, 0),
     hitPoints: 10,
     points: 4,
     id: 'medusa',
-    onKill: (state: StateService, dice: DiceService) => {
-      const roll = dice.rollAndSumDice(1, 6);
+    onKill: async (state: StateService, dice: DiceService) => {
+      const roll = await dice.rollAndSumDiceWithConfirmation(1, 6, 'roll for death', RollDialogComponent);
       if (roll <= 1) {
         state.character.hitPointsCurrent = -1;
       }
-      state.character.silver += dice.rollAndSumDice(1, 4) * dice.rollAndSumDice(1, 6);
+      state.character.silver += await dice.rollAndSumDiceWithConfirmation(1, 4, 'roll for silver', RollDialogComponent) * await dice.rollAndSumDiceWithConfirmation(1, 6, 'roll for silver', RollDialogComponent);
     }
   },
   {
     name: 'RUIN BASILISK',
-    damage: (state: StateService) => state.calculateCombatDamage(1, 6, 0),
+    damage: async (state: StateService) => await state.calculateCombatDamage(1, 6, 0),
     hitPoints: 11,
     points: 4,
     id: 'basilisk',
-    onKill: (state: StateService, dice: DiceService) => {
-      const roll = dice.rollAndSumDice(1, 6);
+    onKill: async (state: StateService, dice: DiceService) => {
+      const roll = await dice.rollAndSumDiceWithConfirmation(1, 6, 'roll for level', RollDialogComponent);
       if (roll <= 1) {
         state.character.points = 15;
       }

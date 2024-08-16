@@ -13,6 +13,8 @@ import {battleItems, IInventoryItem, MonsterIdentifier} from '../../../models/ch
 import {NgForOf, NgIf} from '@angular/common';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
+import {LiteralsService} from "../../../services/literals.service";
+import {RollDialogComponent} from "../../roll-dialog/roll-dialog.component";
 
 @Component({
   selector: 'dark-fort-weak-room',
@@ -44,12 +46,13 @@ export class WeakRoomComponent implements OnInit, OnDestroy {
   monsterDamage!: number;
   evaded!: boolean;
 
-  constructor(public stateService: StateService, private diceService: DiceService, @Inject(MAT_DIALOG_DATA) public data: MonsterIdentifier[]) {
+  constructor(public stateService: StateService,
+              private diceService: DiceService,
+              private literalService: LiteralsService,
+              @Inject(MAT_DIALOG_DATA) public data: MonsterIdentifier[]) {}
 
-  }
-
-  ngOnInit() {
-    this.rollMonster();
+  async ngOnInit() {
+    await this.rollMonster();
     this.daemon = false;
     this.stateService.combatRound = 0;
   }
@@ -58,42 +61,42 @@ export class WeakRoomComponent implements OnInit, OnDestroy {
     this.daemon = false;
   }
 
-  rollMonster(): void {
-    this.monster = this.diceService.getRandomElement(this.data);
+  async rollMonster(): Promise<void> {
+    this.monster = await this.diceService.getRandomElementWithConfirmation(this.data, 1, 4, this.literalService.monsterRoll, RollDialogComponent);
     const monster = this.stateService.getMonster(this.monster);
     this.hitPoints = monster.hitPoints;
     this.monsterName = monster.name;
   }
 
-  attack() {
+  async attack() {
     this.stateService.combatRound += 1;
     const monster = this.stateService.getMonster(this.monster);
-    const hit = this.stateService.calculateMonsterHit(monster.points);
+    const hit = await this.stateService.calculateMonsterHit(monster.points);
     if (hit) {
-      const damage = this.stateService.calculatePlayerDamage();
+      const damage = await this.stateService.calculatePlayerDamage();
       this.message = `you hit the monster for ${damage} damage`;
       this.hitPoints += -damage;
       if (this.daemon) {
-        const daemonDamage = this.stateService.calculateCombatDamage(1, 4, 0);
+        const daemonDamage = await this.stateService.calculateCombatDamage(1, 4, 0);
         this.message += ` your summoned daemon inflicts ${daemonDamage} damage`;
         this.hitPoints += -daemonDamage;
       }
 
     } else {
-      this.monsterDamage = this.stateService.calculateMonsterDamage(this.monster);
+      this.monsterDamage = await this.stateService.calculateMonsterDamage(this.monster);
       this.message = `the monster hits you for ${this.monsterDamage} damage`;
       this.stateService.character.hitPointsCurrent += -this.monsterDamage;
     }
   }
 
-  resolveCombat() {
+  async resolveCombat() {
     if (this.stateService.character.hitPointsCurrent >= 0) {
       const monster = this.stateService.getMonster(this.monster);
       if (!this.evaded) {
         this.stateService.character.points += monster.points;
       }
       if (monster.onKill) {
-        monster.onKill(this.stateService, this.diceService);
+        await monster.onKill(this.stateService, this.diceService);
       }
     }
   }
