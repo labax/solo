@@ -58,11 +58,11 @@ export class ItemRoomComponent implements OnInit {
     const roll: number = await this.diceService.rollAndSumDiceWithConfirmation(1, 6, this.literalsService.initialItemRoll, RollDialogComponent);
 
     if (roll === 1) {
-      return this.diceService.getRandomElement(initialWeaponsTable);
+      return await this.diceService.getRandomElementWithConfirmation(initialWeaponsTable, 1, 4, this.literalsService.initialWeaponRoll, RollDialogComponent);
     } else if (roll === 2) {
-      return this.diceService.getRandomElement(scrollTable);
+      return await this.diceService.getRandomElementWithConfirmation(scrollTable, 1, 4, this.literalsService.scrollRoll, RollDialogComponent);
     }
 
-    return initialItemsTable[roll-3];
+    return initialItemsTable[roll - 3];
   }
 }
