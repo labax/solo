@@ -5,6 +5,6 @@
   <p>Results: {{ data.results.join(', ') }}</p>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="reroll()">Reroll</button>
-  <button mat-button (click)="accept()">Accept</button>
+  <button mat-button *ngIf="canReroll()" (click)="reroll()">Reroll</button>
+  <button mat-button *ngIf="canReroll()" (click)="accept()">Accept</button>
 </div>

@@ -183,6 +183,9 @@ export class StateService {
   }
 
   hasItem(key: ItemIdentifier): boolean {
+    if(!this.character?.inventory) {
+      return false;
+    }
     return !!this.character.inventory.find(item => item.id === key);
   }
 
