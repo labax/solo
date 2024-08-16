@@ -1,11 +1,25 @@
 import {Injectable} from '@angular/core';
 import {
-  ICharacter, IInventoryItem, IItem, ILevel, initialItemsTable,
+  ICharacter,
+  IInventoryItem,
+  IItem,
+  ILevel,
+  initialItemsTable,
   initialWeaponsTable,
-  ItemIdentifier, itemIdentifiers, itemsTable, IWeapon, levelIdentifier, levelTable, MonsterIdentifier, monstersTable,
+  ItemIdentifier,
+  itemIdentifiers,
+  itemsTable,
+  IWeapon,
+  levelIdentifier,
+  levelTable,
+  MonsterIdentifier,
+  monstersTable,
   Room,
-  RoomShape, roomType,
-  Status, WeaponIdentifier, weaponsTable
+  RoomShape,
+  roomType,
+  Status,
+  WeaponIdentifier,
+  weaponsTable
 } from '../models/character.interface';
 import {DiceService} from '../../../../common/src/lib/services/dice.service';
 import {RoomService} from './room.service';
@@ -183,10 +197,10 @@ export class StateService {
     return roll;
   }
 
-  calculateDamage(damageDie: number, damageBonus: number, ignoresArmor: boolean): number {
-    const roll = this.diceService.rollAndSumDice(1, damageDie) + damageBonus;
+  async calculateDamage(damageDie: number, damageBonus: number, ignoresArmor: boolean): Promise<number> {
+    const roll = await this.diceService.rollAndSumDiceWithConfirmation(1, damageDie, this.literalsService.damageRoll, RollDialogComponent) + damageBonus;
     if (this.hasItem('armor') && !ignoresArmor) {
-      return roll - this.diceService.rollAndSumDice(1, 4);
+      return roll - await this.diceService.rollAndSumDiceWithConfirmation(1, 4, this.literalsService.damageRoll, RollDialogComponent);
     }
 
     return roll;
@@ -222,5 +236,9 @@ export class StateService {
     }
 
     return damage >= 0 ? damage : 0;
+  }
+
+  async calculateRiddle() {
+    return await this.diceService.rollAndSumDiceWithConfirmation(1, 6, this.literalsService.riddleRoll, RollDialogComponent);
   }
 }
