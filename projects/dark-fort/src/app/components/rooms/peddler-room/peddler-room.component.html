@@ -31,21 +31,6 @@
     </mat-tab>
   </mat-tab-group>
 </mat-dialog-content>
-<!-- ng-container *ngFor="let item of stateService.character.inventory">
-  <div *ngIf="isListed(item)">
-    {{ item.name }}
-    <button mat-button *ngIf="canBuy(item)" (click)="buyItem(item)">Buy</button>
-    <button mat-button *ngIf="canSellItem(item)" (click)="sellItem(item)">Sell</button>
-  </div>
-</ng-container>
-<ng-container *ngFor="let weapon of weaponsTable">
-  <div *ngIf="isListed(weapon)">
-    {{ weapon.name }}
-    <button mat-button *ngIf="canBuy(weapon)" (click)="buyWeapon(weapon)">Buy</button>
-    <button mat-button *ngIf="canSellWeapon(weapon)" (click)="sellWeapon(weapon)">Sell</button>
-  </div>
-</ng-container>
-</mat-dialog-content -->
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>OK</button>
 </mat-dialog-actions>
