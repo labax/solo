@@ -127,7 +127,7 @@ export const itemsTable: IItem[] = [{
   name: 'Palms Open the Southern Gate',
   silver: 7,
   id: 'palms',
-  chargeable:true
+  chargeable: true
 }, {
   name: 'Aegis of Sorrow',
   silver: 7,
@@ -259,7 +259,7 @@ export const monstersTable: IMonster[] = [
     onKill: async (state: StateService, dice: DiceService) => {
       const roll = await dice.rollAndSumDiceWithConfirmation(1, 6, 'roll for level', RollDialogComponent);
       if (roll <= 1) {
-        state.character.points = 15;
+        state.levelUp.set(true);
       }
     }
   },

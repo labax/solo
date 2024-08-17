@@ -40,7 +40,7 @@ export class ScrollRoomComponent implements OnInit {
     return this.stateService.getItem(scroll).name;
   }
 
-  resolveScroll() {
-    this.stateService.addItemToInventory(this.scroll);
+  async resolveScroll() {
+    await this.stateService.addItemToInventory(this.scroll);
   }
 }

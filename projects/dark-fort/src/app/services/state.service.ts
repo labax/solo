@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 import {
   ICharacter,
   IInventoryItem,
@@ -40,7 +40,7 @@ export class StateService {
   public character!: ICharacter;
   public combatRound: number = 0;
   public halved: MonsterIdentifier[] = []
-
+  public levelUp = signal(false);
   public levels: levelIdentifier[] = ['sir', 'attack', 'hitPoints', 'potions', 'zweihander', 'half'];
 
   public calculateExploredRoomsCount(): number {
