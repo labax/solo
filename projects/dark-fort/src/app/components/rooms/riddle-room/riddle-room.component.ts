@@ -38,7 +38,9 @@ export class RiddleRoomComponent implements OnInit {
 
   async roll() {
     this.solveRoll = await this.stateService.calculateRiddle();
-    this.damageRoll = await this.stateService.calculateDamage(4, 0, true);
+    if(!this.solved()) {
+      this.damageRoll = await this.stateService.calculateDamage(4, 0, true);
+    }
   }
 
   solved(): boolean {

@@ -32,7 +32,9 @@ export class TrapRoomComponent implements OnInit {
 
   async roll() {
     this.avoidRoll = await this.stateService.calculateTrap();
-    this.damageRoll = await this.stateService.calculateDamage(6, 0, false);
+    if (!this.avoided()) {
+      this.damageRoll = await this.stateService.calculateDamage(6, 0, false);
+    }
   }
 
   avoided(): boolean {
@@ -40,7 +42,7 @@ export class TrapRoomComponent implements OnInit {
   }
 
   resolveTrap() {
-    if(!this.avoided()) {
+    if (!this.avoided()) {
       this.stateService.character.hitPointsCurrent += -this.damageRoll;
     }
   }
