@@ -142,6 +142,16 @@ export class WeakRoomComponent implements OnInit, OnDestroy {
     } else {
       this.stateService.character.hitPointsCurrent += this.monsterDamage;
     }
+
+    const item = this.stateService.character.inventory.find(x=>x.id === 'aegis');
+    if(!item) {
+      throw new Error('item not found!');
+    }
+
+    if(item.charges > 0)
+    {
+      item.charges -= 1;
+    }
   }
 
   getUsableItems(): IInventoryItem[] {
