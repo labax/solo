@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>Scroll</h2>
 <mat-dialog-content class="mat-typography">
-  <div>You find a {{getItemName(scroll)}}.</div>
+  <div *ngIf="scroll">You find a {{getItemName(scroll)}}.</div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close (click)="resolveScroll()">OK</button>
