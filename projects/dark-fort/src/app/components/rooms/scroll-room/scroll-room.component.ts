@@ -1,10 +1,12 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatButton} from '@angular/material/button';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import {StateService} from '../../../services/state.service';
 import {DiceService} from '../../../../../../common/src/lib/services/dice.service';
 import {ItemIdentifier, scrollTable} from '../../../models/character.interface';
 import {NgIf} from '@angular/common';
+import {LiteralsService} from '../../../services/literals.service';
+import {RollDialogComponent} from '../../roll-dialog/roll-dialog.component';
 
 @Component({
   selector: 'dark-fort-scroll-room',
@@ -20,15 +22,18 @@ import {NgIf} from '@angular/common';
   templateUrl: './scroll-room.component.html',
   styleUrl: './scroll-room.component.css'
 })
-export class ScrollRoomComponent {
+export class ScrollRoomComponent implements OnInit {
   scroll!: ItemIdentifier;
 
-  constructor(public stateService: StateService, private diceService: DiceService) {
-    this.scroll = this.roll();
+  constructor(public stateService: StateService, private diceService: DiceService, private literalService: LiteralsService) {
   }
 
-  roll(): ItemIdentifier {
-    return this.diceService.getRandomElement(scrollTable);
+  async ngOnInit(): Promise<void> {
+    this.scroll = await this.roll();
+  }
+
+  async roll(): Promise<ItemIdentifier> {
+    return await this.diceService.getRandomElementWithConfirmation(scrollTable, 1, 4, this.literalService.scrollRoll, RollDialogComponent);
   }
 
   getItemName(scroll: ItemIdentifier) {
