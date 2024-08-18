@@ -67,7 +67,7 @@ export class RoomMapComponent implements OnInit {
   }
 
   async onRoomClick(room: Room) {
-    const roomType = this.stateService.resolveRoom(room);
+    const roomType = await this.stateService.resolveRoom(room);
     if (roomType) {
       this.openDialog(roomType);
     } else if (await this.diceService.rollAndSumDiceWithConfirmation(1, 4, this.literalsService.moveRoll, RollDialogComponent) === 1) {

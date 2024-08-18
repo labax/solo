@@ -16,7 +16,7 @@ import {
   monstersTable,
   Room,
   RoomShape,
-  roomType,
+  roomType, roomTypes,
   Status,
   WeaponIdentifier,
   weaponsTable
@@ -26,6 +26,8 @@ import {RoomService} from './room.service';
 import {RollDialogComponent} from '../components/roll-dialog/roll-dialog.component';
 import {LiteralsService} from './literals.service';
 import {MatDialog} from '@angular/material/dialog';
+import {RoomDialogComponent} from '../components/room-dialog/room-dialog.component';
+import {lastValueFrom} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -108,11 +110,22 @@ export class StateService {
     this.character.inventory.push(inventoryItem);
   }
 
-  resolveRoom(room: Room): roomType | undefined {
+  async resolveRoom(room: Room): Promise<roomType | undefined> {
+    let roomType: roomType | undefined = undefined;
+    if(this.hasItem('omen')) {
+      const type$ = this.dialog.open(RoomDialogComponent, {disableClose: true, data: roomTypes}).afterClosed();
+      roomType = await lastValueFrom(type$);
+      if(roomType) {
+        const omen = this.character.inventory.find(x=>x.id === 'omen');
+        if(omen) {
+          this.removeItemFromInventory(omen);
+        }
+      }
+    }
     if (this.roomService.canTravel(this.currentRoom, room) || this.map.length === 1) {
       this.currentRoom = room;
       if (room.shape === RoomShape.placeholder) {
-        const materializedRoom = this.roomService.materializeRoom(room, this.map);
+        const materializedRoom = this.roomService.materializeRoom(room, this.map, roomType);
         const neighbors = this.roomService.getNeighboringCoordinates(materializedRoom);
         for (const neighbor of neighbors) {
           if (!this.map.find(room => room.x === neighbor.x && room.y === neighbor.y)) {
