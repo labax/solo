@@ -121,8 +121,8 @@ export class WeakRoomComponent implements OnInit, OnDestroy {
     this.evaded = true;
   }
 
-  usePalms() {
-    const damage = this.stateService.calculateCombatDamage(1, 6, 1);
+  async usePalms() {
+    const damage = await this.stateService.calculateCombatDamage(1, 6, 1);
     this.hitPoints += -damage;
     this.message = `you inflict ${damage} damage`;
   }
@@ -158,13 +158,13 @@ export class WeakRoomComponent implements OnInit, OnDestroy {
     return this.stateService.character.inventory.filter(item => item.charges > 0 && battleItems.indexOf(item.id) > -1);
   }
 
-  useItem(inventoryItem: IInventoryItem) {
+  async useItem(inventoryItem: IInventoryItem) {
     if (inventoryItem.id === 'potion') {
       this.usePotion();
     } else if (inventoryItem.id === 'cloak') {
       this.useCloak();
     } else if (inventoryItem.id === 'palms') {
-      this.usePalms();
+      await this.usePalms();
     } else if (inventoryItem.id === 'summon') {
       this.useSummon();
     }
