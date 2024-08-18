@@ -22,10 +22,10 @@
         {{ stateService.getItem(item.id).name }}: {{ stateService.getItem(item.id).silver }}s
         <button mat-button (click)="sellItem(item)">Sell</button>
       </div>
-      <ng-container *ngFor="let item of stateService.character.weapons | keyvalue">
-        <div *ngIf="item.value > 0">
-          {{ stateService.getWeapon(item.key).name }}: {{ stateService.getWeapon(item.key).silver }}s
-          <button mat-button (click)="sellWeapon(item.key)">Sell</button>
+      <ng-container *ngFor="let item of stateService.character.weapons">
+        <div>
+          {{ stateService.getWeapon(item).name }}: {{ stateService.getWeapon(item).silver }}s
+          <button mat-button (click)="sellWeapon(item)">Sell</button>
         </div>
       </ng-container>
     </mat-tab>

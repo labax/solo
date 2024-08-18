@@ -5,10 +5,10 @@
     {{ getItemName(item.id) }}<span *ngIf="hasCharges(item)">: {{ item.charges }}</span>
     <button mat-button *ngIf="isUsable(item.id) && item.charges > 0" (click)="use(item)">Use</button>
   </div>
-  <ng-container *ngFor="let weaponSlot of stateService.character.weapons | keyvalue">
-    <div *ngIf="weaponSlot.value > 0">
-      {{ getWeaponName(weaponSlot.key) }}: {{ weaponSlot.value }}
-      <button mat-button (click)="equip(weaponSlot.key)">Equip</button>
+  <ng-container *ngFor="let weaponSlot of stateService.character.weapons">
+    <div>
+      {{ getWeaponName(weaponSlot) }}: {{ weaponSlot }}
+      <button mat-button (click)="equip(weaponSlot)">Equip</button>
     </div>
   </ng-container>
 </ng-container>

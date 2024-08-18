@@ -53,10 +53,10 @@ export class InventoryComponent {
 
   equip(key: string) {
     const buffer = this.stateService.character.weapon;
-
-    this.stateService.character.weapons[key as WeaponIdentifier] += -1;
+    const weaponIndex = this.stateService.character.weapons.findIndex(x=> x === key);
+    this.stateService.character.weapons.splice(weaponIndex, 1);
     if (buffer) {
-      this.stateService.character.weapons[buffer] += 1;
+      this.stateService.character.weapons.push(buffer);
     }
     this.stateService.character.weapon = key as WeaponIdentifier;
   }

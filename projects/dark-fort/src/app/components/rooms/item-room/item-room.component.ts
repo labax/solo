@@ -50,7 +50,7 @@ export class ItemRoomComponent implements OnInit {
     if (this.stateService.isItemIdentifier(this.item)) {
       await this.stateService.addItemToInventory(this.item);
     } else {
-      this.stateService.character.weapons[this.item] += 1;
+      this.stateService.character.weapons.push(this.item);
     }
   }
 

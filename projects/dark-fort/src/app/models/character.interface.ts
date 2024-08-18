@@ -10,7 +10,7 @@ export interface ICharacter {
   level: number;
   weapon: WeaponIdentifier;
   inventory: IInventoryItem[];
-  weapons: Record<WeaponIdentifier, number>;
+  weapons: WeaponIdentifier[];
   points: number;
   attackBonus: number;
 }
@@ -177,7 +177,7 @@ export const monstersTable: IMonster[] = [
       const description = 'roll for loot'
       const roll = await dice.rollAndSumDiceWithConfirmation(1, 6, description, RollDialogComponent);
       if (roll <= 2) {
-        state.character.weapons['dagger'] += 1;
+        state.character.weapons.push('dagger');
       }
     }
   },
@@ -342,7 +342,7 @@ export interface ILevel {
 export const levelTable: ILevel[] = [{
   id: 'zweihander',
   description: 'You find a MIGHTY ZWEIHÄNDER',
-  onLevel: state => state.character.weapons.zweihander += 1
+  onLevel: state => state.character.weapons.push('zweihander')
 }, {
   id: 'hitPoints',
   description: 'Your maximum hit points increase by +5 to 20',

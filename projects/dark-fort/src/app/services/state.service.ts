@@ -18,7 +18,6 @@ import {
   RoomShape,
   roomType, roomTypes,
   Status,
-  WeaponIdentifier,
   weaponsTable
 } from '../models/character.interface';
 import {DiceService} from '../../../../common/src/lib/services/dice.service';
@@ -66,14 +65,6 @@ export class StateService {
   async initialize() {
     this.initializeMap();
 
-    const weapons: Record<WeaponIdentifier, number> = {
-      'dagger': 0,
-      'sword': 0,
-      'flail': 0,
-      'zweihander': 0,
-      'warHammer': 0
-    }
-
     this.character = {
       name: 'Kargunt',
       hitPointsCurrent: 15,
@@ -83,7 +74,7 @@ export class StateService {
       points: 0,
       silver: await this.diceService.rollAndSumDiceWithConfirmation(1, 6, this.literalsService.silverRoll, RollDialogComponent) + 15,
       weapon: await this.diceService.getRandomElementWithConfirmation(initialWeaponsTable, 1, 4, this.literalsService.initialWeaponRoll, RollDialogComponent),
-      weapons: weapons,
+      weapons: [],
       attackBonus: 0
     }
 

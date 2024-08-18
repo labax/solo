@@ -7,7 +7,7 @@ import {
   ItemIdentifier,
   itemsTable,
   IWeapon, scrollTable,
-  sellableItems, WeaponIdentifier,
+  sellableItems,
   weaponsTable
 } from '../../../models/character.interface';
 import {StateService} from '../../../services/state.service';
@@ -57,16 +57,13 @@ export class PeddlerRoomComponent implements OnInit {
 
   sellWeapon(item: string) {
     const weapon = this.stateService.getWeapon(item)
-    this.stateService.character.weapons[item as WeaponIdentifier] += -1;
+    const weaponIndex = this.stateService.character.weapons.findIndex(x=>x === item);
+    this.stateService.character.weapons.splice(weaponIndex, 1);
     this.stateService.character.silver += weapon.silver;
   }
 
-  canSellWeapon(item: IWeapon): boolean {
-    return this.stateService.character.weapons[item.id] > 0;
-  }
-
   buyWeapon(item: IWeapon) {
-    this.stateService.character.weapons[item.id] += 1;
+    this.stateService.character.weapons.push(item.id);
     this.stateService.character.silver += -item.silver;
   }
 
