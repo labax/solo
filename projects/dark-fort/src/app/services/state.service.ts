@@ -4,7 +4,7 @@ import {
   IInventoryItem,
   IItem,
   ILevel,
-  initialItemsTable,
+  initialItemsTable, initialRoomTypes,
   initialWeaponsTable,
   ItemIdentifier,
   itemIdentifiers,
@@ -113,7 +113,7 @@ export class StateService {
   async resolveRoom(room: Room): Promise<roomType | undefined> {
     let roomType: roomType | undefined = undefined;
     if(this.hasItem('omen')) {
-      const type$ = this.dialog.open(RoomDialogComponent, {disableClose: true, data: roomTypes}).afterClosed();
+      const type$ = this.dialog.open(RoomDialogComponent, {disableClose: true, data: [...roomTypes, ...initialRoomTypes]}).afterClosed();
       roomType = await lastValueFrom(type$);
       if(roomType) {
         const omen = this.character.inventory.find(x=>x.id === 'omen');
