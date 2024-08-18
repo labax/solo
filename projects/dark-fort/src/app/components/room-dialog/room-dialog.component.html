@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>Choose Room</h1>
+<div mat-dialog-content>
+  <mat-radio-group [(ngModel)]="room">
+    <mat-radio-button *ngFor="let room of data" [value]="room">{{room}}</mat-radio-button>
+  </mat-radio-group>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="room">Accept</button>
+</div>

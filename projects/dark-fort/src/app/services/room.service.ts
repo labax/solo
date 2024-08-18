@@ -1,7 +1,7 @@
 // src/app/services/room.service.ts
 
 import {Injectable} from '@angular/core';
-import {Cardinality, initialRoomTypes, Room, RoomShape, roomTypes} from '../models/character.interface';
+import {Cardinality, initialRoomTypes, Room, RoomShape, roomType, roomTypes} from '../models/character.interface';
 import {DiceService} from '../../../../common/src/lib/services/dice.service';
 
 @Injectable({
@@ -31,7 +31,7 @@ export class RoomService {
     return {shape: RoomShape.placeholder, exits: Array.from(roomExits), x, y, type: 'nothing'};
   }
 
-  materializeRoom(room: Room, map: Room[]): Room {
+  materializeRoom(room: Room, map: Room[], roomType?: roomType): Room {
     const shapes = Object.values(RoomShape).filter(value => typeof value === 'number')
       .filter(shape => shape !== RoomShape.placeholder);
 
@@ -52,7 +52,11 @@ export class RoomService {
 
     room.exits = Array.from(roomExits);
     room.shape = roomShape;
-    room.type = map.length === 1 ? this.diceService.getRandomElement(initialRoomTypes) : this.diceService.getRandomElement(roomTypes);
+    if (roomType) {
+      room.type = roomType;
+    } else {
+      room.type = map.length === 1 ? this.diceService.getRandomElement(initialRoomTypes) : this.diceService.getRandomElement(roomTypes);
+    }
     return room;
   }
 

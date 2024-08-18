@@ -1,4 +1,4 @@
-import {Injectable, signal} from '@angular/core';
+import {inject, Injectable, signal} from '@angular/core';
 import {
   ICharacter,
   IInventoryItem,
@@ -25,14 +25,16 @@ import {DiceService} from '../../../../common/src/lib/services/dice.service';
 import {RoomService} from './room.service';
 import {RollDialogComponent} from '../components/roll-dialog/roll-dialog.component';
 import {LiteralsService} from './literals.service';
+import {MatDialog} from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StateService {
 
-  constructor(private diceService: DiceService, private roomService: RoomService, private literalsService: LiteralsService) {
-
+  constructor(private diceService: DiceService,
+              private roomService: RoomService,
+              private literalsService: LiteralsService) {
   }
 
   public map: Room[] = [];
@@ -42,6 +44,7 @@ export class StateService {
   public halved: MonsterIdentifier[] = []
   public levelUp = signal(false);
   public levels: levelIdentifier[] = ['sir', 'attack', 'hitPoints', 'potions', 'zweihander', 'half'];
+  readonly dialog = inject(MatDialog);
 
   public calculateExploredRoomsCount(): number {
     return this.map.filter(room => room.shape !== RoomShape.placeholder).length;
@@ -183,7 +186,7 @@ export class StateService {
   }
 
   hasItem(key: ItemIdentifier): boolean {
-    if(!this.character?.inventory) {
+    if (!this.character?.inventory) {
       return false;
     }
     return !!this.character.inventory.find(item => item.id === key);
