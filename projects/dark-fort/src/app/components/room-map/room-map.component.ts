@@ -66,7 +66,11 @@ export class RoomMapComponent implements OnInit {
     return this.stateService.map.find(room => room.x === x && room.y === y);
   }
 
-  async onRoomClick(room: Room) {
+  async onRoomClick(room: Room): Promise<void> {
+    if(!this.roomService.canTravel(this.stateService.currentRoom, room) && this.stateService.map.length > 1)
+    {
+      return;
+    }
     const roomType = await this.stateService.resolveRoom(room);
     if (roomType) {
       this.openDialog(roomType);
