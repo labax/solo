@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>{{data.description}}</h1>
 <div mat-dialog-content class="container">
-  <div *ngFor="let result of data.results" [className]="'dice d' + data.sides + '-' + result"></div>
+  <div *ngFor="let result of data.results" class="dice" [style]="'background-image: url(dice/d' + data.sides + '-' + result + '.svg)'"></div>
 </div>
 <div mat-dialog-actions>
   <button mat-button *ngIf="canReroll()" (click)="reroll()">Reroll</button>
