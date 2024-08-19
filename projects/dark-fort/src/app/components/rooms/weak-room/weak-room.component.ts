@@ -15,6 +15,7 @@ import {MatOption, MatSelect} from '@angular/material/select';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {LiteralsService} from "../../../services/literals.service";
 import {RollDialogComponent} from "../../roll-dialog/roll-dialog.component";
+import {MatGridList, MatGridTile} from '@angular/material/grid-list';
 
 @Component({
   selector: 'dark-fort-weak-room',
@@ -31,7 +32,9 @@ import {RollDialogComponent} from "../../roll-dialog/roll-dialog.component";
     NgForOf,
     MatMenu,
     MatMenuItem,
-    MatMenuTrigger
+    MatMenuTrigger,
+    MatGridList,
+    MatGridTile
   ],
   templateUrl: './weak-room.component.html',
   styleUrl: './weak-room.component.css'

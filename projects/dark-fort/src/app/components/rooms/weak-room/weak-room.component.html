@@ -1,7 +1,17 @@
 <h2 mat-dialog-title>Fight {{monsterName}}</h2>
 <mat-dialog-content class="mat-typography">
-  <div>Hit Points: {{hitPoints}}</div>
-  <div>{{message}}</div>
+  <mat-grid-list cols="3">
+    <mat-grid-tile>
+      <div class="hero" [style]="'background-image: url(kargunt.svg)'"></div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div>Hit Points: {{hitPoints}}</div>
+      <div>{{message}}</div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="monster" [style]="'background-image: url(monsters/' + monster + '.svg)'"></div>
+    </mat-grid-tile>
+  </mat-grid-list>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
 
