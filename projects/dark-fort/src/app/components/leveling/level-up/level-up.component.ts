@@ -1,13 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MatButton} from "@angular/material/button";
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
-import {
-  IMonster,
-  levelIdentifier,
-  MonsterIdentifier,
-  monstersTable, strongMonsters,
-  weakMonsters
-} from "../../../models/character.interface";
 import {StateService} from "../../../services/state.service";
 import {DiceService} from "../../../../../../common/src/lib/services/dice.service";
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
@@ -15,6 +8,12 @@ import {FormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
 import {LiteralsService} from '../../../services/literals.service';
 import {RollDialogComponent} from '../../roll-dialog/roll-dialog.component';
+import {IMonster} from "../../../models/interfaces/IMonster";
+import {MonsterIdentifier} from "../../../models/identifiers/MonsterIdentifier";
+import {monstersTable} from "../../../models/tables/MonstersTable";
+import {weakMonstersTable} from "../../../models/tables/WeakMonstersTable";
+import {strongMonstersTable} from "../../../models/tables/StrongMonstersTable";
+import {levelIdentifier} from "../../../models/identifiers/LevelIdentifier";
 
 @Component({
   selector: 'dark-fort-level-up',
@@ -73,6 +72,6 @@ export class LevelUpComponent implements OnInit {
     return monstersTable.filter(monster=> table.indexOf(monster.id) > -1);
   }
 
-  protected readonly weakMonsters = weakMonsters;
-  protected readonly strongMonsters = strongMonsters;
+  protected readonly weakMonsters = weakMonstersTable;
+  protected readonly strongMonsters = strongMonstersTable;
 }

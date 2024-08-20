@@ -9,7 +9,6 @@ import {
 import {MatButton} from '@angular/material/button';
 import {StateService} from '../../../services/state.service';
 import {DiceService} from '../../../../../../common/src/lib/services/dice.service';
-import {battleItems, IInventoryItem, MonsterIdentifier} from '../../../models/character.interface';
 import {NgForOf, NgIf} from '@angular/common';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
@@ -18,6 +17,9 @@ import {RollDialogComponent} from "../../roll-dialog/roll-dialog.component";
 import {MatGridList, MatGridTile} from '@angular/material/grid-list';
 import {MatIcon} from "@angular/material/icon";
 import {PipsComponent} from "../../../../../../common/src/lib/components/pips/pips.component";
+import {MonsterIdentifier} from "../../../models/identifiers/MonsterIdentifier";
+import {IInventoryItem} from "../../../models/interfaces/IInventoryItem";
+import {battleItemsTable} from "../../../models/tables/BattleItemsTable";
 
 @Component({
   selector: 'dark-fort-weak-room',
@@ -164,7 +166,7 @@ export class WeakRoomComponent implements OnInit, OnDestroy {
   }
 
   getUsableItems(): IInventoryItem[] {
-    return this.stateService.character.inventory.filter(item => item.charges > 0 && battleItems.indexOf(item.id) > -1);
+    return this.stateService.character.inventory.filter(item => item.charges > 0 && battleItemsTable.indexOf(item.id) > -1);
   }
 
   async useItem(inventoryItem: IInventoryItem) {

@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
 import {StateService} from '../../services/state.service';
 import {KeyValuePipe, NgForOf, NgIf} from '@angular/common';
-import {IInventoryItem, WeaponIdentifier} from '../../models/character.interface';
 import {MatButton} from '@angular/material/button';
+import {WeaponIdentifier} from "../../models/identifiers/WeaponIdentifier";
+import {IInventoryItem} from "../../models/interfaces/IInventoryItem";
 
 @Component({
   selector: 'dark-fort-inventory',

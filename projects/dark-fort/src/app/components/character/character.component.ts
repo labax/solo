@@ -1,8 +1,10 @@
 import {Component, Input} from '@angular/core';
-import {ICharacter, WeaponIdentifier, weaponsTable} from '../../models/character.interface';
+import {ICharacter} from '../../models/interfaces/ICharacter';
 import {NgIf} from '@angular/common';
 import {MatButton} from '@angular/material/button';
 import {StateService} from "../../services/state.service";
+import {WeaponIdentifier} from "../../models/identifiers/WeaponIdentifier";
+import {weaponsTable} from "../../models/tables/WeaponsTable";
 
 @Component({
   selector: 'dark-fort-character',

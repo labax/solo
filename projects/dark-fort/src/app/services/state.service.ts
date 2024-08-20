@@ -1,25 +1,7 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {
-  ICharacter,
-  IInventoryItem,
-  IItem,
-  ILevel,
-  initialItemsTable, initialRoomTypes,
-  initialWeaponsTable,
-  ItemIdentifier,
-  itemIdentifiers,
-  itemsTable,
-  IWeapon,
-  levelIdentifier,
-  levelTable,
-  MonsterIdentifier,
-  monstersTable,
-  Room,
-  RoomShape,
-  roomType, roomTypes,
-  Status,
-  weaponsTable
-} from '../models/character.interface';
+  ICharacter
+} from '../models/interfaces/ICharacter';
 import {DiceService} from '../../../../common/src/lib/services/dice.service';
 import {RoomService} from './room.service';
 import {RollDialogComponent} from '../components/roll-dialog/roll-dialog.component';
@@ -27,6 +9,26 @@ import {LiteralsService} from './literals.service';
 import {MatDialog} from '@angular/material/dialog';
 import {RoomDialogComponent} from '../components/room-dialog/room-dialog.component';
 import {lastValueFrom} from 'rxjs';
+import {IWeapon} from "../models/interfaces/IWeapon";
+import {weaponsTable} from "../models/tables/WeaponsTable";
+import {initialWeaponsTable} from "../models/tables/InitialWeaponsTable";
+import {IItem} from "../models/interfaces/IItem";
+import {ItemIdentifier} from "../models/identifiers/ItemIdentifier";
+import {itemsTable} from "../models/tables/ItemsTable";
+import {initialItemsTable} from "../models/tables/InitialItemsTable";
+import {MonsterIdentifier} from "../models/identifiers/MonsterIdentifier";
+import {monstersTable} from "../models/tables/MonstersTable";
+import {RoomShape} from "../models/RoomShape";
+import {IRoom} from "../models/interfaces/IRoom";
+import {Status} from "../models/Status";
+import {roomType} from "../models/RoomType";
+import {roomTypesTable} from "../models/tables/RoomTypesTable";
+import {initialRoomTypesTable} from "../models/tables/InitialRoomTypesTable";
+import {itemIdentifiers} from "../models/identifiers/ItemIdentifiers";
+import {levelIdentifier} from "../models/identifiers/LevelIdentifier";
+import {ILevel} from "../models/interfaces/ILevel";
+import {levelTable} from "../models/tables/LevelTable";
+import {IInventoryItem} from "../models/interfaces/IInventoryItem";
 
 @Injectable({
   providedIn: 'root'
@@ -38,8 +40,8 @@ export class StateService {
               private literalsService: LiteralsService) {
   }
 
-  public map: Room[] = [];
-  public currentRoom!: Room;
+  public map: IRoom[] = [];
+  public currentRoom!: IRoom;
   public character!: ICharacter;
   public combatRound: number = 0;
   public halved: MonsterIdentifier[] = []
@@ -101,10 +103,10 @@ export class StateService {
     this.character.inventory.push(inventoryItem);
   }
 
-  async resolveRoom(room: Room): Promise<roomType | undefined> {
+  async resolveRoom(room: IRoom): Promise<roomType | undefined> {
     let roomType: roomType | undefined = undefined;
     if(this.hasItem('omen')) {
-      const type$ = this.dialog.open(RoomDialogComponent, {disableClose: true, data: [...roomTypes, ...initialRoomTypes]}).afterClosed();
+      const type$ = this.dialog.open(RoomDialogComponent, {disableClose: true, data: [...roomTypesTable, ...initialRoomTypesTable]}).afterClosed();
       roomType = await lastValueFrom(type$);
       if(roomType) {
         const omen = this.character.inventory.find(x=>x.id === 'omen');

@@ -1,8 +1,13 @@
 // src/app/services/room.service.ts
 
 import {Injectable} from '@angular/core';
-import {Cardinality, initialRoomTypes, Room, RoomShape, roomType, roomTypes} from '../models/character.interface';
 import {DiceService} from '../../../../common/src/lib/services/dice.service';
+import {Cardinality} from "../models/Cardinality";
+import {RoomShape} from "../models/RoomShape";
+import {IRoom} from "../models/interfaces/IRoom";
+import {roomType} from "../models/RoomType";
+import {roomTypesTable} from "../models/tables/RoomTypesTable";
+import {initialRoomTypesTable} from "../models/tables/InitialRoomTypesTable";
 
 @Injectable({
   providedIn: 'root'
@@ -24,14 +29,14 @@ export class RoomService {
   private readonly _mapWidth: number;
   private readonly _mapHeight: number;
 
-  generateRandomRoom(x: number, y: number, existingExits: Cardinality[] = []): Room {
+  generateRandomRoom(x: number, y: number, existingExits: Cardinality[] = []): IRoom {
 
     const roomExits = new Set(existingExits);
 
     return {shape: RoomShape.placeholder, exits: Array.from(roomExits), x, y, type: 'nothing'};
   }
 
-  materializeRoom(room: Room, map: Room[], roomType?: roomType): Room {
+  materializeRoom(room: IRoom, map: IRoom[], roomType?: roomType): IRoom {
     const shapes = Object.values(RoomShape).filter(value => typeof value === 'number')
       .filter(shape => shape !== RoomShape.placeholder);
 
@@ -55,12 +60,12 @@ export class RoomService {
     if (roomType) {
       room.type = roomType;
     } else {
-      room.type = map.length === 1 ? this.diceService.getRandomElement(initialRoomTypes) : this.diceService.getRandomElement(roomTypes);
+      room.type = map.length === 1 ? this.diceService.getRandomElement(initialRoomTypesTable) : this.diceService.getRandomElement(roomTypesTable);
     }
     return room;
   }
 
-  calculateInvalidCardinalities(room: Room, map: Room[]): Cardinality[] {
+  calculateInvalidCardinalities(room: IRoom, map: IRoom[]): Cardinality[] {
     const cardinalities: Cardinality[] = [];
     if (room.x === 0 || map.find(r => room.x === r.x + 1 && room.y === r.y)) {
       cardinalities.push('north');
@@ -81,7 +86,7 @@ export class RoomService {
     return cardinalities;
   }
 
-  getNeighboringCoordinates(room: Room): { x: number, y: number }[] {
+  getNeighboringCoordinates(room: IRoom): { x: number, y: number }[] {
     const neighbors: { x: number, y: number }[] = [];
 
     room.exits.forEach(exit => {
@@ -120,7 +125,7 @@ export class RoomService {
     return 'south';
   }
 
-  canTravel(source: Room, target: Room): boolean {
+  canTravel(source: IRoom, target: IRoom): boolean {
     const validTargets = this.getNeighboringCoordinates(source);
     for (const validTarget of validTargets) {
       if (validTarget.x === target.x && validTarget.y === target.y) {

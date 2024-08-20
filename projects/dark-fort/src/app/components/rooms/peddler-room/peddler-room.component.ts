@@ -2,17 +2,16 @@ import {Component, OnInit} from '@angular/core';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
 import {KeyValuePipe, NgForOf, NgIf} from '@angular/common';
-import {
-  IInventoryItem,
-  ItemIdentifier,
-  itemsTable,
-  IWeapon, scrollTable,
-  sellableItems,
-  weaponsTable
-} from '../../../models/character.interface';
 import {StateService} from '../../../services/state.service';
 import {MatTab, MatTabGroup} from '@angular/material/tabs';
 import {DiceService} from '../../../../../../common/src/lib/services/dice.service';
+import {IWeapon} from "../../../models/interfaces/IWeapon";
+import {weaponsTable} from "../../../models/tables/WeaponsTable";
+import {ItemIdentifier} from "../../../models/identifiers/ItemIdentifier";
+import {itemsTable} from "../../../models/tables/ItemsTable";
+import {scrollTable} from "../../../models/tables/ScrollTable";
+import {IInventoryItem} from "../../../models/interfaces/IInventoryItem";
+import {sellableItemsTable} from "../../../models/tables/SellableItemsTable";
 
 @Component({
   selector: 'dark-fort-peddler-room',
@@ -74,7 +73,7 @@ export class PeddlerRoomComponent implements OnInit {
 
 
   protected readonly weaponsTable = weaponsTable;
-  protected readonly sellableItems: ItemIdentifier[] = sellableItems;
+  protected readonly sellableItems: ItemIdentifier[] = sellableItemsTable;
 
   canBuyWeapon(weapon: IWeapon) {
     return weapon.silver <= this.stateService.character.silver;

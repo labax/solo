@@ -3,10 +3,11 @@ import {MatButton} from '@angular/material/button';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import {StateService} from '../../../services/state.service';
 import {DiceService} from '../../../../../../common/src/lib/services/dice.service';
-import {ItemIdentifier, scrollTable} from '../../../models/character.interface';
 import {NgIf} from '@angular/common';
 import {LiteralsService} from '../../../services/literals.service';
 import {RollDialogComponent} from '../../roll-dialog/roll-dialog.component';
+import {ItemIdentifier} from "../../../models/identifiers/ItemIdentifier";
+import {scrollTable} from "../../../models/tables/ScrollTable";
 
 @Component({
   selector: 'dark-fort-scroll-room',

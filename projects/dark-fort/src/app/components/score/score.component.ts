@@ -1,10 +1,11 @@
-import {Component, effect, inject, OnInit} from '@angular/core';
+import {Component, effect, inject} from '@angular/core';
 import {StateService} from '../../services/state.service';
 import {MatButton} from "@angular/material/button";
 import {NgIf} from "@angular/common";
 import {MatDialog} from "@angular/material/dialog";
 import {LevelUpComponent} from "../leveling/level-up/level-up.component";
-import {Status} from "../../models/character.interface";
+
+import {Status} from "../../models/Status";
 
 @Component({
   selector: 'dark-fort-score',

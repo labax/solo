@@ -2,7 +2,6 @@
 
 import {Component, inject, OnInit} from '@angular/core';
 import {RoomService} from '../../services/room.service';
-import {Room, RoomShape, roomType, Status, strongMonsters, weakMonsters} from '../../models/character.interface';
 import {NgForOf, NgIf} from '@angular/common';
 import {StateService} from '../../services/state.service';
 import {DiceService} from '../../../../../common/src/lib/services/dice.service';
@@ -16,6 +15,12 @@ import {ItemRoomComponent} from '../rooms/item-room/item-room.component';
 import {ScrollRoomComponent} from '../rooms/scroll-room/scroll-room.component';
 import {LiteralsService} from '../../services/literals.service';
 import {RollDialogComponent} from '../roll-dialog/roll-dialog.component';
+import {weakMonstersTable} from "../../models/tables/WeakMonstersTable";
+import {strongMonstersTable} from "../../models/tables/StrongMonstersTable";
+import {RoomShape} from "../../models/RoomShape";
+import {IRoom} from "../../models/interfaces/IRoom";
+import {Status} from "../../models/Status";
+import {roomType} from "../../models/RoomType";
 
 @Component({
   selector: 'dark-fort-room-map',
@@ -43,7 +48,7 @@ export class RoomMapComponent implements OnInit {
     this.width = Array(this.roomService.mapWidth).fill(1).map((x, i) => i);
   }
 
-  getRoomDescription(room: Room): string {
+  getRoomDescription(room: IRoom): string {
     if (room === this.stateService.currentRoom && this.stateService.map.length > 1) {
       return 'you are here';
     }
@@ -62,11 +67,11 @@ export class RoomMapComponent implements OnInit {
     return 'explored'
   }
 
-  getRoomAtPosition(x: number, y: number): Room | undefined {
+  getRoomAtPosition(x: number, y: number): IRoom | undefined {
     return this.stateService.map.find(room => room.x === x && room.y === y);
   }
 
-  async onRoomClick(room: Room): Promise<void> {
+  async onRoomClick(room: IRoom): Promise<void> {
     if(!this.roomService.canTravel(this.stateService.currentRoom, room) && this.stateService.map.length > 1)
     {
       return;
@@ -88,9 +93,9 @@ export class RoomMapComponent implements OnInit {
     } else if (roomType === 'riddle') {
       dialogRef = this.dialog.open(RiddleRoomComponent, {disableClose: true});
     } else if (roomType === 'weak') {
-      dialogRef = this.dialog.open(WeakRoomComponent, {disableClose: true, data: weakMonsters, minWidth: 800});
+      dialogRef = this.dialog.open(WeakRoomComponent, {disableClose: true, data: weakMonstersTable, minWidth: 800});
     } else if (roomType === 'tough') {
-      dialogRef = this.dialog.open(WeakRoomComponent, {disableClose: true, data: strongMonsters, minWidth: 800});
+      dialogRef = this.dialog.open(WeakRoomComponent, {disableClose: true, data: strongMonstersTable, minWidth: 800});
     } else if (roomType === 'peddler') {
       dialogRef = this.dialog.open(PeddlerRoomComponent, {disableClose: true});
     } else if (roomType === 'item') {

@@ -8,9 +8,10 @@ import {
 } from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
 import {NgForOf, NgIf} from '@angular/common';
-import {roomType, roomTypes} from '../../models/character.interface';
 import {MatRadioButton, MatRadioGroup} from '@angular/material/radio';
 import {FormsModule} from '@angular/forms';
+import {roomType} from "../../models/RoomType";
+import {roomTypesTable} from "../../models/tables/RoomTypesTable";
 
 @Component({
   selector: 'dark-fort-room-dialog',
@@ -37,5 +38,5 @@ export class RoomDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: roomType[] ) {
   }
 
-  protected readonly roomTypes = roomTypes;
+  protected readonly roomTypes = roomTypesTable;
 }

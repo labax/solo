@@ -2,17 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {MatButton} from '@angular/material/button';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import {NgIf} from '@angular/common';
-import {
-  initialItemsTable,
-  initialWeaponsTable,
-  ItemIdentifier,
-  scrollTable,
-  WeaponIdentifier
-} from '../../../models/character.interface';
 import {StateService} from '../../../services/state.service';
 import {DiceService} from '../../../../../../common/src/lib/services/dice.service';
 import {LiteralsService} from '../../../services/literals.service';
 import {RollDialogComponent} from '../../roll-dialog/roll-dialog.component';
+import {WeaponIdentifier} from "../../../models/identifiers/WeaponIdentifier";
+import {initialWeaponsTable} from "../../../models/tables/InitialWeaponsTable";
+import {ItemIdentifier} from "../../../models/identifiers/ItemIdentifier";
+import {initialItemsTable} from "../../../models/tables/InitialItemsTable";
+import {scrollTable} from "../../../models/tables/ScrollTable";
 
 @Component({
   selector: 'dark-fort-item-room',
