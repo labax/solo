@@ -16,6 +16,7 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {LiteralsService} from "../../../services/literals.service";
 import {RollDialogComponent} from "../../roll-dialog/roll-dialog.component";
 import {MatGridList, MatGridTile} from '@angular/material/grid-list';
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'dark-fort-weak-room',
@@ -34,7 +35,8 @@ import {MatGridList, MatGridTile} from '@angular/material/grid-list';
     MatMenuItem,
     MatMenuTrigger,
     MatGridList,
-    MatGridTile
+    MatGridTile,
+    MatIcon
   ],
   templateUrl: './weak-room.component.html',
   styleUrl: './weak-room.component.css'

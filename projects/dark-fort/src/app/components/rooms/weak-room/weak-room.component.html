@@ -2,14 +2,14 @@
 <mat-dialog-content class="mat-typography">
   <mat-grid-list cols="3">
     <mat-grid-tile>
-      <div class="hero" [style]="'background-image: url(kargunt.svg)'"></div>
+      <mat-icon class="hero" svgIcon="kargunt"></mat-icon>
     </mat-grid-tile>
     <mat-grid-tile>
       <div>Hit Points: {{hitPoints}}</div>
       <div>{{message}}</div>
     </mat-grid-tile>
     <mat-grid-tile>
-      <div class="monster" [style]="'background-image: url(monsters/' + monster + '.svg)'"></div>
+      <mat-icon class="monster" [svgIcon]="monster"></mat-icon>
     </mat-grid-tile>
   </mat-grid-list>
 </mat-dialog-content>

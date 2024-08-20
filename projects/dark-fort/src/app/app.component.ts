@@ -33,7 +33,16 @@ export class AppComponent {
       .addSvgIcon('d6-3', this.setPath('dice/d6-3.svg'))
       .addSvgIcon('d6-4', this.setPath('dice/d6-4.svg'))
       .addSvgIcon('d6-5', this.setPath('dice/d6-5.svg'))
-      .addSvgIcon('d6-6', this.setPath('dice/d6-6.svg'));
+      .addSvgIcon('d6-6', this.setPath('dice/d6-6.svg'))
+      .addSvgIcon('kargunt', this.setPath('kargunt.svg'))
+      .addSvgIcon('basilisk', this.setPath('monsters/basilisk.svg'))
+      .addSvgIcon('cultist', this.setPath('monsters/cultist.svg'))
+      .addSvgIcon('goblin', this.setPath('monsters/goblin.svg'))
+      .addSvgIcon('hound', this.setPath('monsters/hound.svg'))
+      .addSvgIcon('medusa', this.setPath('monsters/medusa.svg'))
+      .addSvgIcon('skeleton', this.setPath('monsters/skeleton.svg'))
+      .addSvgIcon('sorcerer', this.setPath('monsters/sorcerer.svg'))
+      .addSvgIcon('troll', this.setPath('monsters/troll.svg'));
 
     this.stateService.initialize();
   }
