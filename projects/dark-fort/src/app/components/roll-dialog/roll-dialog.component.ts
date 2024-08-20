@@ -10,6 +10,7 @@ import {
 import {MatButton} from '@angular/material/button';
 import {StateService} from '../../services/state.service';
 import {NgForOf, NgIf} from '@angular/common';
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'dark-fort-roll-dialog',
@@ -20,7 +21,8 @@ import {NgForOf, NgIf} from '@angular/common';
     MatDialogActions,
     MatButton,
     NgIf,
-    NgForOf
+    NgForOf,
+    MatIcon
   ],
   templateUrl: './roll-dialog.component.html',
   styleUrl: './roll-dialog.component.css'
