@@ -1,15 +1,29 @@
-<h2 mat-dialog-title>Fight {{monsterName}}</h2>
+<h2 mat-dialog-title>Fight {{ monsterName }}</h2>
 <mat-dialog-content class="mat-typography">
   <mat-grid-list cols="3">
     <mat-grid-tile>
       <mat-icon class="hero" svgIcon="kargunt"></mat-icon>
     </mat-grid-tile>
     <mat-grid-tile>
-      <div>Hit Points: {{hitPoints}}</div>
-      <div>{{message}}</div>
+      <div>Hit Points: {{ monsterHitPoints }}</div>
+      <div>{{ message }}</div>
     </mat-grid-tile>
     <mat-grid-tile>
       <mat-icon class="monster" [svgIcon]="monster"></mat-icon>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div>
+        <solo-pips class="pip" emptyIcon="heart-empty" fullIcon="heart-full"
+                   [totalPips]="stateService.character.hitPointsMax"
+                   [shadedPips]="stateService.character.hitPointsCurrent"></solo-pips>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile></mat-grid-tile>
+    <mat-grid-tile>
+      <div>
+        <solo-pips class="pip" emptyIcon="heart-empty" fullIcon="heart-full" [totalPips]="monsterHitPointsMax"
+                   [shadedPips]="monsterHitPoints"></solo-pips>
+      </div>
     </mat-grid-tile>
   </mat-grid-list>
 </mat-dialog-content>
@@ -17,9 +31,18 @@
 
   <button mat-button *ngIf="canUseAegis()" (click)="useAegis()">Use Aegis of Sorrow</button>
   <mat-menu #menu="matMenu">
-    <button *ngFor="let item of getUsableItems()" (click)="useItem(item)" mat-menu-item>{{stateService.getItem(item.id).name}}: {{item.charges}}</button>
+    <button *ngFor="let item of getUsableItems()" (click)="useItem(item)"
+            mat-menu-item>{{ stateService.getItem(item.id).name }}: {{ item.charges }}
+    </button>
   </mat-menu>
-  <button mat-button *ngIf="hitPoints > 0 && stateService.character.hitPointsCurrent > 0 && getUsableItems().length > 0" [matMenuTriggerFor]="menu">Use</button>
-  <button mat-button *ngIf="hitPoints > 0 && stateService.character.hitPointsCurrent > 0" (click)="attack()">Attack</button>
-  <button mat-button *ngIf="hitPoints <= 0 || stateService.character.hitPointsCurrent <=0" (click)="resolveCombat()" mat-dialog-close>OK</button>
+  <button mat-button
+          *ngIf="monsterHitPoints > 0 && stateService.character.hitPointsCurrent > 0 && getUsableItems().length > 0"
+          [matMenuTriggerFor]="menu">Use
+  </button>
+  <button mat-button *ngIf="monsterHitPoints > 0 && stateService.character.hitPointsCurrent > 0" (click)="attack()">
+    Attack
+  </button>
+  <button mat-button *ngIf="monsterHitPoints <= 0 || stateService.character.hitPointsCurrent <=0"
+          (click)="resolveCombat()" mat-dialog-close>OK
+  </button>
 </mat-dialog-actions>

@@ -42,7 +42,9 @@ export class AppComponent {
       .addSvgIcon('medusa', this.setPath('monsters/medusa.svg'))
       .addSvgIcon('skeleton', this.setPath('monsters/skeleton.svg'))
       .addSvgIcon('sorcerer', this.setPath('monsters/sorcerer.svg'))
-      .addSvgIcon('troll', this.setPath('monsters/troll.svg'));
+      .addSvgIcon('troll', this.setPath('monsters/troll.svg'))
+      .addSvgIcon('heart-empty', this.setPath('heart-red-outline.svg'))
+      .addSvgIcon('heart-full', this.setPath('heart-red.svg'));
 
     this.stateService.initialize();
   }

@@ -17,6 +17,7 @@ import {LiteralsService} from "../../../services/literals.service";
 import {RollDialogComponent} from "../../roll-dialog/roll-dialog.component";
 import {MatGridList, MatGridTile} from '@angular/material/grid-list';
 import {MatIcon} from "@angular/material/icon";
+import {PipsComponent} from "../../../../../../common/src/lib/components/pips/pips.component";
 
 @Component({
   selector: 'dark-fort-weak-room',
@@ -36,7 +37,8 @@ import {MatIcon} from "@angular/material/icon";
     MatMenuTrigger,
     MatGridList,
     MatGridTile,
-    MatIcon
+    MatIcon,
+    PipsComponent
   ],
   templateUrl: './weak-room.component.html',
   styleUrl: './weak-room.component.css'
@@ -44,7 +46,8 @@ import {MatIcon} from "@angular/material/icon";
 export class WeakRoomComponent implements OnInit, OnDestroy {
 
   monster!: MonsterIdentifier;
-  hitPoints!: number;
+  monsterHitPoints!: number;
+  monsterHitPointsMax!: number;
   monsterName!: string;
   message!: string;
   daemon!: boolean;
@@ -69,7 +72,8 @@ export class WeakRoomComponent implements OnInit, OnDestroy {
   async rollMonster(): Promise<void> {
     this.monster = await this.diceService.getRandomElementWithConfirmation(this.data, 1, 4, this.literalService.monsterRoll, RollDialogComponent);
     const monster = this.stateService.getMonster(this.monster);
-    this.hitPoints = monster.hitPoints;
+    this.monsterHitPoints = monster.hitPoints;
+    this.monsterHitPointsMax = monster.hitPoints;
     this.monsterName = monster.name;
   }
 
@@ -80,11 +84,11 @@ export class WeakRoomComponent implements OnInit, OnDestroy {
     if (hit) {
       const damage = await this.stateService.calculatePlayerDamage();
       this.message = `you hit the monster for ${damage} damage`;
-      this.hitPoints += -damage;
+      this.monsterHitPoints += -damage;
       if (this.daemon) {
         const daemonDamage = await this.stateService.calculateCombatDamage(1, 4, 0);
         this.message += ` your summoned daemon inflicts ${daemonDamage} damage`;
-        this.hitPoints += -daemonDamage;
+        this.monsterHitPoints += -daemonDamage;
       }
 
     } else {
@@ -122,13 +126,13 @@ export class WeakRoomComponent implements OnInit, OnDestroy {
     }
 
     this.message = 'you evade the monster';
-    this.hitPoints = 0;
+    this.monsterHitPoints = 0;
     this.evaded = true;
   }
 
   async usePalms() {
     const damage = await this.stateService.calculateCombatDamage(1, 6, 1);
-    this.hitPoints += -damage;
+    this.monsterHitPoints += -damage;
     this.message = `you inflict ${damage} damage`;
   }
 
