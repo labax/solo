@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "ng deploy --repo=https://github.com/labax/solo.git --base-href=/solo/"
+    "deploy": "ng deploy --repo=https://github.com/labax/solo.git --base-href=/solo/",
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -32,6 +33,7 @@
     "@types/eslint": "^9",
     "@types/jasmine": "~5.1.0",
     "angular-cli-ghpages": "2.0.1",
+    "angular-eslint": "18.3.0",
     "eslint": "^9.9.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
@@ -40,7 +42,8 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "ng-packagr": "^18.1.0",
-    "typescript": "~5.4.2"
+    "typescript": "~5.4.2",
+    "typescript-eslint": "8.1.0"
   },
   "packageManager": "yarn@4.3.1"
 }
