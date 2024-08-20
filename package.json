@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "deploy": "ng deploy --repo=https://github.com/labax/solo.git --base-href=/solo/",
-    "lint": "ng lint"
+    "lint": "ng lint --project=darkFort"
   },
   "private": true,
   "dependencies": {
@@ -30,11 +30,18 @@
     "@angular-devkit/build-angular": "^18.1.0",
     "@angular/cli": "^18.0.1",
     "@angular/compiler-cli": "^18.0.0",
+    "@nx/eslint-plugin": "^19.6.1",
     "@types/eslint": "^9",
     "@types/jasmine": "~5.1.0",
     "angular-cli-ghpages": "2.0.1",
     "angular-eslint": "18.3.0",
     "eslint": "^9.9.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-ban": "^1.6.0",
+    "eslint-plugin-header": "^3.1.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsdoc": "^50.2.2",
+    "eslint-plugin-prettier": "^5.2.1",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

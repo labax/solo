@@ -98,6 +98,15 @@
         },
         "deploy": {
           "builder": "angular-cli-ghpages:deploy"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/dark-fort/src/**/*.ts",
+              "projects/dark-fort/src/**/*.html"
+            ]
+          }
         }
       }
     },
@@ -129,6 +138,15 @@
             "polyfills": [
               "zone.js",
               "zone.js/testing"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/common/src/**/*.ts",
+              "projects/common/src/**/*.html"
             ]
           }
         }
