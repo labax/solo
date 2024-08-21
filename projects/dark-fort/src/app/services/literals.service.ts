@@ -19,4 +19,5 @@ export class LiteralsService {
   public readonly damageRoll: string = 'roll for damage';
   public readonly armorRoll: string = 'roll for armor';
   public readonly monsterRoll: string = 'roll for monster';
+  public readonly healthRoll: string = 'roll for health';
 }

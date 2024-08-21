@@ -5,8 +5,8 @@ export const itemsTable: IItem[] = [{
   name: 'Potion',
   silver: 6,
   id: 'potion',
-  onUse: (state: StateService) => {
-    state.healCharacter();
+  onUse: async (state: StateService) => {
+    await state.healCharacter();
   },
   chargeable: false
 }, {

@@ -148,8 +148,8 @@ export class StateService {
     return Status.continue;
   }
 
-  healCharacter(): void {
-    this.character.hitPointsCurrent += this.diceService.rollAndSumDice(1, 6);
+  async healCharacter(): Promise<void> {
+    this.character.hitPointsCurrent += await this.diceService.rollAndSumDiceWithConfirmation(1, 6, this.literalsService.healthRoll, RollDialogComponent);
     if (this.character.hitPointsCurrent > this.character.hitPointsMax) {
       this.character.hitPointsCurrent = this.character.hitPointsMax;
     }
