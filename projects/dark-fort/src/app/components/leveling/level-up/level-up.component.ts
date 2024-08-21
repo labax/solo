@@ -46,11 +46,10 @@ export class LevelUpComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.level = await this.diceService.getRandomElementWithConfirmation(this.stateService.levels, 1,6, this.literalsService.levelRoll, RollDialogComponent);
+    this.levelDescription = this.stateService.getLevel(this.level).description;
 
     const index = this.stateService.levels.findIndex(item => item === this.level);
-
     this.stateService.levels.splice(index, 1);
-    this.levelDescription = this.stateService.getLevel(this.level).description;
   }
 
   resetMap() {
