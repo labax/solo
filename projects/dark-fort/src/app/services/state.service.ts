@@ -105,12 +105,15 @@ export class StateService {
 
   async resolveRoom(room: IRoom): Promise<roomType | undefined> {
     let roomType: roomType | undefined = undefined;
-    if(this.hasItem('omen')) {
-      const type$ = this.dialog.open(RoomDialogComponent, {disableClose: true, data: [...roomTypesTable, ...initialRoomTypesTable]}).afterClosed();
+    if (this.hasItem('omen')) {
+      const type$ = this.dialog.open(RoomDialogComponent, {
+        disableClose: true,
+        data: [...roomTypesTable, ...initialRoomTypesTable]
+      }).afterClosed();
       roomType = await lastValueFrom(type$);
-      if(roomType) {
-        const omen = this.character.inventory.find(x=>x.id === 'omen');
-        if(omen) {
+      if (roomType) {
+        const omen = this.character.inventory.find(x => x.id === 'omen');
+        if (omen) {
           this.removeItemFromInventory(omen);
         }
       }
@@ -212,7 +215,8 @@ export class StateService {
   async calculateDamage(damageDie: number, damageBonus: number, ignoresArmor: boolean): Promise<number> {
     const roll = await this.diceService.rollAndSumDiceWithConfirmation(1, damageDie, this.literalsService.damageRoll, RollDialogComponent) + damageBonus;
     if (this.hasItem('armor') && !ignoresArmor) {
-      return roll - await this.diceService.rollAndSumDiceWithConfirmation(1, 4, this.literalsService.armorRoll, RollDialogComponent);
+      const damage = roll - await this.diceService.rollAndSumDiceWithConfirmation(1, 4, this.literalsService.armorRoll, RollDialogComponent);
+      return damage > 0 ? damage : 0;
     }
 
     return roll;
