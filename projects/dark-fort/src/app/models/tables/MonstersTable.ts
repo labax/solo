@@ -62,8 +62,9 @@ export const monstersTable: IMonster[] = [
       const roll = await dice.rollAndSumDiceWithConfirmation(1, 6, description, RollDialogComponent);
       if (roll <= 1) {
         state.character.hitPointsCurrent = -1;
+      } else {
+        state.character.silver += await dice.rollAndSumDiceWithConfirmation(3, 6, 'roll for silver', RollDialogComponent);
       }
-      state.character.silver += await dice.rollAndSumDiceWithConfirmation(3, 6, 'roll for silver', RollDialogComponent);
     }
   },
   {
@@ -83,8 +84,9 @@ export const monstersTable: IMonster[] = [
       const roll = await dice.rollAndSumDiceWithConfirmation(1, 6, 'roll for death', RollDialogComponent);
       if (roll <= 1) {
         state.character.hitPointsCurrent = -1;
+      } else {
+        state.character.silver += await dice.rollAndSumDiceWithConfirmation(1, 4, 'roll for silver', RollDialogComponent) * await dice.rollAndSumDiceWithConfirmation(1, 6, 'roll for silver', RollDialogComponent);
       }
-      state.character.silver += await dice.rollAndSumDiceWithConfirmation(1, 4, 'roll for silver', RollDialogComponent) * await dice.rollAndSumDiceWithConfirmation(1, 6, 'roll for silver', RollDialogComponent);
     }
   },
   {

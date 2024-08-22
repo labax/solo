@@ -3,7 +3,7 @@ import {
   MAT_DIALOG_DATA,
   MatDialogActions,
   MatDialogClose,
-  MatDialogContent,
+  MatDialogContent, MatDialogRef,
   MatDialogTitle
 } from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
@@ -59,6 +59,7 @@ export class WeakRoomComponent implements OnInit, OnDestroy {
   constructor(public stateService: StateService,
               private diceService: DiceService,
               private literalService: LiteralsService,
+              public dialogRef: MatDialogRef<WeakRoomComponent>,
               @Inject(MAT_DIALOG_DATA) public data: MonsterIdentifier[]) {
   }
 
@@ -116,6 +117,7 @@ export class WeakRoomComponent implements OnInit, OnDestroy {
       if (monster.onKill) {
         await monster.onKill(this.stateService, this.diceService);
       }
+      this.dialogRef.close();
     }
   }
 
