@@ -36,6 +36,9 @@ export class RollDialogComponent implements DiceDialog, OnInit {
   }
 
   ngOnInit(): void {
+    if(this.data.results.length === 3) {
+      this.dialogRef.updateSize('500px')
+    }
     if(!this.canReroll()) {
       setTimeout(() => this.dialogRef.close('accept'), 2000);
     }
