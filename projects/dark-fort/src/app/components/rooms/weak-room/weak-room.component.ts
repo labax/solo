@@ -59,7 +59,8 @@ export class WeakRoomComponent implements OnInit, OnDestroy {
   constructor(public stateService: StateService,
               private diceService: DiceService,
               private literalService: LiteralsService,
-              @Inject(MAT_DIALOG_DATA) public data: MonsterIdentifier[]) {}
+              @Inject(MAT_DIALOG_DATA) public data: MonsterIdentifier[]) {
+  }
 
   async ngOnInit() {
     await this.rollMonster();
@@ -103,8 +104,14 @@ export class WeakRoomComponent implements OnInit, OnDestroy {
   async resolveCombat() {
     if (this.stateService.character.hitPointsCurrent >= 0) {
       const monster = this.stateService.getMonster(this.monster);
+      // TODO: different properties for monster attack and xp or points calculated on onKillEvent
       if (!this.evaded) {
-        this.stateService.character.points += monster.points;
+        if (this.monster === 'troll') {
+          this.stateService.character.points += 7;
+        }
+        else {
+          this.stateService.character.points += monster.points;
+        }
       }
       if (monster.onKill) {
         await monster.onKill(this.stateService, this.diceService);
@@ -120,12 +127,8 @@ export class WeakRoomComponent implements OnInit, OnDestroy {
   }
 
   useCloak() {
-    if (this.monster === 'troll') {
-      this.stateService.character.points += 5;
-    } else {
-      const monster = this.stateService.getMonster(this.monster);
-      this.stateService.character.points += monster.points;
-    }
+    const monster = this.stateService.getMonster(this.monster);
+    this.stateService.character.points += monster.points;
 
     this.message = 'you evade the monster';
     this.monsterHitPoints = 0;
@@ -154,13 +157,12 @@ export class WeakRoomComponent implements OnInit, OnDestroy {
       this.stateService.character.hitPointsCurrent += this.monsterDamage;
     }
 
-    const item = this.stateService.character.inventory.find(x=>x.id === 'aegis');
-    if(!item) {
+    const item = this.stateService.character.inventory.find(x => x.id === 'aegis');
+    if (!item) {
       throw new Error('item not found!');
     }
 
-    if(item.charges > 0)
-    {
+    if (item.charges > 0) {
       item.charges -= 1;
     }
   }

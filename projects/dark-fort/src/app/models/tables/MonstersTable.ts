@@ -70,7 +70,7 @@ export const monstersTable: IMonster[] = [
     name: 'SMALL STONE TROLL',
     damage: async (state: StateService) => await state.calculateCombatDamage(1, 6, 1),
     hitPoints: 9,
-    points: 7,
+    points: 5,
     id: 'troll'
   },
   {
