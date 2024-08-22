@@ -42,10 +42,10 @@ import {battleItemsTable} from "../../../models/tables/BattleItemsTable";
     MatIcon,
     PipsComponent
   ],
-  templateUrl: './weak-room.component.html',
-  styleUrl: './weak-room.component.css'
+  templateUrl: './combat-room.component.html',
+  styleUrl: './combat-room.component.css'
 })
-export class WeakRoomComponent implements OnInit, OnDestroy {
+export class CombatRoomComponent implements OnInit, OnDestroy {
 
   monster!: MonsterIdentifier;
   monsterHitPoints!: number;
@@ -59,7 +59,7 @@ export class WeakRoomComponent implements OnInit, OnDestroy {
   constructor(public stateService: StateService,
               private diceService: DiceService,
               private literalService: LiteralsService,
-              public dialogRef: MatDialogRef<WeakRoomComponent>,
+              public dialogRef: MatDialogRef<CombatRoomComponent>,
               @Inject(MAT_DIALOG_DATA) public data: MonsterIdentifier[]) {
   }
 

@@ -9,7 +9,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {EmptyRoomComponent} from '../rooms/empty-room/empty-room.component';
 import {TrapRoomComponent} from '../rooms/trap-room/trap-room.component';
 import {RiddleRoomComponent} from '../rooms/riddle-room/riddle-room.component';
-import {WeakRoomComponent} from '../rooms/weak-room/weak-room.component';
+import {CombatRoomComponent} from '../rooms/combat-room/combat-room.component';
 import {PeddlerRoomComponent} from '../rooms/peddler-room/peddler-room.component';
 import {ItemRoomComponent} from '../rooms/item-room/item-room.component';
 import {ScrollRoomComponent} from '../rooms/scroll-room/scroll-room.component';
@@ -93,9 +93,9 @@ export class RoomMapComponent implements OnInit {
     } else if (roomType === 'riddle') {
       dialogRef = this.dialog.open(RiddleRoomComponent, {disableClose: true});
     } else if (roomType === 'weak') {
-      dialogRef = this.dialog.open(WeakRoomComponent, {disableClose: true, data: weakMonstersTable, minWidth: 800});
+      dialogRef = this.dialog.open(CombatRoomComponent, {disableClose: true, data: weakMonstersTable, minWidth: 800});
     } else if (roomType === 'tough') {
-      dialogRef = this.dialog.open(WeakRoomComponent, {disableClose: true, data: strongMonstersTable, minWidth: 800});
+      dialogRef = this.dialog.open(CombatRoomComponent, {disableClose: true, data: strongMonstersTable, minWidth: 800});
     } else if (roomType === 'peddler') {
       dialogRef = this.dialog.open(PeddlerRoomComponent, {disableClose: true});
     } else if (roomType === 'item') {

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ToughRoomComponent } from './tough-room.component';
+import { CombatRoomComponent } from './combat-room.component';
 
-describe('ToughRoomComponent', () => {
-  let component: ToughRoomComponent;
-  let fixture: ComponentFixture<ToughRoomComponent>;
+describe('WeakRoomComponent', () => {
+  let component: CombatRoomComponent;
+  let fixture: ComponentFixture<CombatRoomComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ToughRoomComponent]
+      imports: [CombatRoomComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ToughRoomComponent);
+    fixture = TestBed.createComponent(CombatRoomComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
