@@ -48,14 +48,14 @@ export class AppComponent {
       .addSvgIcon('cloak', this.setPath('combat/cloak.svg'))
       .addSvgIcon('daemon', this.setPath('combat/daemon.svg'))
       .addSvgIcon('potion', this.setPath('combat/potion.svg'))
-      .addSvgIcon('aegis', this.setPath('scrolls/aegis.svg'))
-      .addSvgIcon('palms', this.setPath('scrolls/palms.svg'))
-      .addSvgIcon('summon', this.setPath('scrolls/summon.svg'))
-      .addSvgIcon('dagger', this.setPath('weapons/dagger.svg'))
-      .addSvgIcon('flail', this.setPath('weapons/flail.svg'))
-      .addSvgIcon('sword', this.setPath('weapons/sword.svg'))
-      .addSvgIcon('warHammer', this.setPath('weapons/warHammer.svg'))
-      .addSvgIcon('zweihander', this.setPath('weapons/zweihander.svg'));
+      .addSvgIcon('aegis', this.setPath('combat/scrolls/aegis.svg'))
+      .addSvgIcon('palms', this.setPath('combat/scrolls/palms.svg'))
+      .addSvgIcon('summon', this.setPath('combat/scrolls/summon.svg'))
+      .addSvgIcon('dagger', this.setPath('combat/weapons/dagger.svg'))
+      .addSvgIcon('flail', this.setPath('combat/weapons/flail.svg'))
+      .addSvgIcon('sword', this.setPath('combat/weapons/sword.svg'))
+      .addSvgIcon('warHammer', this.setPath('combat/weapons/warHammer.svg'))
+      .addSvgIcon('zweihander', this.setPath('combat/weapons/zweihander.svg'));
 
 
     this.stateService.initialize();

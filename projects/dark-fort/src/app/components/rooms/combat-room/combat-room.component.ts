@@ -3,10 +3,11 @@ import {
   MAT_DIALOG_DATA,
   MatDialogActions,
   MatDialogClose,
-  MatDialogContent, MatDialogRef,
+  MatDialogContent,
+  MatDialogRef,
   MatDialogTitle
 } from '@angular/material/dialog';
-import {MatButton} from '@angular/material/button';
+import {MatButton, MatFabButton} from '@angular/material/button';
 import {StateService} from '../../../services/state.service';
 import {DiceService} from '../../../../../../common/src/lib/services/dice.service';
 import {NgForOf, NgIf} from '@angular/common';
@@ -15,7 +16,7 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {LiteralsService} from "../../../services/literals.service";
 import {RollDialogComponent} from "../../roll-dialog/roll-dialog.component";
 import {MatGridList, MatGridTile} from '@angular/material/grid-list';
-import {MatIcon} from "@angular/material/icon";
+import {MatIconModule} from "@angular/material/icon";
 import {PipsComponent} from "../../../../../../common/src/lib/components/pips/pips.component";
 import {MonsterIdentifier} from "../../../models/identifiers/MonsterIdentifier";
 import {IInventoryItem} from "../../../models/interfaces/IInventoryItem";
@@ -28,7 +29,6 @@ import {battleItemsTable} from "../../../models/tables/BattleItemsTable";
     MatDialogContent,
     MatDialogTitle,
     MatDialogActions,
-    MatButton,
     MatDialogClose,
     NgIf,
     MatSelect,
@@ -39,8 +39,10 @@ import {battleItemsTable} from "../../../models/tables/BattleItemsTable";
     MatMenuTrigger,
     MatGridList,
     MatGridTile,
-    MatIcon,
-    PipsComponent
+    MatIconModule,
+    PipsComponent,
+    MatFabButton,
+    MatButton
   ],
   templateUrl: './combat-room.component.html',
   styleUrl: './combat-room.component.css'
@@ -109,8 +111,7 @@ export class CombatRoomComponent implements OnInit, OnDestroy {
       if (!this.evaded) {
         if (this.monster === 'troll') {
           this.stateService.character.points += 7;
-        }
-        else {
+        } else {
           this.stateService.character.points += monster.points;
         }
       }

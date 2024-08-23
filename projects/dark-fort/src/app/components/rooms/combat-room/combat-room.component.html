@@ -18,7 +18,12 @@
                    [shadedPips]="stateService.character.hitPointsCurrent"></solo-pips>
       </div>
     </mat-grid-tile>
-    <mat-grid-tile></mat-grid-tile>
+    <mat-grid-tile>
+      <button mat-fab extended [disabled]="monsterHitPoints === 0 || stateService.character.hitPointsCurrent === 0" (click)="attack()">
+        <mat-icon class="action" svgIcon="dagger"></mat-icon>
+        Attack
+      </button>
+    </mat-grid-tile>
     <mat-grid-tile>
       <div>
         <solo-pips class="pip" emptyIcon="heart-empty" fullIcon="heart-full" [totalPips]="monsterHitPointsMax"
@@ -39,9 +44,7 @@
           *ngIf="monsterHitPoints > 0 && stateService.character.hitPointsCurrent > 0 && getUsableItems().length > 0"
           [matMenuTriggerFor]="menu">Use
   </button>
-  <button mat-button *ngIf="monsterHitPoints > 0 && stateService.character.hitPointsCurrent > 0" (click)="attack()">
-    Attack
-  </button>
+
   <button mat-button *ngIf="monsterHitPoints <= 0 || stateService.character.hitPointsCurrent <=0"
           (click)="resolveCombat()">OK
   </button>

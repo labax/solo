@@ -93,9 +93,9 @@ export class RoomMapComponent implements OnInit {
     } else if (roomType === 'riddle') {
       dialogRef = this.dialog.open(RiddleRoomComponent, {disableClose: true});
     } else if (roomType === 'weak') {
-      dialogRef = this.dialog.open(CombatRoomComponent, {disableClose: true, data: weakMonstersTable, minWidth: 800});
+      dialogRef = this.dialog.open(CombatRoomComponent, {disableClose: true, data: weakMonstersTable, minWidth: 900});
     } else if (roomType === 'tough') {
-      dialogRef = this.dialog.open(CombatRoomComponent, {disableClose: true, data: strongMonstersTable, minWidth: 800});
+      dialogRef = this.dialog.open(CombatRoomComponent, {disableClose: true, data: strongMonstersTable, minWidth: 900});
     } else if (roomType === 'peddler') {
       dialogRef = this.dialog.open(PeddlerRoomComponent, {disableClose: true});
     } else if (roomType === 'item') {
