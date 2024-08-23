@@ -19,7 +19,7 @@
       </div>
     </mat-grid-tile>
     <mat-grid-tile>
-      <button mat-fab extended [disabled]="monsterHitPoints === 0 || stateService.character.hitPointsCurrent === 0" (click)="attack()">
+      <button mat-fab extended [disabled]="monsterHitPoints <= 0 || stateService.character.hitPointsCurrent <= 0" (click)="attack()">
         <mat-icon class="action" svgIcon="dagger"></mat-icon>
         Attack
       </button>
