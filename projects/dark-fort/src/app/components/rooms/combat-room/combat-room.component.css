@@ -17,3 +17,12 @@
   width: 32px;
   height: 32px;
 }
+
+.buttons-container {
+  display:flex;
+  flex-direction:column;
+}
+
+.buttons-container > button {
+  margin-bottom: 3px;
+}

@@ -5,8 +5,18 @@
       <mat-icon class="hero" svgIcon="kargunt"></mat-icon>
     </mat-grid-tile>
     <mat-grid-tile>
-      <div>Hit Points: {{ monsterHitPoints }}</div>
-      <div>{{ message }}</div>
+      <div class="buttons-container">
+        <button mat-fab extended [disabled]="monsterHitPoints <= 0 || stateService.character.hitPointsCurrent <= 0"
+                (click)="attack()">
+          <mat-icon class="action" svgIcon="dagger"></mat-icon>
+          Attack
+        </button>
+        <button mat-fab extended *ngFor="let item of getUsableItems()" (click)="useItem(item)">
+          <mat-icon class="action" [svgIcon]="item.id"></mat-icon>
+          {{ stateService.getItem(item.id).name }}: {{ item.charges }}
+        </button>
+        <button mat-fab extended *ngIf="stateService.hasItem('aegis')" [disabled]="!canUseAegis()" (click)="useAegis()">Aegis of Sorrow</button>
+      </div>
     </mat-grid-tile>
     <mat-grid-tile>
       <mat-icon class="monster" [svgIcon]="monster"></mat-icon>
@@ -19,10 +29,7 @@
       </div>
     </mat-grid-tile>
     <mat-grid-tile>
-      <button mat-fab extended [disabled]="monsterHitPoints <= 0 || stateService.character.hitPointsCurrent <= 0" (click)="attack()">
-        <mat-icon class="action" svgIcon="dagger"></mat-icon>
-        Attack
-      </button>
+
     </mat-grid-tile>
     <mat-grid-tile>
       <div>
@@ -33,18 +40,6 @@
   </mat-grid-list>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-
-  <button mat-button *ngIf="canUseAegis()" (click)="useAegis()">Use Aegis of Sorrow</button>
-  <mat-menu #menu="matMenu">
-    <button *ngFor="let item of getUsableItems()" (click)="useItem(item)"
-            mat-menu-item>{{ stateService.getItem(item.id).name }}: {{ item.charges }}
-    </button>
-  </mat-menu>
-  <button mat-button
-          *ngIf="monsterHitPoints > 0 && stateService.character.hitPointsCurrent > 0 && getUsableItems().length > 0"
-          [matMenuTriggerFor]="menu">Use
-  </button>
-
   <button mat-button *ngIf="monsterHitPoints <= 0 || stateService.character.hitPointsCurrent <=0"
           (click)="resolveCombat()">OK
   </button>
