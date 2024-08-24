@@ -33,7 +33,7 @@
     </mat-grid-tile>
     <mat-grid-tile>
       <div>
-        <solo-pips class="pip" emptyIcon="heart-empty" fullIcon="heart-full" [totalPips]="monsterHitPointsMax"
+        <solo-pips *ngIf="monster" class="pip" emptyIcon="heart-empty" fullIcon="heart-full" [totalPips]="monsterHitPointsMax"
                    [shadedPips]="monsterHitPoints"></solo-pips>
       </div>
     </mat-grid-tile>
