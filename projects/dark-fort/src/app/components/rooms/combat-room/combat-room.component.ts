@@ -102,6 +102,12 @@ export class CombatRoomComponent implements OnInit, OnDestroy {
       this.message = `the monster hits you for ${this.monsterDamage} damage`;
       this.stateService.character.hitPointsCurrent += -this.monsterDamage;
     }
+
+    if(this.stateService.character.hitPointsCurrent <=  0 || this.monsterHitPoints <= 0) {
+      await this.resolveCombat();
+      setTimeout(() => this.dialogRef.close('accept'), 2000);
+    }
+
   }
 
   async resolveCombat() {

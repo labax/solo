@@ -39,8 +39,3 @@
     </mat-grid-tile>
   </mat-grid-list>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button *ngIf="monsterHitPoints <= 0 || stateService.character.hitPointsCurrent <=0"
-          (click)="resolveCombat()">OK
-  </button>
-</mat-dialog-actions>
