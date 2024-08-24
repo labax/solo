@@ -21,6 +21,7 @@ import {PipsComponent} from "../../../../../../common/src/lib/components/pips/pi
 import {MonsterIdentifier} from "../../../models/identifiers/MonsterIdentifier";
 import {IInventoryItem} from "../../../models/interfaces/IInventoryItem";
 import {battleItemsTable} from "../../../models/tables/BattleItemsTable";
+import {fadeIn} from '../../../../../../common/src/lib/animations/fadeIn';
 
 @Component({
   selector: 'dark-fort-weak-room',
@@ -44,6 +45,7 @@ import {battleItemsTable} from "../../../models/tables/BattleItemsTable";
     MatFabButton,
     MatButton
   ],
+  animations: [fadeIn],
   templateUrl: './combat-room.component.html',
   styleUrl: './combat-room.component.css'
 })

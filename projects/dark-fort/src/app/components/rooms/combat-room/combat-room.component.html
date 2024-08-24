@@ -19,7 +19,7 @@
       </div>
     </mat-grid-tile>
     <mat-grid-tile>
-      <mat-icon class="monster" [svgIcon]="monster"></mat-icon>
+      <mat-icon *ngIf="monster" class="monster" [svgIcon]="monster" [@fadeIn]="{ value: '*', params: { transitionTime: '1000ms' } }"></mat-icon>
     </mat-grid-tile>
     <mat-grid-tile>
       <div>
